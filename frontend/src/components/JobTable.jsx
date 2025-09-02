@@ -237,7 +237,12 @@ export default function JobTable() {
     const currentJobs = jobs;
 
     return (
-        <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 ${showSignInModal ? 'filter blur-sm pointer-events-none' : ''}`}>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40">
+
+            {showSignInModal && (
+                <div className="fixed inset-0 z-40 backdrop-blur-sm bg-black/20 pointer-events-none"></div>
+            )}
+
             {/* Header Section */}
             <div className="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800">
                 <div className="absolute inset-0 bg-black/10"></div>
@@ -524,7 +529,7 @@ export default function JobTable() {
 
             {/* Sign In Modal */}
             {showSignInModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
                         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
                             <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Sign In Required</h3>
@@ -542,7 +547,7 @@ export default function JobTable() {
                             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                                 <button
                                     onClick={() => {
-                                        console.log('Navigate to sign-in');
+                                        navigate('/sign-in');
                                         setShowSignInModal(false);
                                     }}
                                     className="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg sm:rounded-xl hover:bg-indigo-700 transition-colors duration-200 text-sm sm:text-base"
