@@ -17,7 +17,6 @@ import {
   Puzzle,
   LayoutDashboard,
   MessageCircle,
-  Bell,
   Search,
   Star,
   FileEdit
@@ -126,8 +125,8 @@ export default function Header() {
     const menuItems = [
       { path: '/', icon: Home, label: 'Home' },
       { path: '/about', icon: Info, label: 'About' },
-      { path: '/my-jobs', icon: BriefcaseIcon, label: 'Jobs' },
-      { path: '/trends', icon: TrendingUp, label: 'Trends' },
+      { path: '/my-jobs', icon: BriefcaseIcon, label: 'My Jobs' },
+      { path: '/jobs', icon: TrendingUp, label: 'Jobs' },
       { path: '/contactUs', icon: MessageCircle, label: 'Contact' }
     ];
 
@@ -246,7 +245,7 @@ export default function Header() {
       { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data' },
       { path: '/resumeTemplates', icon: BookOpen, label: 'Resume Templates', desc: 'Professional templates' },
       { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder', desc: 'Create your resume' },
-      { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Practice questions' }
+      { path: '/interview-questions', icon: Puzzle, label: 'Question Bank', desc: 'Practice questions' }
     ];
 
     return (
@@ -393,7 +392,8 @@ export default function Header() {
                     { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals' },
                     { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights' },
                     { path: '/resumeTemplates', icon: BookOpen, label: 'Resume Templates' },
-                    { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder' }
+                    { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder' },
+                    { path: '/interview-questions', icon: Puzzle, label: 'Question Bank' }
                   ].map(({ path, icon: Icon, label }) => (
                     <motion.div
                       key={path}
@@ -537,13 +537,6 @@ export default function Header() {
           <div className="flex-shrink-0">
             {currentUser ? (
               <div className="flex items-center space-x-2 lg:space-x-4">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  className="p-2 rounded-full text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                >
-                  <Bell size={18} />
-                </motion.button>
-                
                 <div className="relative" ref={profileRef}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}

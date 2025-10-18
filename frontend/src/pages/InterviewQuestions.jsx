@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import InterviewCommentSection from '../components/InterviewCommentSection';
 import slugify from '../utils/slugify';
 import StructuredAnswer from '../components/StructuredAnswer';
+import { Puzzle } from 'lucide-react';
 
 
 export default function InterviewQuestions() {
@@ -425,6 +426,21 @@ export default function InterviewQuestions() {
           </div>
         ) : (
           <div className="space-y-8 max-w-none">
+            {/* Page Description */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <Puzzle size={24} className="text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800 mb-2">Question Bank</h2>
+                  <p className="text-slate-600 leading-relaxed">
+                    These are actual questions asked in real interviews to help you get ready with confidence.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Admin Controls */}
             {currentUser?.isUserAdmin && (
               <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 p-6 xl:p-8">

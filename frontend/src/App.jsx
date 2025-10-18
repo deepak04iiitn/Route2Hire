@@ -23,6 +23,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import ContactUs from './pages/ContactUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import CookiePolicy from './pages/CookiePolicy';
 import Jobs from './pages/Jobs';
 import InterviewDetailPage from './pages/InterviewDetailPage';
 import SalaryDetailPage from './pages/SalaryDetailPage';
@@ -131,6 +133,8 @@ export default function App() {
             <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />
             <Route path='/contactUs' element={<ContactUs />} />
             <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+            <Route path='/terms' element={<TermsOfService />} />
+            <Route path='/cookies' element={<CookiePolicy />} />
             <Route path='/newsletter' element={<Newsletter />} />
             <Route path='/jobs' element={<Jobs />} />
             <Route path='/resume-builder' element={<ResumeBuilder />} />
