@@ -49,17 +49,17 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
             // Helper function to add section header
             const addSectionHeader = (title) => {
                 pdf.setFont('helvetica', 'bold');
-                pdf.setFontSize(12);
+                pdf.setFontSize(11);
                 pdf.text(title.toUpperCase(), leftMargin, yPosition);
-                yPosition += 0.08;
+                yPosition += 0.06;
                 
                 // Add thin underline
-                pdf.setLineWidth(0.01); // Make the line thin
+                pdf.setLineWidth(0.008);
                 pdf.line(leftMargin, yPosition, rightMargin, yPosition);
-                yPosition += 0.15;
+                yPosition += 0.12;
                 
                 pdf.setFont('helvetica', 'normal');
-                pdf.setFontSize(10);
+                pdf.setFontSize(9);
             };
 
             // Process each selected field
@@ -396,16 +396,16 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
 
             case 'Objective':
                 return (
-                    <div className="mb-2">
-                        <h2 className="text-base font-bold border-b border-gray-400 pb-2 mb-1 uppercase">Objective</h2>
-                        <p className="text-gray-700 text-xs mt-0.5">{value}</p>
+                    <div className="mb-3">
+                        <h2 className="text-sm font-bold border-b-2 border-gray-300 pb-1 mb-2 uppercase tracking-wide">Objective</h2>
+                        <p className="text-gray-700 text-xs leading-relaxed">{value}</p>
                     </div>
                 );
 
             case 'Education':
                 return (
-                    <div className="mb-2">
-                        <h2 className="text-base font-bold border-b border-gray-400 pb-2 mb-1 uppercase">Education</h2>
+                    <div className="mb-3">
+                        <h2 className="text-sm font-bold border-b-2 border-gray-300 pb-1 mb-2 uppercase tracking-wide">Education</h2>
                         {(value || []).map((edu, index) => (
                             <div key={index} className="mb-1 last:mb-0">
                                 <div className="flex justify-between text-xs">
@@ -431,8 +431,8 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
                 // Check if skills are categorized
                 if (value.length > 0 && typeof value[0] === 'object' && 'category' in value[0]) {
                     return (
-                        <div className="mb-2">
-                            <h2 className="text-base font-bold border-b border-gray-400 pb-2 mb-1 uppercase">Technical Skills</h2>
+                        <div className="mb-3">
+                            <h2 className="text-sm font-bold border-b-2 border-gray-300 pb-1 mb-2 uppercase tracking-wide">Technical Skills</h2>
                             {value.map((category, index) => (
                                 <div key={index} className="text-gray-700 text-xs mt-0.5">
                                     <span style={{fontWeight: 'bold', marginRight: 4}}>•</span>
@@ -445,8 +445,8 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
                 
                 // Fallback for uncategorized skills
                 return (
-                    <div className="mb-2">
-                        <h2 className="text-base font-bold border-b border-gray-400 pb-2 mb-1 uppercase">Technical Skills</h2>
+                    <div className="mb-3">
+                        <h2 className="text-sm font-bold border-b-2 border-gray-300 pb-1 mb-2 uppercase tracking-wide">Technical Skills</h2>
                         {value.map((skill, index) => (
                             <div key={index} className="text-gray-700 text-xs mt-0.5">
                                 <span style={{fontWeight: 'bold', marginRight: 4}}>•</span>{typeof skill === 'string' ? skill : ''}
@@ -457,8 +457,8 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
 
             case 'Projects':
                 return (
-                    <div className="mb-2">
-                        <h2 className="text-base font-bold border-b border-gray-400 pb-2 mb-1 uppercase">Projects</h2>
+                    <div className="mb-3">
+                        <h2 className="text-sm font-bold border-b-2 border-gray-300 pb-1 mb-2 uppercase tracking-wide">Projects</h2>
                         {(value || []).map((project, index) => (
                             <div key={index} className="mb-1 last:mb-0">
                                 <div className="flex justify-between items-start text-xs">
@@ -503,8 +503,8 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
 
             case 'Work Experience':
                 return (
-                    <div className="mb-2">
-                        <h2 className="text-base font-bold border-b border-gray-400 pb-2 mb-1 uppercase">Work Experience</h2>
+                    <div className="mb-3">
+                        <h2 className="text-sm font-bold border-b-2 border-gray-300 pb-1 mb-2 uppercase tracking-wide">Work Experience</h2>
                         {(value || []).map((exp, index) => (
                             <div key={index} className="mb-1 last:mb-0">
                                 <div className="flex justify-between text-xs">
@@ -648,20 +648,24 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
 
     return (
         <div className="relative">
-            <button
-                onClick={handleDownload}
-                className="absolute top-0 right-0 p-1 text-blue-600 hover:text-blue-800 z-10"
-                title="Download PDF"
-            >
-                <FaDownload size={20} />
-            </button>
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">Resume Preview</h3>
+                <button
+                    onClick={handleDownload}
+                    className="flex items-center space-x-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 text-sm font-medium"
+                    title="Download PDF"
+                >
+                    <FaDownload size={14} />
+                    <span>Download PDF</span>
+                </button>
+            </div>
 
-            <div className="relative w-full overflow-x-auto">
+            <div className="relative w-full overflow-x-auto bg-slate-800/20 rounded-xl p-4 border border-slate-600/30">
                 <div
                     ref={resumeRef}
-                    className="bg-white shadow-lg mx-auto text-gray-900 leading-tight"
+                    className="bg-white shadow-2xl mx-auto text-gray-900 leading-tight rounded-lg overflow-hidden"
                     style={{ 
-                        fontFamily: 'Arial, sans-serif',
+                        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
                         fontSize: '0.7rem',
                         width: '8.5in',
                         minHeight: '11in',
@@ -669,7 +673,7 @@ const ResumePreview = ({ selectedFields = [], resumeData = {} }) => {
                         boxSizing: 'border-box',
                         position: 'relative',
                         backgroundColor: 'white',
-                        padding: '0.2in',
+                        padding: '0.3in',
                         overflowWrap: 'break-word',
                         wordWrap: 'break-word',
                         overflow: 'hidden'
