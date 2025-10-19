@@ -240,12 +240,12 @@ export default function Header() {
   // Enhanced Features Dropdown
   const FeaturesDropdown = () => {
     const features = [
-      { path: '/interviewExp', icon: User, label: 'Interview Experiences', desc: 'Real experiences shared' },
+      { path: '/interviewExp', icon: User, label: 'Interview Experiences', desc: 'Company wise' },
       { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', desc: 'Get referred by peers' },
       { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data' },
       { path: '/resumeTemplates', icon: BookOpen, label: 'Resume Templates', desc: 'Professional templates' },
       { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder', desc: 'Create your resume' },
-      { path: '/interview-questions', icon: Puzzle, label: 'Question Bank', desc: 'Practice questions' }
+      { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise' }
     ];
 
     return (
@@ -393,7 +393,7 @@ export default function Header() {
                     { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights' },
                     { path: '/resumeTemplates', icon: BookOpen, label: 'Resume Templates' },
                     { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder' },
-                    { path: '/interview-questions', icon: Puzzle, label: 'Question Bank' }
+                    { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions' }
                   ].map(({ path, icon: Icon, label }) => (
                     <motion.div
                       key={path}
