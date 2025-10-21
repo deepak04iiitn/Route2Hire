@@ -127,6 +127,7 @@ export default function Header() {
       { path: '/about', icon: Info, label: 'About' },
       { path: '/my-jobs', icon: BriefcaseIcon, label: 'My Jobs' },
       { path: '/jobs', icon: TrendingUp, label: 'Jobs' },
+      { path: '/publicpolls', icon: Puzzle, label: 'Polls' },
       { path: '/contactUs', icon: MessageCircle, label: 'Contact' }
     ];
 

@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Plus, Minus, Sparkles, Vote } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import '../styles/Home.css';
 
 const CreatePollModal = ({ onClose }) => {
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+
+  // Redirect to sign-in if user is not authenticated
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/signin');
+      onClose();
+    }
+  }, [currentUser, navigate, onClose]);
+
+  // Don't render the modal if user is not authenticated
+  if (!currentUser) {
+    return null;
+  }
 
   const handleAddOption = () => {
     setOptions([...options, '']);
@@ -29,7 +45,7 @@ const CreatePollModal = ({ onClose }) => {
       await axios.post('/backend/polls', { question, options });
       
       onClose();
-      navigate('/publicpolls');
+      navigate('/mypolls');
     } catch (error) {
       console.error('Error creating poll:', error);
     }
@@ -172,52 +188,6 @@ const CreatePollModal = ({ onClose }) => {
         </div>
       </div>
 
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 2px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.3);
-          border-radius: 2px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.5);
-        }
-        
-        @keyframes animate-in {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-in {
-          animation: animate-in 0.3s ease-out forwards;
-        }
-        
-        .slide-in-from-left {
-          animation: slide-in-from-left 0.3s ease-out forwards;
-        }
-        
-        @keyframes slide-in-from-left {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </div>
   );
 };

@@ -33,6 +33,7 @@ import ResumeBuilder from './pages/ResumeBuilder';
 import InterviewQuestions from './pages/InterviewQuestions';
 import AdminInterviewQuestions from './pages/AdminInterviewQuestions';
 import Newsletter from './pages/Newsletter';
+import GlobalPollModal from './components/GlobalPollModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { signoutSuccess, initializeSessionExpiry } from './redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
@@ -143,6 +144,7 @@ export default function App() {
           </Routes>
         </div>
         <Footer />
+        <GlobalPollModal />
       </div>
     </BrowserRouter>
   );

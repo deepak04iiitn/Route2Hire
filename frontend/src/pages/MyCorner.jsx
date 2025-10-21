@@ -7,7 +7,8 @@ import {
   Settings,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  Puzzle
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import MyInterviews from '../components/MyInterviews';
@@ -15,6 +16,7 @@ import MyReferrals from '../components/MyReferrals';
 import MySalary from '../components/MySalary';
 import MyResumeTemplates from '../components/MyResumeTemplates';
 import ResumeBuilder from './ResumeBuilder';
+import MyPolls from './MyPolls';
 
 export default function MyCorner() {
   const { currentUser } = useSelector((state) => state.user);
@@ -39,6 +41,7 @@ export default function MyCorner() {
     { id: 'referral', icon: Users, label: 'Referrals' },
     { id: 'salary', icon: DollarSign, label: 'Salary Structures' },
     { id: 'resume', icon: FileEdit, label: 'Resume Templates' },
+    { id: 'polls', icon: Puzzle, label: 'My Polls' },
   ];
 
   const handleMenuItemClick = (itemId) => {
@@ -60,6 +63,8 @@ export default function MyCorner() {
         return <MyResumeTemplates />;
       case 'resumeBuilder':
         return <ResumeBuilder />;
+      case 'polls':
+        return <MyPolls />;
       default:
         return <div className="p-8">Select a menu item</div>;
     }

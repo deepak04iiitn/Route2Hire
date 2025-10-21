@@ -1,59 +1,59 @@
-import React, { useState, useRef, useEffect } from 'react';
-import TypeWriterEffect from 'react-typewriter-effect';
-import JobTable from '../components/JobTable';
-import { FloatButton } from 'antd';
-import { MessageFilled, PlusOutlined, FormOutlined, UsergroupAddOutlined, RiseOutlined, CloseOutlined, SendOutlined, BarChartOutlined, CoffeeOutlined, RocketOutlined, TrophyOutlined, StarOutlined, ThunderboltOutlined, FireOutlined, CrownOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from 'flowbite-react';
-import FadedJobTablePreview from '../components/FadedJobTablePreview';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import CreatePollModal from '../components/CreatePollModal';
+import React, { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TestimonialForm from '../components/TestimonialForm';
-import TestimonialSection from '../components/TestimonialSection';
 import { useSelector } from 'react-redux';
-import NewsletterBanner from '../components/NewsLetterBanner';
+import { MessageFilled, RiseOutlined, CloseOutlined, SendOutlined, BarChartOutlined, UsergroupAddOutlined, RocketOutlined, TrophyOutlined, CrownOutlined, FormOutlined } from '@ant-design/icons';
+import '../styles/Home.css';
+import { debounce, preloadCriticalResources } from '../utils/performanceOptimizations';
+
+// Lazy load heavy components
+const TypeWriterEffect = lazy(() => import('react-typewriter-effect'));
+const FadedJobTablePreview = lazy(() => import('../components/FadedJobTablePreview'));
+const TestimonialSection = lazy(() => import('../components/TestimonialSection'));
+const NewsletterBanner = lazy(() => import('../components/NewsLetterBanner'));
+
+// Lazy load AI functionality only when needed
+const loadAIFunctionality = () => import('@google/generative-ai');
 
 export default function Home() {
 
   const [showModal, setShowModal] = useState(false);
-  const [showPollModal, setShowPollModal] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isCheckingPremium, setIsCheckingPremium] = useState(true);
+  const [aiModule, setAiModule] = useState(null);
 
   const chatEndRef = useRef(null);
   const navigate = useNavigate();
-
   const {currentUser} = useSelector((state) => state.user);
 
-  // SEO: structured data for WebSite
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Route2Hire",
-    url: siteUrl,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteUrl}/jobs?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
-    about:
-      "Job search, tech job listings, employee referrals, interview questions, salary insights, resume templates, and community polls",
-  };
+  // Memoize SEO data to prevent recreation on every render
+  const jsonLd = useMemo(() => {
+    const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Route2Hire",
+      url: siteUrl,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${siteUrl}/jobs?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+      about: "Job search, tech job listings, employee referrals, interview questions, salary insights, resume templates, and community polls",
+    };
+  }, []);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, []);
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, scrollToBottom]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (showModal || showPollModal) {
+    if (showModal) {
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = '0px'; // Prevent scrollbar shift
     } else {
@@ -66,41 +66,49 @@ export default function Home() {
       document.body.style.overflow = 'unset';
       document.body.style.paddingRight = '0px';
     };
-  }, [showModal, showPollModal]);
+  }, [showModal]);
 
-  // Check premium status
+  // Check premium status with debouncing
+  const checkPremiumStatus = useCallback(async () => {
+    if (!currentUser?.email) {
+      setIsPremiumUser(false);
+      setIsCheckingPremium(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/backend/premium');
+      const premiumUsers = await response.json();
+      const userIsPremium = premiumUsers.some(user => user.email === currentUser.email);
+      setIsPremiumUser(userIsPremium);
+    } catch (error) {
+      console.error('Error checking premium status:', error);
+      setIsPremiumUser(false);
+    } finally {
+      setIsCheckingPremium(false);
+    }
+  }, [currentUser?.email]);
+
+  const debouncedCheckPremium = useMemo(
+    () => debounce(checkPremiumStatus, 300),
+    [checkPremiumStatus]
+  );
+
   useEffect(() => {
+    debouncedCheckPremium();
+  }, [debouncedCheckPremium]);
 
-    const checkPremiumStatus = async () => {
-      if (!currentUser?.email) {
-        setIsPremiumUser(false);
-        setIsCheckingPremium(false);
-        return;
-      }
+  // Preload critical resources on component mount
+  useEffect(() => {
+    preloadCriticalResources();
+  }, []);
 
-      try {
-        const response = await fetch('/backend/premium');
-        const premiumUsers = await response.json();
-        
-        const userIsPremium = premiumUsers.some(user => user.email === currentUser.email);
-        setIsPremiumUser(userIsPremium);
-      } catch (error) {
-        console.error('Error checking premium status:', error);
-        setIsPremiumUser(false);
-      } finally {
-        setIsCheckingPremium(false);
-      }
-    };
-
-    checkPremiumStatus();
-  }, [currentUser]);
-
-  const formatResponse = (text) => {
+  const formatResponse = useCallback((text) => {
     const lines = text.split('\n');
     let formattedText = '';
     let inList = false;
 
-    lines.forEach((line, index) => {
+    lines.forEach((line) => {
       line = line.replace(/\*/g, ''); // Remove asterisks
       
       if (line.trim().match(/^\d+\./) || line.trim().startsWith('-') || line.trim().startsWith('•')) {
@@ -134,33 +142,41 @@ export default function Home() {
     }
 
     return formattedText.trim();
-  };
+  }, []);
 
 
-  const AIanswer = async (question) => {
+  const AIanswer = useCallback(async (question) => {
     setIsLoading(true);
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
-    const generationConfig = {
-      temperature: 1,
-      topP: 0.95,
-      topK: 64,
-      maxOutputTokens: 8192,
-      responseMimeType: "text/plain",
-    };
+    try {
+      // Lazy load AI module only when needed
+      if (!aiModule) {
+        const { GoogleGenerativeAI } = await loadAIFunctionality();
+        setAiModule({ GoogleGenerativeAI });
+      }
+      
+      const { GoogleGenerativeAI } = aiModule || await loadAIFunctionality();
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      
+      const generationConfig = {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 8192,
+        responseMimeType: "text/plain",
+      };
 
-    const chatSession = model.startChat({
-      generationConfig,
-      history: [],
-    });
+      const chatSession = model.startChat({
+        generationConfig,
+        history: [],
+      });
 
-    const fullPrompt = `Answer the following question about job opportunities or career advice. Use bullet points and numbered lists where appropriate to make the answer more readable:
+      const fullPrompt = `Answer the following question about job opportunities or career advice. Use bullet points and numbered lists where appropriate to make the answer more readable:
 
 ${question}`;
 
-    try {
       const result = await chatSession.sendMessage(fullPrompt);
       const formattedResponse = formatResponse(result.response.text());
       setMessages(prev => [...prev, { type: 'ai', content: formattedResponse }]);
@@ -169,31 +185,35 @@ ${question}`;
       setMessages(prev => [...prev, { type: 'ai', content: "I'm sorry, I couldn't generate a response. Please try again." }]);
     }
     setIsLoading(false);
-  };
+  }, [aiModule, formatResponse]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (inputMessage.trim() === '') return;
     setMessages(prev => [...prev, { type: 'user', content: inputMessage }]);
     setInputMessage('');
     await AIanswer(inputMessage);
-  };
+  }, [inputMessage, AIanswer]);
 
-  const handleModalOpen = (modalType) => {
-    // Prevent any scrolling or jumping
+  const handleModalOpen = useCallback((modalType) => {
     if (modalType === 'chat') {
       setShowModal(true);
     } else if (modalType === 'poll') {
-      setShowPollModal(true);
+      // Check if user is signed in before opening poll modal
+      if (!currentUser) {
+        // Show sign-in prompt or redirect to sign-in page
+        navigate('/signin');
+        return;
+      }
+      // Trigger the global poll modal
+      window.dispatchEvent(new CustomEvent('openCreatePollModal'));
     }
-  };
+  }, [currentUser, navigate]);
 
-  const handleModalClose = (modalType) => {
+  const handleModalClose = useCallback((modalType) => {
     if (modalType === 'chat') {
       setShowModal(false);
-    } else if (modalType === 'poll') {
-      setShowPollModal(false);
     }
-  };
+  }, []);
 
 
   return (
@@ -231,22 +251,30 @@ ${question}`;
             <div className="relative max-w-6xl mx-auto" aria-hidden="true">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-teal-500/30 blur-3xl scale-110"></div>
               <div className="relative text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 leading-tight">
-                <TypeWriterEffect
-                  textStyle={{
-                    fontFamily: 'Inter, system-ui',
-                    fontWeight: '900',
-                    background: 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)',
-                    WebkitBackgroundClip: 'text',
-                    color: 'transparent',
-                    fontSize: 'inherit',
-                    textAlign: 'center',
-                    display: 'block'
-                  }}
-                  startDelay={100}
-                  cursorColor="#60a5fa"
-                  text="Route2Hire"
-                  typeSpeed={80}
-                />
+                <Suspense fallback={
+                  <div className="text-center">
+                    <div className="text-white font-black text-3xl sm:text-5xl md:text-7xl lg:text-8xl">
+                      Route2Hire
+                    </div>
+                  </div>
+                }>
+                  <TypeWriterEffect
+                    textStyle={{
+                      fontFamily: 'Inter, system-ui',
+                      fontWeight: '900',
+                      background: 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)',
+                      WebkitBackgroundClip: 'text',
+                      color: 'transparent',
+                      fontSize: 'inherit',
+                      textAlign: 'center',
+                      display: 'block'
+                    }}
+                    startDelay={100}
+                    cursorColor="#60a5fa"
+                    text="Route2Hire"
+                    typeSpeed={80}
+                  />
+                </Suspense>
               </div>
             </div>
             
@@ -282,7 +310,7 @@ ${question}`;
               </button>
 
               <button
-                onClick={() => navigate('/publicpolls')}
+                onClick={() => handleModalOpen('poll')}
                 className="group inline-flex items-center justify-center gap-3 sm:gap-4 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white px-6 sm:px-10 py-4 sm:py-5 rounded-2xl text-base sm:text-lg font-bold transition-all duration-500 hover:scale-105 shadow-2xl border border-white/20 hover:border-white/30 w-full sm:w-auto max-w-xs sm:max-w-none"
               >
                 <BarChartOutlined className="text-xl sm:text-2xl flex-shrink-0" />
@@ -294,8 +322,8 @@ ${question}`;
             {/* Premium Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 max-w-4xl mx-auto mb-8 sm:mb-12">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">1K+</div>
-                <div className="text-white/60 font-medium text-sm sm:text-base">Premium Jobs</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">3K+</div>
+                <div className="text-white/60 font-medium text-sm sm:text-base">Fresh Jobs</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">350+</div>
@@ -314,7 +342,15 @@ ${question}`;
           </div>
         </section>
 
-        <FadedJobTablePreview />
+        <Suspense fallback={
+          <div className="relative w-full h-[600px] overflow-hidden rounded-3xl border border-white/10 bg-white/5 animate-pulse">
+            <div className="flex items-center justify-center h-full">
+              <div className="text-white/60">Loading job preview...</div>
+            </div>
+          </div>
+        }>
+          <FadedJobTablePreview />
+        </Suspense>
 
         {/* Premium Action Cards Section - New Addition */}
         <section className="py-8 sm:py-12">
@@ -344,15 +380,35 @@ ${question}`;
               {/* Create Poll Card */}
               <div 
                 onClick={() => handleModalOpen('poll')}
-                className="group cursor-pointer bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/20 hover:border-purple-500/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20"
+                className={`group cursor-pointer bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+                  currentUser 
+                    ? 'border-white/20 hover:border-purple-500/50 hover:shadow-purple-500/20' 
+                    : 'border-yellow-500/30 hover:border-yellow-500/50 hover:shadow-yellow-500/20'
+                }`}
               >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg ${
+                  currentUser 
+                    ? 'bg-gradient-to-br from-purple-500 to-purple-600' 
+                    : 'bg-gradient-to-br from-yellow-500 to-orange-500'
+                }`}>
                   <FormOutlined className="text-white text-xl sm:text-2xl" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 text-center">Create Poll</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 text-center">
+                  {currentUser ? 'Create Poll' : 'Sign In to Create Poll'}
+                </h3>
                 <p className="text-white/70 text-center leading-relaxed text-sm sm:text-base">
-                  Share insights and gather community feedback
+                  {currentUser 
+                    ? 'Share insights and gather community feedback'
+                    : 'Join our community to create and participate in polls'
+                  }
                 </p>
+                {!currentUser && (
+                  <div className="mt-3 flex items-center justify-center">
+                    <span className="text-yellow-400 text-xs font-medium bg-yellow-500/20 px-2 py-1 rounded-full">
+                      Sign In Required
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Analytics Card */}
@@ -442,15 +498,40 @@ ${question}`;
         {/* Newsletter Section */}
         <section className="py-12 sm:py-16">
           <div className="container mx-auto px-4 sm:px-6">
-            <NewsletterBanner />
+            <Suspense fallback={
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-8 px-4 rounded-xl shadow-2xl mx-auto w-full mb-16 animate-pulse">
+                <div className="text-center">
+                  <div className="h-8 bg-white/20 rounded mb-4 mx-auto max-w-md"></div>
+                  <div className="h-4 bg-white/20 rounded mb-6 mx-auto max-w-2xl"></div>
+                  <div className="h-12 bg-white/20 rounded-full mx-auto max-w-xs"></div>
+                </div>
+              </div>
+            }>
+              <NewsletterBanner />
+            </Suspense>
           </div>
         </section>
-
 
         {/* Testimonials */}
         <section id="testimonials" className="py-12 sm:py-20">
           <div className="container mx-auto px-4 sm:px-6">
-            <TestimonialSection />
+            <Suspense fallback={
+              <div className="text-center py-12">
+                <div className="h-8 bg-white/20 rounded mb-4 mx-auto max-w-md"></div>
+                <div className="h-4 bg-white/20 rounded mb-8 mx-auto max-w-2xl"></div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="bg-white/10 rounded-xl p-6 animate-pulse">
+                      <div className="h-4 bg-white/20 rounded mb-4"></div>
+                      <div className="h-4 bg-white/20 rounded mb-2"></div>
+                      <div className="h-4 bg-white/20 rounded w-3/4"></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            }>
+              <TestimonialSection />
+            </Suspense>
           </div>
         </section>
 
@@ -552,153 +633,7 @@ ${question}`;
         </div>
       )}
 
-      {/* Poll Modal */}
-      {showPollModal && (
-        <CreatePollModal onClose={() => handleModalClose('poll')} />
-      )}
 
-<style jsx>{`
-        @keyframes fadeInSlide {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeInSlide {
-          animation: fadeInSlide 0.6s ease-out;
-        }
-
-        /* Premium Scrollbar */
-        .home-page ::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        .home-page ::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
-        }
-
-        .home-page ::-webkit-scrollbar-thumb {
-          background: linear-gradient(45deg, #667eea, #764ba2);
-          border-radius: 10px;
-        }
-
-        .home-page ::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(45deg, #5a67d8, #6b46c1);
-        }
-
-        /* Enhanced bounce animation */
-        @keyframes bounce {
-          0%, 20%, 53%, 80%, 100% {
-            transform: translate3d(0,0,0);
-          }
-          40%, 43% {
-            transform: translate3d(0, -12px, 0);
-          }
-          70% {
-            transform: translate3d(0, -6px, 0);
-          }
-          90% {
-            transform: translate3d(0, -3px, 0);
-          }
-        }
-
-        .animate-bounce {
-          animation: bounce 1.6s infinite;
-        }
-
-        /* Pulse effect for background elements */
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.4;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.8;
-            transform: scale(1.05);
-          }
-        }
-
-        .animate-pulse {
-          animation: pulse 4s ease-in-out infinite;
-        }
-
-        /* Glass morphism effects */
-        .glass {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Premium gradient text */
-        .premium-text {
-          background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        /* Hover glow effects */
-        .glow-on-hover:hover {
-          box-shadow: 0 0 50px rgba(102, 126, 234, 0.6);
-        }
-
-        /* Smooth transitions for all interactive elements (scoped to Home only) */
-        .home-page * {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Custom gradient borders */
-        .gradient-border {
-          position: relative;
-          background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
-          background-size: 400% 400%;
-          animation: gradient-shift 6s ease infinite;
-        }
-
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-
-        /* Premium card hover effects */
-        .premium-card {
-          transform-style: preserve-3d;
-          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .premium-card:hover {
-          transform: rotateY(5deg) rotateX(5deg) translateZ(50px);
-        }
-
-        /* Text shadow for better readability */
-        .text-shadow {
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Loading animation improvements */
-        .loading-dots {
-          display: inline-block;
-        }
-
-        .loading-dots::after {
-          content: '';
-          animation: loading-dots 1.5s infinite;
-        }
-
-        @keyframes loading-dots {
-          0%, 20% { content: ''; }
-          40% { content: '.'; }
-          60% { content: '..'; }
-          80%, 100% { content: '...'; }
-        }
-      `}</style>
     </div>
   );
 }

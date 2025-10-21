@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Home.css';
 
 const FadedJobTablePreview = () => {
   // Mock job data for the preview
@@ -85,25 +86,6 @@ const FadedJobTablePreview = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes infinite-scroll {
-          0% {
-            transform: translateY(0);
-          }
-          100% {
-            transform: translateY(-50%);
-          }
-        }
-
-        .animate-infinite-scroll {
-          animation: infinite-scroll 20s linear infinite;
-        }
-
-        /* Ensure smooth scrolling even on slower devices */
-        .animate-infinite-scroll {
-          will-change: transform;
-        }
-      `}</style>
     </div>
   );
 };
