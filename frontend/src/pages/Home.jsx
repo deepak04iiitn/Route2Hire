@@ -29,6 +29,22 @@ export default function Home() {
 
   const {currentUser} = useSelector((state) => state.user);
 
+  // SEO: structured data for WebSite
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Route2Hire",
+    url: siteUrl,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}/jobs?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+    about:
+      "Job search, tech job listings, employee referrals, interview questions, salary insights, resume templates, and community polls",
+  };
+
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -182,6 +198,11 @@ ${question}`;
 
   return (
     <div className="home-page mt-10 min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden">
+      {/* SEO: JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -195,6 +216,10 @@ ${question}`;
         {/* Hero Section - Centered */}
         <section className="py-12 sm:py-20 md:py-32">
           <div className="container mx-auto px-4 sm:px-6 text-center">
+            {/* SEO-only H1 (keeps design intact while improving semantics) */}
+            <h1 className="sr-only">
+              Tech Job Search, Employee Referrals, Interview Prep & Salary Insights | Route2Hire
+            </h1>
             
             {/* Premium Badge */}
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-4 sm:px-6 py-2 mb-6 sm:mb-8">
@@ -202,10 +227,10 @@ ${question}`;
               <span className="text-yellow-300 font-semibold text-xs sm:text-sm tracking-wide">PREMIUM EXPERIENCE</span>
             </div>
             
-            {/* Main Title - Centered */}
-            <div className="relative max-w-6xl mx-auto">
+            {/* Main Title - Centered (decorative, hidden from accessibility tree) */}
+            <div className="relative max-w-6xl mx-auto" aria-hidden="true">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-teal-500/30 blur-3xl scale-110"></div>
-              <h1 className="relative text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 leading-tight">
+              <div className="relative text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 leading-tight">
                 <TypeWriterEffect
                   textStyle={{
                     fontFamily: 'Inter, system-ui',
@@ -222,17 +247,17 @@ ${question}`;
                   text="Route2Hire"
                   typeSpeed={80}
                 />
-              </h1>
+              </div>
             </div>
             
-            {/* Premium Subtitle */}
-            <p className="text-lg sm:text-xl md:text-3xl text-white/80 mb-3 sm:mb-4 font-light leading-relaxed max-w-4xl mx-auto">
-              Where Career Dreams Meet
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold"> Premium Opportunities</span>
-            </p>
-            
+            {/* SEO-optimized subtitle and supporting copy */}
+            <h2 className="text-lg sm:text-xl md:text-3xl text-white/80 mb-3 sm:mb-4 font-light leading-relaxed max-w-4xl mx-auto">
+              Find curated tech jobs, verified employee referrals, expert interview preparation and much more —
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold"> all in one place</span>
+            </h2>
+
             <p className="text-base sm:text-lg md:text-xl text-white/60 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed">
-              Experience the future of job discovery with AI-powered matching, exclusive opportunities, and a community of ambitious professionals
+              Discover trending roles, salary benchmarks, resume templates, and community polls — everything you need to land your next role faster with Route2Hire.
             </p>
             
             {/* Premium CTA Buttons */}
