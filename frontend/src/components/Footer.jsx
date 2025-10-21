@@ -70,11 +70,11 @@ export default function Footer() {
             </p>
             <div className="flex items-center space-x-2 text-sm text-slate-500">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Trusted by 50K+ professionals</span>
+              <span>Trusted by many professionals</span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-slate-500">
               <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-              <span>500+ companies hiring</span>
+              <span>3000+ companies hiring</span>
             </div>
           </div>
           
@@ -103,7 +103,6 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li><FooterLink href="/about">About Us</FooterLink></li>
-              <li><FooterLink href="/trends">Career Trends</FooterLink></li>
               <li><FooterLink href="/newsletter">Newsletter</FooterLink></li>
               <li><FooterLink href="/contactUs">Contact Us</FooterLink></li>
               <li><FooterLink href="/myCorner">My Corner</FooterLink></li>
