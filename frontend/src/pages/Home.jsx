@@ -201,7 +201,7 @@ ${question}`;
       // Check if user is signed in before opening poll modal
       if (!currentUser) {
         // Show sign-in prompt or redirect to sign-in page
-        navigate('/signin');
+        navigate('/sign-in');
         return;
       }
       // Trigger the global poll modal
