@@ -1,6 +1,8 @@
 import InterviewQuestion from '../models/interviewQuestion.model.js';
 import User from '../models/user.model.js';
 import { errorHandler } from '../utils/error.js';
+import { clearSitemapCache } from './sitemap.controller.js';
+import { clearLLMSCache } from './llms.controller.js';
 
 export const createInterviewQuestion = async (req, res, next) => {
   try {
@@ -27,6 +29,8 @@ export const createInterviewQuestion = async (req, res, next) => {
     });
 
     const savedQuestion = await newInterviewQuestion.save();
+    clearSitemapCache(); // Clear sitemap cache when new content is added
+    clearLLMSCache(); // Clear llms cache when new content is added
     res.status(201).json(savedQuestion);
   } catch (error) {
     next(error);
@@ -110,6 +114,8 @@ export const updateInterviewQuestion = async (req, res, next) => {
       { new: true }
     );
 
+    clearSitemapCache(); // Clear sitemap cache when content is updated
+    clearLLMSCache(); // Clear llms cache when content is updated
     res.status(200).json(updatedQuestion);
   } catch (error) {
     next(error);
@@ -129,6 +135,8 @@ export const deleteInterviewQuestion = async (req, res, next) => {
     }
 
     await InterviewQuestion.findByIdAndDelete(req.params.id);
+    clearSitemapCache(); // Clear sitemap cache when content is deleted
+    clearLLMSCache(); // Clear llms cache when content is deleted
     res.status(200).json('Question has been deleted');
   } catch (error) {
     next(error);

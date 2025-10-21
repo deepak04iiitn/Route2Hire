@@ -1,5 +1,7 @@
 import Salary from "../models/salary.model.js";
 import { errorHandler } from "../utils/error.js";
+import { clearSitemapCache } from "./sitemap.controller.js";
+import { clearLLMSCache } from "./llms.controller.js";
 
 export const createSalary = async(req, res, next) => {
     const { 
@@ -64,6 +66,8 @@ export const createSalary = async(req, res, next) => {
 
     try {
         await newSalary.save();
+        clearSitemapCache(); // Clear sitemap cache when new content is added
+        clearLLMSCache(); // Clear llms cache when new content is added
         res.status(201).json(newSalary);
     } catch (error) {
         next(error);
@@ -206,6 +210,8 @@ export const deleteSal = async(req, res, next) => {
         }
   
         await Salary.findByIdAndDelete(req.params.salId);
+        clearSitemapCache(); // Clear sitemap cache when content is deleted
+        clearLLMSCache(); // Clear llms cache when content is deleted
         res.status(200).json('Salary Structure has been deleted!');
     } catch (error) {
         next(error);

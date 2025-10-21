@@ -1,5 +1,7 @@
 import Referral from "../models/referral.model.js";
 import { errorHandler } from "../utils/error.js";
+import { clearSitemapCache } from "./sitemap.controller.js";
+import { clearLLMSCache } from "./llms.controller.js";
 
 export const createReferral = async(req, res, next) => {
 
@@ -32,6 +34,8 @@ export const createReferral = async(req, res, next) => {
 
     try {
         await newReferral.save();
+        clearSitemapCache(); // Clear sitemap cache when new content is added
+        clearLLMSCache(); // Clear llms cache when new content is added
         res.status(201).json(newReferral);
     } catch (error) {
         next(error);
@@ -149,6 +153,8 @@ export const deleteRef = async(req, res, next) => {
         }
   
         await Referral.findByIdAndDelete(req.params.refId);
+        clearSitemapCache(); // Clear sitemap cache when content is deleted
+        clearLLMSCache(); // Clear llms cache when content is deleted
         res.status(200).json('Referral has been deleted!');
     } catch (error) {
         next(error);

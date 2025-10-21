@@ -18,6 +18,8 @@ import testimonialRoutes from './routes/testimonial.route.js';
 import adminRoutes from './routes/admin.route.js';
 import interviewQuestionRoutes from './routes/interviewQuestion.route.js';
 import interviewQuestionCommentRoutes from './routes/interviewQuestionComment.route.js';
+import sitemapRoutes from './routes/sitemap.route.js';
+import llmsRoutes from './routes/llms.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
@@ -139,6 +141,8 @@ app.use('/backend/admin', adminRoutes);
 app.use('/backend/resume', resumeRoutes);
 app.use('/backend/interview-questions', interviewQuestionRoutes);
 app.use('/backend/interview-question-comments', interviewQuestionCommentRoutes);
+app.use('/', sitemapRoutes);
+app.use('/', llmsRoutes);
 
 
 app.get('/backend/ping', (req, res) => {
@@ -365,6 +369,11 @@ app.get('/backend/naukri/:url/:id', cacheMiddleware, async (req, res) => {
 app.post('/backend/webhook/jobs-update', async (req, res) => {
   try {
     clearCache();
+    // Also clear sitemap and llms cache when jobs are updated
+    const { clearSitemapCache } = await import('./controllers/sitemap.controller.js');
+    const { clearLLMSCache } = await import('./controllers/llms.controller.js');
+    clearSitemapCache();
+    clearLLMSCache();
     res.json({ message: 'Cache cleared successfully' });
   } catch (error) {
     console.error('Error clearing cache:', error);
@@ -389,9 +398,25 @@ cron.schedule('0 0 * * *', async () => {
         const result = await Naukri.deleteMany({ time: { $lt: oneMonthAgo } });
         if (result.deletedCount > 0) {
             console.log(`Cron Job: Deleted ${result.deletedCount} jobs older than 1 month.`);
+            // Clear sitemap cache when jobs are deleted
+            const { clearSitemapCache } = await import('./controllers/sitemap.controller.js');
+            clearSitemapCache();
         }
     } catch (error) {
         console.error('Cron Job Error (deleting old jobs):', error);
+    }
+});
+
+// Cron job to refresh sitemap and llms cache every 6 hours (runs at 00:00, 06:00, 12:00, 18:00)
+cron.schedule('0 */6 * * *', async () => {
+    try {
+        const { clearSitemapCache } = await import('./controllers/sitemap.controller.js');
+        const { clearLLMSCache } = await import('./controllers/llms.controller.js');
+        clearSitemapCache();
+        clearLLMSCache();
+        console.log('Cron Job: Sitemap and LLMS cache refreshed.');
+    } catch (error) {
+        console.error('Cron Job Error (refreshing caches):', error);
     }
 });
 

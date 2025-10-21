@@ -1,5 +1,7 @@
 import InterviewExperience from "../models/interview.model.js";
 import { errorHandler } from "../utils/error.js";
+import { clearSitemapCache } from "./sitemap.controller.js";
+import { clearLLMSCache } from "./llms.controller.js";
 
 export const createExperience = async(req, res, next) => {
 
@@ -28,6 +30,8 @@ export const createExperience = async(req, res, next) => {
 
     try {
         await newExperience.save();
+        clearSitemapCache(); // Clear sitemap cache when new content is added
+        clearLLMSCache(); // Clear llms cache when new content is added
         res.status(201).json(newExperience);
     } catch (error) {
         next(error);
@@ -154,6 +158,8 @@ export const deleteExp = async(req, res, next) => {
         }
 
         await InterviewExperience.findByIdAndDelete(req.params.expId);
+        clearSitemapCache(); // Clear sitemap cache when content is deleted
+        clearLLMSCache(); // Clear llms cache when content is deleted
 
         res.status(200).json('Experience has been deleted!');
     } catch (error) {
