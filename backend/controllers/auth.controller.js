@@ -59,7 +59,7 @@ export const signin = async (req, res, next) => {
                 isUserAdmin: validUser.isUserAdmin  // Include isUserAdmin in the token
             },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '7d' }
         );
 
         const { password: pass, ...rest } = validUser._doc;
@@ -67,7 +67,7 @@ export const signin = async (req, res, next) => {
         res.status(200)
            .cookie('access_token', token, {
                 httpOnly: true,
-                maxAge: 60 * 60 * 1000, // 1 hour
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
                 sameSite: 'strict',
                 secure: process.env.NODE_ENV === 'production'
            })
@@ -92,7 +92,7 @@ export const google = async(req, res, next) => {
                     isUserAdmin: user.isUserAdmin  // Include isUserAdmin in the token
                 },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '7d' }
             );
 
             const { password, ...rest } = user._doc;
@@ -100,7 +100,7 @@ export const google = async(req, res, next) => {
             res.status(200)
                .cookie('access_token', token, {
                     httpOnly: true,
-                    maxAge: 60 * 60 * 1000, // 1 hour
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
                     sameSite: 'strict',
                     secure: process.env.NODE_ENV === 'production'
                })
@@ -127,7 +127,7 @@ export const google = async(req, res, next) => {
                     isUserAdmin: newUser.isUserAdmin  // Include isUserAdmin in the token
                 },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '7d' }
             );
 
             const { password, ...rest } = newUser._doc;
@@ -135,7 +135,7 @@ export const google = async(req, res, next) => {
             res.status(200)
                .cookie('access_token', token, {
                     httpOnly: true,
-                    maxAge: 60 * 60 * 1000, // 1 hour
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
                     sameSite: 'strict',
                     secure: process.env.NODE_ENV === 'production'
                })

@@ -19,8 +19,8 @@ const userSlice = createSlice({
             state.currentUser = action.payload; // user data is payload
             state.loading = false;
             state.error = null;
-            // Set 1 hour expiry from now
-            state.sessionExpiry = Date.now() + 60 * 60 * 1000;
+            // Set 7 days expiry from now
+            state.sessionExpiry = Date.now() + 7 * 24 * 60 * 60 * 1000;
         },
         signInFailure : (state , action) => {
             state.loading = false;
@@ -62,7 +62,7 @@ const userSlice = createSlice({
         // In case we need to initialize expiry when missing (e.g., after upgrade)
         initializeSessionExpiry: (state) => {
             if (state.currentUser && !state.sessionExpiry) {
-                state.sessionExpiry = Date.now() + 60 * 60 * 1000;
+                state.sessionExpiry = Date.now() + 7 * 24 * 60 * 60 * 1000;
             }
         }
     }
