@@ -11,7 +11,7 @@ Disallow: /mypolls
 
 # Sitemaps and AI crawler hints
 Sitemap: https://route2hire.com/sitemap.xml
-llms: https://route2hire.com/llms.txt
+# LLM policy (informational only): https://route2hire.com/llms.txt
 
 # Optional: Allow major AI crawlers for structured understanding
 User-agent: GPTBot
