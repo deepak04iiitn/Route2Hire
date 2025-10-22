@@ -5,8 +5,6 @@ import { MessageFilled, RiseOutlined, CloseOutlined, SendOutlined, BarChartOutli
 import '../styles/Home.css';
 import { debounce, preloadCriticalResources } from '../utils/performanceOptimizations';
 
-// Lazy load heavy components
-const TypeWriterEffect = lazy(() => import('react-typewriter-effect'));
 const FadedJobTablePreview = lazy(() => import('../components/FadedJobTablePreview'));
 const TestimonialSection = lazy(() => import('../components/TestimonialSection'));
 const NewsletterBanner = lazy(() => import('../components/NewsLetterBanner'));
@@ -251,30 +249,10 @@ ${question}`;
             <div className="relative max-w-6xl mx-auto" aria-hidden="true">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-purple-600/30 to-teal-500/30 blur-3xl scale-110"></div>
               <div className="relative text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 leading-tight">
-                <Suspense fallback={
-                  <div className="text-center">
-                    <div className="text-white font-black text-3xl sm:text-5xl md:text-7xl lg:text-8xl">
-                      Route2Hire
-                    </div>
-                  </div>
-                }>
-                  <TypeWriterEffect
-                    textStyle={{
-                      fontFamily: 'Inter, system-ui',
-                      fontWeight: '900',
-                      background: 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)',
-                      WebkitBackgroundClip: 'text',
-                      color: 'transparent',
-                      fontSize: 'inherit',
-                      textAlign: 'center',
-                      display: 'block'
-                    }}
-                    startDelay={100}
-                    cursorColor="#60a5fa"
-                    text="Route2Hire"
-                    typeSpeed={80}
-                  />
-                </Suspense>
+                {/* Replace the entire TypeWriterEffect Suspense block with: */}
+                <div className="text-white font-black text-3xl sm:text-5xl md:text-7xl lg:text-8xl bg-gradient-to-r from-white via-slate-200 to-slate-300 bg-clip-text text-transparent">
+                  Route2Hire
+                </div>
               </div>
             </div>
             
