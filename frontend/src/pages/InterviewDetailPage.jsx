@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Building, BookOpen, Calendar, MapPin, Clock, Users, Star, Quote, Award, Target, CheckCircle, ExternalLink, User, Briefcase, TrendingUp, Code, Brain, MessageCircle, Trophy, Zap, Globe, Layers, Copy, Linkedin, X, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import InterviewCommentSection from '../components/InterviewCommentSection';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
@@ -532,19 +533,60 @@ export default function InterviewDetailPage() {
   }
 
   return (
-    <div className="min-h-screen relative">
-      <BackgroundPattern />
-      <FloatingElements />
-      <ResponsiveBookExperience 
-        experience={experience} 
-        handleLike={handleLike}
-        handleDislike={handleDislike}
-        likes={likes}
-        dislikes={dislikes}
-        isLiked={isLiked}
-        isDisliked={isDisliked}
-        currentUser={currentUser}
-      />
-    </div>
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {experience 
+            ? `${experience.position} Interview at ${experience.company} | ${experience.verdict === 'selected' ? 'Selected' : 'Not Selected'} - Route2Hire`
+            : "Interview Experience Details | Route2Hire QA & SDET Platform"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            experience 
+              ? `Read detailed interview experience for ${experience.position} at ${experience.company}. ${experience.verdict === 'selected' ? 'Successfully selected' : 'Not selected'} with ${experience.rating || 3}/5 difficulty rating. Get insights for QA, SDET, and Test Automation interviews on Route2Hire.`
+              : "View detailed interview experience for QA, SDET, Test Automation, and Software Testing roles. Get insights, tips, and real interview stories from professionals on Route2Hire."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            experience 
+              ? `${experience.position} interview, ${experience.company} interview, QA interview experience, SDET interview, Test Automation interview, Software Testing interview, ${experience.verdict === 'selected' ? 'Interview success' : 'Interview experience'}, QA career insights`
+              : "Interview experience, QA interview, SDET interview, Test Automation interview, Software Testing interview, Interview insights, QA career, Interview preparation"
+          }
+        />
+        <meta property="og:title" content={experience ? `${experience.position} Interview at ${experience.company} | Route2Hire` : "Interview Experience | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            experience 
+              ? `Read interview experience for ${experience.position} at ${experience.company}. ${experience.verdict === 'selected' ? 'Successfully selected' : 'Interview experience'} with ${experience.rating || 3}/5 difficulty.`
+              : "View detailed interview experiences for QA, SDET, and Test Automation roles. Get real insights from professionals."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={experience ? `https://route2hire.com/interview-experience/${experience._id}` : "https://route2hire.com/interview-experiences"} />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href={experience ? `https://route2hire.com/interview-experience/${experience._id}` : "https://route2hire.com/interview-experiences"} />
+      </Helmet>
+
+      <div className="min-h-screen relative">
+        <BackgroundPattern />
+        <FloatingElements />
+        <ResponsiveBookExperience 
+          experience={experience} 
+          handleLike={handleLike}
+          handleDislike={handleDislike}
+          likes={likes}
+          dislikes={dislikes}
+          isLiked={isLiked}
+          isDisliked={isDisliked}
+          currentUser={currentUser}
+        />
+      </div>
+    </>
   );
 }

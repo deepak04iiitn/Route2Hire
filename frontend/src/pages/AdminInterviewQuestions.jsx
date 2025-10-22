@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import { FaPlus, FaTrash, FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -135,7 +136,47 @@ export default function AdminInterviewQuestions() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 mt-20">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {questions.length > 0 
+            ? `Admin Interview Questions (${questions.length} Sets) | QA, SDET & Test Automation - Route2Hire`
+            : "Admin Interview Questions | QA, SDET & Test Automation - Route2Hire"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            questions.length > 0 
+              ? `Manage ${questions.length} interview question sets for QA, SDET, Test Automation, and Software Testing roles on Route2Hire. Create, edit, and organize comprehensive interview questions for software testing professionals.`
+              : "Manage interview question sets for QA, SDET, Test Automation, and Software Testing roles on Route2Hire. Create and organize comprehensive interview questions for software testing professionals."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            questions.length > 0 
+              ? `Admin interview questions, QA interview questions, SDET interview questions, Test Automation questions, Software Testing questions, Interview question management, QA admin panel, ${questions.map(q => q.topic).join(', ')}, Interview preparation admin`
+              : "Admin interview questions, QA interview questions, SDET interview questions, Test Automation questions, Software Testing questions, Interview question management, QA admin panel, Interview preparation admin"
+          }
+        />
+        <meta property="og:title" content={questions.length > 0 ? `Admin Interview Questions (${questions.length} Sets) | Route2Hire` : "Admin Interview Questions | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            questions.length > 0 
+              ? `Manage ${questions.length} interview question sets for QA, SDET, and Test Automation roles. Create and organize comprehensive interview questions for software testing professionals.`
+              : "Manage interview question sets for QA, SDET, and Test Automation roles. Create and organize comprehensive interview questions for software testing professionals."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/admin/interview-questions" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/admin/interview-questions" />
+      </Helmet>
+
+      <div className="max-w-4xl mx-auto p-8 mt-20">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Manage Interview Questions</h1>
         <button
@@ -262,6 +303,7 @@ export default function AdminInterviewQuestions() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+    </>
   );
 } 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 import PollCard from '../components/PollCard';
 import { Button, Spinner } from 'flowbite-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -54,7 +55,30 @@ const PublicPolls = () => {
   }
 
   return (
-    <div className="mt-20 min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50/30 relative overflow-hidden">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Public Polls | QA & SDET Community Discussions - Route2Hire</title>
+        <meta
+          name="description"
+          content="Participate in public polls and discussions for QA, SDET, Test Automation, and Software Testing professionals. Share insights, vote on industry topics, and engage with the QA community on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="Public polls, QA community polls, SDET polls, Test Automation polls, Software Testing polls, Community discussions, QA insights, Professional polls, Industry polls"
+        />
+        <meta property="og:title" content="Public Polls | QA & SDET Community Discussions - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Join QA, SDET, and Test Automation community discussions through public polls. Share insights and engage with software testing professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/publicpolls" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/publicpolls" />
+      </Helmet>
+
+      <div className="mt-20 min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50/30 relative overflow-hidden">
       {/* Floating orbs background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-purple-200/20 to-blue-200/20 rounded-full blur-3xl animate-pulse" />
@@ -236,7 +260,8 @@ const PublicPolls = () => {
           </motion.div>
         )}
       </motion.div>
-    </div>
+      </div>
+    </>
   );
 };
 

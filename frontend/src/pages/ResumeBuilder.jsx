@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 import ResumeForm from '../components/resume/ResumeForm';
 import ResumePreview from '../components/resume/ResumePreview';
 import FieldSelection from '../components/resume/FieldSelection';
@@ -264,7 +265,30 @@ const ResumeBuilder = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+        <>
+            {/* ✅ Helmet for SEO */}
+            <Helmet>
+                <title>Resume Builder | QA, SDET & Test Automation Professionals - Route2Hire</title>
+                <meta
+                    name="description"
+                    content="Create professional resumes for QA, SDET, Test Automation, and Software Testing roles with Route2Hire's free resume builder. Download ATS-friendly templates and get expert tips for QA professionals."
+                />
+                <meta
+                    name="keywords"
+                    content="Resume builder, QA resume, SDET resume, Test Automation resume, Software Testing resume, QA resume templates, Professional resume builder, ATS-friendly resume, QA career resume"
+                />
+                <meta property="og:title" content="Resume Builder | QA, SDET & Test Automation Professionals - Route2Hire" />
+                <meta
+                    property="og:description"
+                    content="Build professional resumes for QA, SDET, and Test Automation roles. Free resume builder with ATS-friendly templates for software testing professionals."
+                />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://route2hire.com/resume-builder" />
+                <meta property="og:image" content="https://route2hire.com/logo.png" />
+                <link rel="canonical" href="https://route2hire.com/resume-builder" />
+            </Helmet>
+
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
             {/* Modern Background Effects */}
             <div className="absolute inset-0">
                 <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -485,7 +509,8 @@ const ResumeBuilder = () => {
                     )}
                 </div>
             </div>
-        </div>
+            </div>
+        </>
     );
 };
 

@@ -6,6 +6,7 @@ import {
   FaEnvelope,
   FaLinkedin,
 } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 
 export default function ContactUs() {
   const socialLinks = [
@@ -31,121 +32,145 @@ export default function ContactUs() {
   ];
 
   return (
-    <div className="min-h-screen mt-10 bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-16 px-4 flex items-center justify-center">
-      <motion.div 
-        className="container max-w-6xl mx-auto"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Contact Route2Hire | QA, SDET, Automation & IT Careers</title>
+        <meta
+          name="description"
+          content="Get in touch with Route2Hire to explore career opportunities across multiple domains, with a focus on QA, SDET, and Automation roles. Connect with our team for job guidance, collaborations, and support."
+        />
+        <meta
+          name="keywords"
+          content="Route2Hire contact, QA jobs, SDET careers, Automation testing, IT careers, Software jobs, DevOps jobs, Internship opportunities, Software testing community"
+        />
+        <meta property="og:title" content="Contact Route2Hire | QA, SDET, Automation & IT Careers" />
+        <meta
+          property="og:description"
+          content="Connect with Route2Hire to discover career opportunities in QA, SDET, Automation, and broader IT domains. Reach out to our team for support, collaborations, and guidance."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/contactUs" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/contactUs" />
+      </Helmet>
+
+      <div className="min-h-screen mt-10 bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-16 px-4 flex items-center justify-center">
         <motion.div 
-          className="text-center mb-12"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          className="container max-w-6xl mx-auto"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">
-            Connect With Us
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover multiple ways to reach our team. Whether you're a potential collaborator, job seeker, or just curious, we're always happy to connect!
-          </p>
-        </motion.div>
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-4">
+              Connect With Us
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Discover multiple ways to reach our team. Whether you're a potential collaborator, job seeker, or just curious, we're always happy to connect!
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {socialLinks.map((social, index) => (
-            social.icon ? (
-              <motion.a
-                key={index}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`
-                  p-6 rounded-2xl shadow-lg 
-                  ${social.color} 
-                  transform transition-all duration-300 
-                  flex items-center space-x-4
-                  bg-opacity-50 backdrop-blur-sm
-                `}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: index * 0.1 
-                }}
-                whileHover={{ 
-                  scale: 1.05, 
-                  rotate: [0, -5, 5, 0],
-                  transition: { 
-                    duration: 0.3,
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 10
-                  }
-                }}
-              >
-                <div className={`text-4xl ${social.color.split(' ')[0]} p-3 rounded-full`}>
-                  {social.icon}
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-800">{social.name}</h2>
-                </div>
-              </motion.a>
-            ) : (
-              <motion.a
-                key={index}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`
-                  p-6 rounded-2xl shadow-lg 
-                  ${social.color} 
-                  transform transition-all duration-300 
-                  flex items-center space-x-4
-                  bg-opacity-50 backdrop-blur-sm
-                `}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: index * 0.1 
-                }}
-                whileHover={{ 
-                  scale: 1.05, 
-                  rotate: [0, -5, 5, 0],
-                  transition: { 
-                    duration: 0.3,
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 10
-                  }
-                }}
-              >
-                <img 
-                  src={social.image} 
-                  alt={social.name} 
-                  className="w-24 h-24 rounded-full object-cover mr-4"
-                />
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-800">{social.name}</h2>
-                  <p className="text-sm text-gray-600">{social.role}</p>
-                </div>
-              </motion.a>
-            )
-          ))}
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {socialLinks.map((social, index) => (
+              social.icon ? (
+                <motion.a
+                  key={index}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`
+                    p-6 rounded-2xl shadow-lg 
+                    ${social.color} 
+                    transform transition-all duration-300 
+                    flex items-center space-x-4
+                    bg-opacity-50 backdrop-blur-sm
+                  `}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: index * 0.1 
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    rotate: [0, -5, 5, 0],
+                    transition: { 
+                      duration: 0.3,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 10
+                    }
+                  }}
+                >
+                  <div className={`text-4xl ${social.color.split(' ')[0]} p-3 rounded-full`}>
+                    {social.icon}
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-800">{social.name}</h2>
+                  </div>
+                </motion.a>
+              ) : (
+                <motion.a
+                  key={index}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`
+                    p-6 rounded-2xl shadow-lg 
+                    ${social.color} 
+                    transform transition-all duration-300 
+                    flex items-center space-x-4
+                    bg-opacity-50 backdrop-blur-sm
+                  `}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: index * 0.1 
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    rotate: [0, -5, 5, 0],
+                    transition: { 
+                      duration: 0.3,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 10
+                    }
+                  }}
+                >
+                  <img 
+                    src={social.image} 
+                    alt={social.name} 
+                    className="w-24 h-24 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800">{social.name}</h2>
+                    <p className="text-sm text-gray-600">{social.role}</p>
+                  </div>
+                </motion.a>
+              )
+            ))}
+          </div>
 
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
-        >
-          <p className="text-sm text-gray-500">
-            We value your privacy and promise to use your contact information responsibly.
-          </p>
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
+          >
+            <p className="text-sm text-gray-500">
+              We value your privacy and promise to use your contact information responsibly.
+            </p>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </>
   );
 }

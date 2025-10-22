@@ -1,9 +1,33 @@
 import React from 'react'
+import { Helmet } from 'react-helmet-async';
 import JobTable from '../components/JobTable'
 
 export default function Jobs() {
   return (
-    <div>
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>QA, SDET & Test Automation Jobs | Route2Hire</title>
+        <meta
+          name="description"
+          content="Browse latest QA, SDET, Test Automation, and Software Testing jobs on Route2Hire. Find curated opportunities from top companies for Quality Assurance and Test Engineering professionals."
+        />
+        <meta
+          name="keywords"
+          content="QA jobs, SDET careers, Test Automation jobs, Software Testing positions, Quality Assurance roles, Test Engineering jobs, QA engineer positions, Automation testing careers"
+        />
+        <meta property="og:title" content="QA, SDET & Test Automation Jobs | Route2Hire" />
+        <meta
+          property="og:description"
+          content="Discover the latest QA, SDET, and Test Automation job opportunities. Browse curated software testing positions from top companies on Route2Hire platform."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/jobs" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/jobs" />
+      </Helmet>
+
+      <div>
       {/* Job Table Section */}
       <section id="jobs" className="py-12 sm:py-20">
           <div className="container mx-auto px-4 sm:px-6">
@@ -18,6 +42,7 @@ export default function Jobs() {
             </div>
           </div>
         </section>
-    </div>
+      </div>
+    </>
   )
 }

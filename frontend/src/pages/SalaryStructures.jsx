@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Menu, X } from 'lucide-react';
 
 // Components
@@ -149,7 +150,30 @@ export default function SalaryStructures() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>Salary Structures | QA, SDET & Test Automation Salaries - Route2Hire</title>
+        <meta
+          name="description"
+          content="Explore salary structures for QA, SDET, Test Automation, and Software Testing roles. Compare compensation packages, get salary insights, and negotiate better offers for QA professionals on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="QA salary, SDET salary, Test Automation salary, Software Testing salary, QA compensation, Salary insights, QA salary comparison, Test engineer salary, Quality Assurance salary"
+        />
+        <meta property="og:title" content="Salary Structures | QA, SDET & Test Automation Salaries - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Compare salary structures for QA, SDET, and Test Automation roles. Get salary insights and compensation data for software testing professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/salary-structures" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/salary-structures" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
@@ -293,6 +317,7 @@ export default function SalaryStructures() {
           )}
         </AnimatePresence>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { Camera, LogOut, Trash2, Building, Mail, User, Edit3, Shield, Star } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import 'react-circular-progressbar/dist/styles.css';
 import { app } from '../firebase.js';
 import { 
@@ -193,7 +194,35 @@ export default function Profile() {
   }
 
   return (
-    <div className="mt-20 min-h-screen bg-gradient-to-br from-slate-50 via-violet-50/30 to-indigo-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/30 py-8 px-4 relative overflow-hidden">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {currentUser 
+            ? `${currentUser.username || 'User'} Profile | Route2Hire QA & SDET Platform`
+            : "User Profile | Route2Hire QA & SDET Platform"
+          }
+        </title>
+        <meta
+          name="description"
+          content="Manage your Route2Hire profile for QA, SDET, Test Automation, and Software Testing professionals. Update your information, preferences, and career details to enhance your job search experience."
+        />
+        <meta
+          name="keywords"
+          content="User profile, QA profile, SDET profile, Test Automation profile, Software Testing profile, Profile management, QA career profile, User settings"
+        />
+        <meta property="og:title" content="User Profile | Route2Hire QA & SDET Platform" />
+        <meta
+          property="og:description"
+          content="Manage your Route2Hire profile for QA, SDET, and Test Automation professionals. Update your career information and preferences."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/profile" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/profile" />
+      </Helmet>
+
+      <div className="mt-20 min-h-screen bg-gradient-to-br from-slate-50 via-violet-50/30 to-indigo-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/30 py-8 px-4 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-violet-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
@@ -458,6 +487,7 @@ export default function Profile() {
           animation: spin-slow 8s linear infinite;
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

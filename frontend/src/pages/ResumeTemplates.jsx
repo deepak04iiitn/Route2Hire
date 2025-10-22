@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Menu, X } from 'lucide-react';
 
 // Component imports
@@ -139,7 +140,30 @@ export default function ResumeTemplates() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Resume Templates | QA, SDET & Test Automation Professionals - Route2Hire</title>
+        <meta
+          name="description"
+          content="Browse professional resume templates for QA, SDET, Test Automation, and Software Testing roles. Download ATS-friendly templates and get inspiration for your QA career resume on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="Resume templates, QA resume examples, SDET resume templates, Test Automation resume, Software Testing resume, Professional resume templates, ATS-friendly resume, QA career templates"
+        />
+        <meta property="og:title" content="Resume Templates | QA, SDET & Test Automation Professionals - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Explore professional resume templates for QA, SDET, and Test Automation roles. Download ATS-friendly templates for software testing professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/resume-templates" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/resume-templates" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
@@ -284,6 +308,7 @@ export default function ResumeTemplates() {
           )}
         </AnimatePresence>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

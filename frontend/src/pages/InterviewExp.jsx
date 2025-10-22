@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import InterviewForm from '../components/InterviewForm';
 import InterviewEmptyState from '../components/InterviewEmptyState';
 import InterviewHeader from '../components/InterviewHeader';
@@ -140,7 +141,30 @@ export default function InterviewExp() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>Interview Experiences | QA, SDET & Test Automation - Route2Hire</title>
+        <meta
+          name="description"
+          content="Read real interview experiences from QA, SDET, Test Automation, and Software Testing professionals. Get insights, tips, and company-specific interview processes to ace your next QA interview on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="Interview experiences, QA interview stories, SDET interview experiences, Test Automation interviews, Software Testing interview experiences, QA interview tips, Company interview processes, QA career insights"
+        />
+        <meta property="og:title" content="Interview Experiences | QA, SDET & Test Automation - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Read real interview experiences from QA, SDET, and Test Automation professionals. Get company-specific insights and tips to ace your software testing interviews."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/interview-experiences" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/interview-experiences" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
@@ -284,6 +308,7 @@ export default function InterviewExp() {
           )}
         </AnimatePresence>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

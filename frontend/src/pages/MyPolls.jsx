@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 import PollCard from '../components/PollCard';
 import { Spinner, Button } from 'flowbite-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -112,7 +113,30 @@ const MyPolls = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>My Polls | QA & SDET Community Polls - Route2Hire</title>
+        <meta
+          name="description"
+          content="Manage your QA, SDET, Test Automation, and Software Testing community polls on Route2Hire. Create, edit, and track engagement for your professional polls and surveys."
+        />
+        <meta
+          name="keywords"
+          content="My polls, QA polls, SDET polls, Test Automation polls, Software Testing polls, Community polls, Poll management, QA community engagement, Professional polls"
+        />
+        <meta property="og:title" content="My Polls | QA & SDET Community Polls - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Manage your QA, SDET, and Test Automation community polls. Create and track engagement for professional polls on Route2Hire."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/mypolls" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/mypolls" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
       {/* Enhanced animated background elements */}
       <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-violet-400/10 to-indigo-400/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute top-40 right-20 w-48 h-48 bg-gradient-to-br from-rose-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse animation-delay-300" />
@@ -287,7 +311,8 @@ const MyPolls = () => {
           animation-delay: 1000ms;
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 };
 

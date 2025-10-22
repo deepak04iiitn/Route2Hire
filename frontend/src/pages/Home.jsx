@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspens
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { MessageFilled, RiseOutlined, CloseOutlined, SendOutlined, BarChartOutlined, UsergroupAddOutlined, RocketOutlined, TrophyOutlined, CrownOutlined, FormOutlined } from '@ant-design/icons';
+import { Helmet } from 'react-helmet-async';
 import '../styles/Home.css';
 import { debounce, preloadCriticalResources } from '../utils/performanceOptimizations';
 
@@ -215,12 +216,35 @@ ${question}`;
 
 
   return (
-    <div className="home-page mt-10 min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden">
-      {/* SEO: JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Route2Hire | QA, SDET, Automation & IT Jobs Platform</title>
+        <meta
+          name="description"
+          content="Discover top QA, SDET, Test Automation, and Software Testing careers on Route2Hire. Find curated jobs, employee referrals, interview prep, salary insights, and resume templates for quality assurance professionals."
+        />
+        <meta
+          name="keywords"
+          content="QA jobs, SDET careers, Test Automation, Software Testing, Quality Assurance, Test Engineering, IT jobs, Software jobs, QA platform, Test engineer roles, Automation testing jobs"
+        />
+        <meta property="og:title" content="Route2Hire | QA, SDET, Automation & IT Jobs Platform" />
+        <meta
+          property="og:description"
+          content="Find your next QA, SDET, or Test Automation role with Route2Hire. Access curated jobs, referrals, interview prep, and career resources for software testing professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com" />
+      </Helmet>
+
+      <div className="home-page mt-10 min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden">
+        {/* SEO: JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -611,7 +635,7 @@ ${question}`;
         </div>
       )}
 
-
-    </div>
+      </div>
+    </>
   );
 }

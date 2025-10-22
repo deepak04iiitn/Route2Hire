@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrashIcon, BriefcaseIcon, MapPinIcon, ClockIcon, BookmarkIcon, StarIcon, ExternalLinkIcon } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -51,7 +52,47 @@ export default function MyJobs() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 mt-10">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {savedJobs.length > 0 
+            ? `My Saved Jobs (${savedJobs.length}) | QA, SDET & Test Automation - Route2Hire`
+            : "My Saved Jobs | QA, SDET & Test Automation - Route2Hire"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            savedJobs.length > 0 
+              ? `Manage your saved QA, SDET, Test Automation, and Software Testing jobs on Route2Hire. You have ${savedJobs.length} saved opportunities. Track your job applications and career progress for software testing professionals.`
+              : "Manage your saved QA, SDET, Test Automation, and Software Testing jobs on Route2Hire. Bookmark and track your favorite job opportunities for software testing careers."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            savedJobs.length > 0 
+              ? `My saved jobs, QA saved jobs, SDET saved jobs, Test Automation saved jobs, Software Testing saved jobs, Job bookmarks, Saved opportunities, QA career tracking, Job management, ${savedJobs.map(job => `${job.title} ${job.company}`).join(', ')}`
+              : "My saved jobs, QA saved jobs, SDET saved jobs, Test Automation saved jobs, Software Testing saved jobs, Job bookmarks, Saved opportunities, QA career tracking, Job management"
+          }
+        />
+        <meta property="og:title" content={savedJobs.length > 0 ? `My Saved Jobs (${savedJobs.length}) | Route2Hire` : "My Saved Jobs | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            savedJobs.length > 0 
+              ? `Manage your ${savedJobs.length} saved QA, SDET, and Test Automation jobs. Track your career opportunities and applications on Route2Hire.`
+              : "Manage your saved QA, SDET, and Test Automation jobs. Bookmark and track your favorite opportunities on Route2Hire."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/my-jobs" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/my-jobs" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 mt-10">
       {/* Floating Header with Glass Effect */}
       <div className="relative overflow-hidden">
         {/* Background Pattern */}
@@ -224,6 +265,7 @@ export default function MyJobs() {
           overflow: hidden;
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

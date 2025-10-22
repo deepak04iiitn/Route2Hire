@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Puzzle
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import MyInterviews from '../components/MyInterviews';
 import MyReferrals from '../components/MyReferrals';
@@ -71,8 +72,30 @@ export default function MyCorner() {
   };
 
   return (
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>My Corner | Personal Dashboard - Route2Hire QA & SDET Platform</title>
+        <meta
+          name="description"
+          content="Access your personal dashboard on Route2Hire. Manage your QA, SDET, Test Automation interviews, referrals, salary data, resume templates, and polls in one place for software testing professionals."
+        />
+        <meta
+          name="keywords"
+          content="Personal dashboard, My corner, QA dashboard, SDET dashboard, Test Automation dashboard, User dashboard, Personal workspace, QA career management"
+        />
+        <meta property="og:title" content="My Corner | Personal Dashboard - Route2Hire QA & SDET Platform" />
+        <meta
+          property="og:description"
+          content="Access your personal dashboard for QA, SDET, and Test Automation career management. Manage interviews, referrals, and career resources."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/mycorner" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/mycorner" />
+      </Helmet>
 
-    <div className="flex h-screen overflow-hidden">
+      <div className="flex h-screen overflow-hidden">
 
       {/* Mobile Header Bar - Fixed at top */}
       <div className="absolute top-16 left-0 right-0 h-16 bg-white shadow-md z-40 md:hidden">
@@ -164,7 +187,7 @@ export default function MyCorner() {
       <div className="flex-1 overflow-auto bg-gray-50 w-full pt-16 md:pt-0 h-[calc(100vh-64px)] md:h-full">
         {getActiveComponent()}
       </div>
-      
-    </div>
+      </div>
+    </>
   );
 }

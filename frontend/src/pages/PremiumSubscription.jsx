@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Coffee, Gift, Heart, CreditCard, Send } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const BuyMeCoffee = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -49,9 +50,32 @@ const BuyMeCoffee = () => {
   };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50 via-white to-amber-100 relative overflow-hidden"
-    >
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Support Route2Hire | Premium QA & SDET Platform</title>
+        <meta
+          name="description"
+          content="Support Route2Hire's mission to help QA, SDET, Test Automation, and Software Testing professionals. Your contribution helps us create better career resources, job opportunities, and community features for software testing professionals."
+        />
+        <meta
+          name="keywords"
+          content="Support Route2Hire, Premium subscription, QA platform support, SDET platform, Test Automation platform, Software Testing platform, Career platform support, QA community support"
+        />
+        <meta property="og:title" content="Support Route2Hire | Premium QA & SDET Platform" />
+        <meta
+          property="og:description"
+          content="Support Route2Hire's mission to help QA, SDET, and Test Automation professionals. Contribute to better career resources and community features."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/premium-subscription" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/premium-subscription" />
+      </Helmet>
+
+      <div 
+        className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50 via-white to-amber-100 relative overflow-hidden"
+      >
       {/* Subtle Coffee Bean Background Animations */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -150,7 +174,8 @@ const BuyMeCoffee = () => {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

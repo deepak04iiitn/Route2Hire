@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import { CreditCard, UserCircle, Mail, Briefcase, MessageCircle, Send } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Modal = memo(({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -69,16 +70,39 @@ export default function Newsletter() {
   }, [showPaymentModal]);
 
   return (
-    <div 
-      className="min-h-screen mt-16 p-2 sm:p-4 flex items-center justify-center relative bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: "url('/assets/gif.webp')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        backgroundBlendMode: 'overlay'
-      }}
-    >
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Premium Newsletter Subscription | QA, SDET & Test Automation Jobs - Route2Hire</title>
+        <meta
+          name="description"
+          content="Subscribe to Route2Hire's premium newsletter for personalized QA, SDET, Test Automation, and Software Testing job updates. Get filtered jobs by experience, daily email updates, and exclusive career opportunities for software testing professionals."
+        />
+        <meta
+          name="keywords"
+          content="Premium newsletter, QA newsletter, SDET newsletter, Test Automation newsletter, Software Testing newsletter, Job updates, Personalized jobs, QA career updates, Test engineer jobs, Quality Assurance newsletter"
+        />
+        <meta property="og:title" content="Premium Newsletter Subscription | QA, SDET & Test Automation Jobs - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Subscribe to Route2Hire's premium newsletter for personalized QA, SDET, and Test Automation job updates. Get filtered jobs and daily email updates for software testing professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/newsletter" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/newsletter" />
+      </Helmet>
+
+      <div 
+        className="min-h-screen mt-16 p-2 sm:p-4 flex items-center justify-center relative bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/assets/gif.webp')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundBlendMode: 'overlay'
+        }}
+      >
       {/* Main Subscription Card */}
       <div className="relative bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 max-w-2xl w-full transform transition-all duration-300 hover:scale-[1.02]">
         <div className="text-center mb-6 sm:mb-8">
@@ -203,6 +227,7 @@ export default function Newsletter() {
           <form id="razorpay-form" className="text-center mt-4"></form>
         </div>
       </Modal>
-    </div>
+      </div>
+    </>
   );
 }

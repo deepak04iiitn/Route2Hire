@@ -10,6 +10,7 @@ import {
   CheckCircle,
   XCircle
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export default function TermsOfService() {
   const [activeSection, setActiveSection] = useState(null);
@@ -83,7 +84,30 @@ export default function TermsOfService() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Terms of Service | Route2Hire QA & SDET Platform</title>
+        <meta
+          name="description"
+          content="Read Route2Hire's Terms of Service to understand the terms and conditions for using our QA, SDET, Test Automation, and Software Testing career platform and services."
+        />
+        <meta
+          name="keywords"
+          content="Terms of service, Route2Hire terms, User agreement, Terms and conditions, QA platform terms, SDET platform terms, Software Testing platform terms, Legal terms"
+        />
+        <meta property="og:title" content="Terms of Service | Route2Hire QA & SDET Platform" />
+        <meta
+          property="og:description"
+          content="Review the terms and conditions for using Route2Hire's QA, SDET, and Test Automation career platform and services."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/terms-of-service" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/terms-of-service" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full bg-white shadow-2xl rounded-2xl overflow-hidden mt-20">
         {/* Header */}
         <motion.div 
@@ -173,6 +197,7 @@ export default function TermsOfService() {
           <p>&copy; {new Date().getFullYear()} Route2Hire. All Rights Reserved.</p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Loader2, TrendingUp, BarChart3, PieChart } from 'lucide-react';
 
 const formatDate = (date) => {
@@ -112,9 +113,32 @@ export default function TrendsVisualization() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Platform Trends | QA & SDET Analytics - Route2Hire</title>
+        <meta
+          name="description"
+          content="Explore platform trends and analytics for QA, SDET, Test Automation, and Software Testing professionals. View user engagement, job trends, and community insights on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="Platform trends, QA trends, SDET trends, Test Automation trends, Software Testing trends, Analytics, User engagement, Job trends, Community insights, QA platform analytics"
+        />
+        <meta property="og:title" content="Platform Trends | QA & SDET Analytics - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Explore trends and analytics for QA, SDET, and Test Automation professionals. View platform insights and community engagement data."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/trends" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/trends" />
+      </Helmet>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
       className="min-h-screen bg-gradient-to-br from-white to-gray-100 p-8 mt-10"
     >
@@ -269,6 +293,7 @@ export default function TrendsVisualization() {
           </motion.div>
         </div>
       </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }

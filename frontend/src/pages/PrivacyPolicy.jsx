@@ -7,6 +7,7 @@ import {
   Mail, 
   FileText 
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export default function PrivacyPolicy() {
   const [activeSection, setActiveSection] = useState(null);
@@ -50,7 +51,30 @@ export default function PrivacyPolicy() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Privacy Policy | Route2Hire QA & SDET Platform</title>
+        <meta
+          name="description"
+          content="Read Route2Hire's Privacy Policy to understand how we protect your personal information while using our QA, SDET, Test Automation, and Software Testing career platform."
+        />
+        <meta
+          name="keywords"
+          content="Privacy policy, Route2Hire privacy, Data protection, User privacy, QA platform privacy, SDET platform privacy, Software Testing platform privacy, Privacy rights"
+        />
+        <meta property="og:title" content="Privacy Policy | Route2Hire QA & SDET Platform" />
+        <meta
+          property="og:description"
+          content="Learn how Route2Hire protects your privacy while providing QA, SDET, and Test Automation career services and resources."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/privacy-policy" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/privacy-policy" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden">
         {/* Header */}
         <motion.div 
@@ -137,6 +161,7 @@ export default function PrivacyPolicy() {
           <p>&copy; 2024 Route2Hire. All Rights Reserved.</p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

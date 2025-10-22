@@ -12,6 +12,7 @@ import {
   Clock,
   Globe
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 export default function CookiePolicy() {
   const [activeSection, setActiveSection] = useState(null);
@@ -85,117 +86,141 @@ export default function CookiePolicy() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full bg-white shadow-2xl rounded-2xl overflow-hidden mt-20">
-        {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="bg-green-600 text-white py-8 px-6 text-center"
-        >
-          <h1 className="text-4xl font-extrabold tracking-tight">
-            Cookie Policy
-          </h1>
-          <p className="mt-4 text-green-100">
-            How We Use Cookies to Enhance Your Experience
-          </p>
-          <p className="mt-2 text-sm text-green-200">
-            Last updated: {new Date().toLocaleDateString()}
-          </p>
-        </motion.div>
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Cookie Policy | Route2Hire Careers in QA, SDET & IT</title>
+        <meta
+          name="description"
+          content="Read Route2Hire's Cookie Policy to understand how we use cookies to enhance your experience while exploring career opportunities, especially in QA, SDET, Automation, and other IT roles."
+        />
+        <meta
+          name="keywords"
+          content="Route2Hire cookie policy, QA jobs, SDET careers, Automation testing, IT jobs, Software testing platform, Cookies, User experience"
+        />
+        <meta property="og:title" content="Cookie Policy | Route2Hire Careers in QA, SDET & IT" />
+        <meta
+          property="og:description"
+          content="Learn how Route2Hire uses cookies to provide a better browsing experience while helping professionals and students explore careers in QA, SDET, Automation, and IT domains."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/cookie-policy" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/cookie-policy" />
+      </Helmet>
 
-        {/* Cookie Consent Notice */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="bg-green-50 p-6 border-l-4 border-green-500"
-        >
-          <div className="flex items-start">
-            <Cookie className="h-6 w-6 text-green-600 mr-3 mt-1" />
-            <div>
-              <h3 className="text-lg font-semibold text-green-800 mb-2">
-                Cookie Consent
-              </h3>
-              <p className="text-green-700">
-                By continuing to use our website, you consent to our use of cookies as described in this policy. 
-                You can manage your cookie preferences at any time through your browser settings.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Sections */}
-        <div className="p-6 sm:p-12">
-          {sections.map((section, index) => (
-            <motion.div
-              key={section.title}
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="mb-8 group"
-            >
-              <div 
-                onClick={() => setActiveSection(activeSection === index ? null : index)}
-                className="flex items-center cursor-pointer hover:bg-green-50 p-4 rounded-lg transition-all duration-300"
-              >
-                <section.icon 
-                  className="h-10 w-10 text-green-500 mr-4 group-hover:text-green-600 transition-colors"
-                  strokeWidth={1.5}
-                />
-                <h2 className="text-2xl font-semibold text-green-700 group-hover:text-green-800">
-                  {section.title}
-                </h2>
-              </div>
-              <AnimatePresence>
-                {activeSection === index && (
-                  <motion.p
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="text-gray-600 text-lg leading-relaxed mt-4 px-4 overflow-hidden"
-                  >
-                    {section.content}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Cookie Management Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          className="bg-green-50 p-8 text-center"
-        >
-          <div className="flex justify-center items-center mb-4">
-            <Settings 
-              className="h-10 w-10 text-green-500 mr-4" 
-              strokeWidth={1.5}
-            />
-            <h3 className="text-2xl font-semibold text-green-700">
-              Manage Your Cookie Preferences
-            </h3>
-          </div>
-          <p className="text-gray-600 mb-6">
-            You have control over which cookies you accept. Learn how to manage your preferences.
-          </p>
-          <a 
-            href="/contactUs" 
-            className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 transition-colors inline-block"
+      <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full bg-white shadow-2xl rounded-2xl overflow-hidden mt-20">
+          {/* Header */}
+          <motion.div 
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-green-600 text-white py-8 px-6 text-center"
           >
-            Contact Us
-          </a>
-        </motion.div>
+            <h1 className="text-4xl font-extrabold tracking-tight">
+              Cookie Policy
+            </h1>
+            <p className="mt-4 text-green-100">
+              How We Use Cookies to Enhance Your Experience
+            </p>
+            <p className="mt-2 text-sm text-green-200">
+              Last updated: {new Date().toLocaleDateString()}
+            </p>
+          </motion.div>
 
-        {/* Footer */}
-        <div className="bg-green-600 text-white py-4 text-center">
-          <p>&copy; {new Date().getFullYear()} Route2Hire. All Rights Reserved.</p>
+          {/* Cookie Consent Notice */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="bg-green-50 p-6 border-l-4 border-green-500"
+          >
+            <div className="flex items-start">
+              <Cookie className="h-6 w-6 text-green-600 mr-3 mt-1" />
+              <div>
+                <h3 className="text-lg font-semibold text-green-800 mb-2">
+                  Cookie Consent
+                </h3>
+                <p className="text-green-700">
+                  By continuing to use our website, you consent to our use of cookies as described in this policy. 
+                  You can manage your cookie preferences at any time through your browser settings.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Sections */}
+          <div className="p-6 sm:p-12">
+            {sections.map((section, index) => (
+              <motion.div
+                key={section.title}
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="mb-8 group"
+              >
+                <div 
+                  onClick={() => setActiveSection(activeSection === index ? null : index)}
+                  className="flex items-center cursor-pointer hover:bg-green-50 p-4 rounded-lg transition-all duration-300"
+                >
+                  <section.icon 
+                    className="h-10 w-10 text-green-500 mr-4 group-hover:text-green-600 transition-colors"
+                    strokeWidth={1.5}
+                  />
+                  <h2 className="text-2xl font-semibold text-green-700 group-hover:text-green-800">
+                    {section.title}
+                  </h2>
+                </div>
+                <AnimatePresence>
+                  {activeSection === index && (
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="text-gray-600 text-lg leading-relaxed mt-4 px-4 overflow-hidden"
+                    >
+                      {section.content}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Cookie Management Section */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="bg-green-50 p-8 text-center"
+          >
+            <div className="flex justify-center items-center mb-4">
+              <Settings 
+                className="h-10 w-10 text-green-500 mr-4" 
+                strokeWidth={1.5}
+              />
+              <h3 className="text-2xl font-semibold text-green-700">
+                Manage Your Cookie Preferences
+              </h3>
+            </div>
+            <p className="text-gray-600 mb-6">
+              You have control over which cookies you accept. Learn how to manage your preferences.
+            </p>
+            <a 
+              href="/contactUs" 
+              className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 transition-colors inline-block"
+            >
+              Contact Us
+            </a>
+          </motion.div>
+
+          {/* Footer */}
+          <div className="bg-green-600 text-white py-4 text-center">
+            <p>&copy; {new Date().getFullYear()} Route2Hire. All Rights Reserved.</p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

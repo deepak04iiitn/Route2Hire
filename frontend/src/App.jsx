@@ -37,6 +37,7 @@ import GlobalPollModal from './components/GlobalPollModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { signoutSuccess, initializeSessionExpiry } from './redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 function SessionManager() {
   const dispatch = useDispatch();
@@ -102,50 +103,52 @@ function SessionManager() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <SessionManager />
-        <Header />
-        <div className="flex-grow">
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/sign-in' element={<SignIn />} />
-            <Route path='/sign-up' element={<SignUp />} />
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/trends' element={<Trends />} />
-            <Route path='/fulljd/:url/:id' element={<FullJd />} />
-            <Route path="/my-jobs" element={<MyJobs />} />
-            <Route path='/publicpolls' element={<PublicPolls />} />
-            <Route path="/mypolls" element={<MyPolls />} />
-            <Route path="/interviewExp" element={<InterviewExp />} />
-            <Route path="/interview-experiences" element={<InterviewExp />} />
-            <Route path="/interview-experience/:id" element={<InterviewDetailPage />} />
-            <Route path="/salaryStructures" element={<SalaryStructures />} />
-            <Route path="/salary/:id" element={<SalaryDetailPage />} />
-            <Route path="/referrals" element={<Referrals />} />
-            <Route path="/referral/:id" element={<ReferralDetailPage />} />
-            <Route path='/resumeTemplates' element={<ResumeTemplates />} />
-            <Route path='/myCorner' element={<MyCorner />} />
-            <Route element={<PrivateRoute />}>
-              <Route path='/dashboard' element={<Dashboard />} />
-              <Route path='/admin/interview-questions' element={<AdminInterviewQuestions />} />
-            </Route>
-            <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />
-            <Route path='/contactUs' element={<ContactUs />} />
-            <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
-            <Route path='/terms' element={<TermsOfService />} />
-            <Route path='/cookies' element={<CookiePolicy />} />
-            <Route path='/newsletter' element={<Newsletter />} />
-            <Route path='/jobs' element={<Jobs />} />
-            <Route path='/resume-builder' element={<ResumeBuilder />} />
-            <Route path='/interview-questions' element={<InterviewQuestions />} />
-            <Route path='/interview-questions/:topicSlug' element={<InterviewQuestions />} />
-          </Routes>
-        </div>
-        <Footer />
-        <GlobalPollModal />
-      </div>
-    </BrowserRouter>
+    <HelmetProvider>
+        <BrowserRouter>
+          <div className="flex flex-col min-h-screen">
+            <SessionManager />
+            <Header />
+            <div className="flex-grow">
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/sign-in' element={<SignIn />} />
+                <Route path='/sign-up' element={<SignUp />} />
+                <Route path='/profile' element={<Profile />} />
+                <Route path='/trends' element={<Trends />} />
+                <Route path='/fulljd/:url/:id' element={<FullJd />} />
+                <Route path="/my-jobs" element={<MyJobs />} />
+                <Route path='/publicpolls' element={<PublicPolls />} />
+                <Route path="/mypolls" element={<MyPolls />} />
+                <Route path="/interviewExp" element={<InterviewExp />} />
+                <Route path="/interview-experiences" element={<InterviewExp />} />
+                <Route path="/interview-experience/:id" element={<InterviewDetailPage />} />
+                <Route path="/salaryStructures" element={<SalaryStructures />} />
+                <Route path="/salary/:id" element={<SalaryDetailPage />} />
+                <Route path="/referrals" element={<Referrals />} />
+                <Route path="/referral/:id" element={<ReferralDetailPage />} />
+                <Route path='/resumeTemplates' element={<ResumeTemplates />} />
+                <Route path='/myCorner' element={<MyCorner />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path='/dashboard' element={<Dashboard />} />
+                  <Route path='/admin/interview-questions' element={<AdminInterviewQuestions />} />
+                </Route>
+                <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />
+                <Route path='/contactUs' element={<ContactUs />} />
+                <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+                <Route path='/terms' element={<TermsOfService />} />
+                <Route path='/cookies' element={<CookiePolicy />} />
+                <Route path='/newsletter' element={<Newsletter />} />
+                <Route path='/jobs' element={<Jobs />} />
+                <Route path='/resume-builder' element={<ResumeBuilder />} />
+                <Route path='/interview-questions' element={<InterviewQuestions />} />
+                <Route path='/interview-questions/:topicSlug' element={<InterviewQuestions />} />
+              </Routes>
+            </div>
+            <Footer />
+            <GlobalPollModal />
+          </div>
+        </BrowserRouter>
+    </HelmetProvider>
   );
 }

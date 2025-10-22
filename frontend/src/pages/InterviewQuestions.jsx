@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaThumbsUp, FaThumbsDown, FaSearch, FaSort, FaPlus, FaTrash, FaEdit, FaBars, FaTimes, FaHeart, FaBookmark, FaShare } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 import InterviewCommentSection from '../components/InterviewCommentSection';
 import slugify from '../utils/slugify';
 import StructuredAnswer from '../components/StructuredAnswer';
@@ -315,7 +316,47 @@ export default function InterviewQuestions() {
   const selectedQuestion = questions.find(q => q._id === selectedTopic);
 
   return (
-    <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {selectedTopic 
+            ? `${selectedTopic} Interview Questions | QA, SDET & Test Automation - Route2Hire`
+            : "Interview Questions | QA, SDET, Test Automation & Software Testing - Route2Hire"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            selectedTopic 
+              ? `Practice ${selectedTopic} interview questions for QA, SDET, and Test Automation roles. Get expert answers, tips, and insights to ace your software testing interviews on Route2Hire.`
+              : "Master QA, SDET, Test Automation, and Software Testing interviews with comprehensive question banks. Practice with real interview questions, expert answers, and community insights on Route2Hire."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            selectedTopic 
+              ? `${selectedTopic} interview questions, QA interview prep, SDET interview, Test Automation questions, Software Testing interview, ${selectedTopic} QA, Quality Assurance interview`
+              : "QA interview questions, SDET interview prep, Test Automation questions, Software Testing interview, Quality Assurance interview, Test Engineering questions, QA interview tips"
+          }
+        />
+        <meta property="og:title" content={selectedTopic ? `${selectedTopic} Interview Questions | Route2Hire` : "Interview Questions | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            selectedTopic 
+              ? `Practice ${selectedTopic} interview questions for QA, SDET, and Test Automation roles. Expert answers and tips on Route2Hire.`
+              : "Master QA, SDET, and Test Automation interviews with comprehensive question banks and expert answers on Route2Hire platform."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/interview-questions" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/interview-questions" />
+      </Helmet>
+
+      <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
       {/* Sidebar Toggle Button for mobile and tablet */}
       <button
         className="xl:hidden fixed top-14 sm:top-16 md:top-20 right-2 sm:right-3 md:right-4 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 md:p-3 rounded-full shadow-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-300 touch-manipulation"
@@ -807,6 +848,7 @@ export default function InterviewQuestions() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

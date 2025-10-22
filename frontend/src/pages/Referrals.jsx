@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import ReferralForm from '../components/ReferralForm';
 import ReferralCard from '../components/ReferralCard';
 import ReferralHeader from '../components/ReferralHeader';
@@ -149,7 +150,30 @@ export default function Referrals() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>Employee Referrals | QA, SDET & Test Automation Jobs - Route2Hire</title>
+        <meta
+          name="description"
+          content="Find employee referrals for QA, SDET, Test Automation, and Software Testing positions. Get insider referrals from professionals at top companies to accelerate your QA career on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="Employee referrals, QA referrals, SDET referrals, Test Automation referrals, Software Testing referrals, Job referrals, QA job referrals, Internal referrals, QA career referrals"
+        />
+        <meta property="og:title" content="Employee Referrals | QA, SDET & Test Automation Jobs - Route2Hire" />
+        <meta
+          property="og:description"
+          content="Get employee referrals for QA, SDET, and Test Automation positions. Connect with professionals for insider job referrals in software testing."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/referrals" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/referrals" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gray-50 py-4 sm:py-8 overflow-x-hidden">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
@@ -293,7 +317,8 @@ export default function Referrals() {
           )}
         </AnimatePresence>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

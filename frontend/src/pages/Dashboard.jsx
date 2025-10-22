@@ -11,6 +11,7 @@ import {
   FaTimes,
   FaCheck, FaTrash, FaExclamationTriangle 
 } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 import PlatformStatistics from '../components/PlatformStatistics';
 
 const Dashboard = () => {
@@ -917,7 +918,30 @@ const Dashboard = () => {
 
 
   return (
-    <div className="relative h-screen bg-gray-50 dark:bg-gray-900 flex">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Admin Dashboard | Route2Hire QA & SDET Platform</title>
+        <meta
+          name="description"
+          content="Manage Route2Hire platform with comprehensive admin dashboard. Monitor QA jobs, SDET careers, user activity, comments, referrals, and platform statistics for software testing professionals."
+        />
+        <meta
+          name="keywords"
+          content="Admin dashboard, Route2Hire management, QA platform admin, SDET careers management, Software testing platform, User management, Platform statistics"
+        />
+        <meta property="og:title" content="Admin Dashboard | Route2Hire QA & SDET Platform" />
+        <meta
+          property="og:description"
+          content="Comprehensive admin dashboard for managing Route2Hire platform, monitoring QA jobs, SDET careers, and supporting software testing professionals."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/dashboard" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/dashboard" />
+      </Helmet>
+
+      <div className="relative h-screen bg-gray-50 dark:bg-gray-900 flex">
       {/* Mobile & Tablet Hamburger Button */}
       <button 
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -1086,7 +1110,8 @@ const Dashboard = () => {
           animation: modal-slide-in 0.3s ease-out;
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 };
 

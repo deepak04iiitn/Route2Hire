@@ -4,6 +4,7 @@ import axios from "axios";
 import { BookmarkIcon, Share2, MapPin, Briefcase, Clock, BarChart3, ExternalLink, Sparkles } from "lucide-react";
 import Modal from "react-modal";
 import { ShareSocial } from "react-share-social";
+import { Helmet } from "react-helmet-async";
 import CommentSection from "../components/CommentSection";
 import { useSelector } from "react-redux";
 
@@ -221,8 +222,48 @@ const checkIfJobIsSaved = async (jobId) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 lg:px-8 mt-16">
-      {job ? (
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {job 
+            ? `${job.title} at ${job.company} | ${job.location} - Route2Hire`
+            : "Job Details | Route2Hire QA & SDET Platform"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            job 
+              ? `Apply for ${job.title} position at ${job.company} in ${job.location}. ${job.experience || 'Experience required'}. ${job.salary ? `Salary: ${job.salary}. ` : ''}Find QA, SDET, and Test Automation jobs on Route2Hire.`
+              : "View detailed job information for QA, SDET, Test Automation, and Software Testing positions. Apply to top companies through Route2Hire platform."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            job 
+              ? `${job.title}, ${job.company}, QA jobs, SDET careers, Test Automation, Software Testing, ${job.location}, Quality Assurance, Test Engineering, ${job.experience || 'IT jobs'}`
+              : "QA jobs, SDET careers, Test Automation, Software Testing, Quality Assurance, Test Engineering, Job details, IT careers"
+          }
+        />
+        <meta property="og:title" content={job ? `${job.title} at ${job.company} | Route2Hire` : "Job Details | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            job 
+              ? `Apply for ${job.title} at ${job.company} in ${job.location}. ${job.salary ? `Salary: ${job.salary}. ` : ''}Find QA, SDET, and Test Automation jobs on Route2Hire.`
+              : "Discover QA, SDET, and Test Automation job opportunities. View detailed job information and apply through Route2Hire platform."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={job ? `https://route2hire.com/job/${job._id}` : "https://route2hire.com/jobs"} />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href={job ? `https://route2hire.com/job/${job._id}` : "https://route2hire.com/jobs"} />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 lg:px-8 mt-16">
+        {job ? (
         <div className="max-w-5xl mx-auto">
           {/* Header Card */}
           <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 lg:p-12 shadow-2xl mb-8 hover:shadow-3xl transition-all duration-500">
@@ -524,6 +565,7 @@ const checkIfJobIsSaved = async (jobId) => {
         message={toastMessage} 
         onHide={() => setShowToast(false)} 
       />
-    </div>
+      </div>
+    </>
   );
 }

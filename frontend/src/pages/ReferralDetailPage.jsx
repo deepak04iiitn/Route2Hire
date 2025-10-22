@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ThumbsUp, ThumbsDown, MessageCircle, Linkedin, Building2, User, Mail, Phone, Briefcase, Hash, ExternalLink, Heart, Share2, X } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import ReferralCommentSection from '../components/referralCommentSection';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -210,7 +211,47 @@ export default function ReferralDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900">
+    <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {referral 
+            ? `${referral.company} Employee Referral | ${referral.positions.length} QA, SDET & Test Automation Positions - Route2Hire`
+            : "Employee Referral Details | Route2Hire QA & SDET Platform"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            referral 
+              ? `Get employee referral for ${referral.positions.length} ${referral.positions.length === 1 ? 'position' : 'positions'} at ${referral.company}. Contact ${referral.fullName} for QA, SDET, Test Automation, and Software Testing opportunities. Connect with professionals for insider job referrals on Route2Hire.`
+              : "View employee referral details for QA, SDET, Test Automation, and Software Testing positions. Get insider referrals from professionals at top companies on Route2Hire platform."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            referral 
+              ? `${referral.company} referral, Employee referral, QA referral, SDET referral, Test Automation referral, Software Testing referral, ${referral.positions.map(pos => pos.position).join(', ')}, Job referral, Internal referral, QA career referral`
+              : "Employee referral, QA referral, SDET referral, Test Automation referral, Software Testing referral, Job referral, Internal referral, QA career referral, Professional referral"
+          }
+        />
+        <meta property="og:title" content={referral ? `${referral.company} Employee Referral | Route2Hire` : "Employee Referral | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            referral 
+              ? `Get employee referral for ${referral.positions.length} positions at ${referral.company}. Contact ${referral.fullName} for QA, SDET, and Test Automation opportunities.`
+              : "View employee referral details for QA, SDET, and Test Automation positions. Get insider referrals from professionals."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={referral ? `https://route2hire.com/referral/${referral._id}` : "https://route2hire.com/referrals"} />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href={referral ? `https://route2hire.com/referral/${referral._id}` : "https://route2hire.com/referrals"} />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900">
       {/* Header */}
       <div className="sticky top-0 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -444,6 +485,7 @@ export default function ReferralDetailPage() {
         referralId={referral._id}
         companyName={referral.company}
       />
-    </div>
+      </div>
+    </>
   );
 }

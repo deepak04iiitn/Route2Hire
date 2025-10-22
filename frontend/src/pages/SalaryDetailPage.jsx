@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { X, Building, MapPin, Linkedin, Award, DollarSign, TrendingUp, Users, Target, Banknote, ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import SalaryCommentSection from '../components/SalaryCommentSection';
 import { useSelector } from 'react-redux';
@@ -133,6 +134,45 @@ export default function SalaryDetailPage() {
 
   return (
     <>
+      {/* ✅ Helmet for Dynamic SEO */}
+      <Helmet>
+        <title>
+          {salary 
+            ? `${salary.position} Salary at ${salary.company} | ${salary.ctc} LPA | ${salary.location} - Route2Hire`
+            : "Salary Details | Route2Hire QA & SDET Platform"
+          }
+        </title>
+        <meta
+          name="description"
+          content={
+            salary 
+              ? `View detailed salary information for ${salary.position} at ${salary.company} in ${salary.location}. Total CTC: ${salary.ctc} LPA, Base: ${salary.salary || 'N/A'}, Experience: ${salary.yearsOfExperience} years. Get salary insights for QA, SDET, Test Automation, and Software Testing roles on Route2Hire.`
+              : "View detailed salary information for QA, SDET, Test Automation, and Software Testing positions. Compare compensation packages and get salary insights for software testing professionals on Route2Hire."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            salary 
+              ? `${salary.position} salary, ${salary.company} salary, QA salary, SDET salary, Test Automation salary, Software Testing salary, ${salary.location} salary, ${salary.ctc} LPA, Salary insights, QA compensation, Test engineer salary`
+              : "QA salary, SDET salary, Test Automation salary, Software Testing salary, Salary insights, QA compensation, Salary comparison, Test engineer salary, Quality Assurance salary"
+          }
+        />
+        <meta property="og:title" content={salary ? `${salary.position} Salary at ${salary.company} | Route2Hire` : "Salary Details | Route2Hire"} />
+        <meta
+          property="og:description"
+          content={
+            salary 
+              ? `View salary details for ${salary.position} at ${salary.company}. Total CTC: ${salary.ctc} LPA, Experience: ${salary.yearsOfExperience} years. Get salary insights for QA, SDET, and Test Automation roles.`
+              : "View detailed salary information for QA, SDET, and Test Automation positions. Compare compensation packages and get salary insights."
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={salary ? `https://route2hire.com/salary/${salary._id}` : "https://route2hire.com/salary-structures"} />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href={salary ? `https://route2hire.com/salary/${salary._id}` : "https://route2hire.com/salary-structures"} />
+      </Helmet>
+
       {/* Regular page content - navbar and footer will be visible */}
       <motion.div
         className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 pt-20 pb-10"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import OAuth from '../components/OAuth';
 
 export default function SignUp() {
@@ -42,7 +43,30 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
+    <>
+      {/* ✅ Helmet for SEO */}
+      <Helmet>
+        <title>Sign Up | Join Route2Hire QA & SDET Community</title>
+        <meta
+          name="description"
+          content="Join Route2Hire community for QA, SDET, Test Automation professionals. Get access to curated jobs, interview prep, salary insights, and career resources for software testing roles."
+        />
+        <meta
+          name="keywords"
+          content="Sign up, Register, Join Route2Hire, QA community, SDET community, Test Automation community, Software Testing community, QA platform registration"
+        />
+        <meta property="og:title" content="Sign Up | Join Route2Hire QA & SDET Community" />
+        <meta
+          property="og:description"
+          content="Join the Route2Hire community for QA, SDET, and Test Automation professionals. Access jobs, interview prep, and career resources."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/sign-up" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/sign-up" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Left side - Hero Section */}
@@ -178,6 +202,7 @@ export default function SignUp() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
