@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { Star, ArrowLeft, ArrowRight, X } from 'lucide-react';
-import { useSelector } from 'react-redux';
 
-// Custom Modal component to replace shadcn Dialog
+// Image optimization helper
+const getOptimizedImageUrl = (url, size = 120) => {
+  // If it's a pngall.com or similar external image
+  if (url.includes('pngall.com') || url.includes('http')) {
+    // Use a free image CDN proxy for resizing
+    return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=${size}&h=${size}&fit=cover&output=webp`;
+  }
+  // For local images, return as-is (handle on backend)
+  return url;
+};
+
+// Custom Modal component
 const Modal = ({ isOpen, onClose, children }) => {
-
   if (!isOpen) return null;
 
   return (
@@ -23,23 +32,21 @@ const Modal = ({ isOpen, onClose, children }) => {
 };
 
 const TestimonialCard = ({ testimonial, onClick }) => {
-
-  const { currentUser } = useSelector((state) => state.user);
-  
-  // Clamp testimonial text to roughly 3-4 lines (assuming average word length)
   const clampedTestimonial = testimonial.testimonial.length > 200 
     ? testimonial.testimonial.slice(0, 40) + '...'
     : testimonial.testimonial;
 
   return (
-
     <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full w-full">
       <div className="p-6 flex flex-col h-full">
         <div className="flex items-center gap-4 mb-4">
           <img
-            src={testimonial.profileImage}
+            src={getOptimizedImageUrl(testimonial.profileImage, 120)}
             alt={testimonial.name}
+            width="60"
+            height="60"
             className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-purple-100"
+            loading="lazy"
           />
           <div>
             <h3 className="font-semibold text-base sm:text-lg text-gray-800">{testimonial.name}</h3>
@@ -84,9 +91,6 @@ const TestimonialCard = ({ testimonial, onClick }) => {
 };
 
 const TestimonialModal = ({ isOpen, onClose, testimonial }) => {
-
-  const { currentUser } = useSelector((state) => state.user);
-
   if (!testimonial) return null;
 
   return (
@@ -94,9 +98,12 @@ const TestimonialModal = ({ isOpen, onClose, testimonial }) => {
       <div className="p-6">
         <div className="flex items-center gap-4">
           <img
-            src={testimonial.profileImage}
+            src={getOptimizedImageUrl(testimonial.profileImage, 160)}
             alt={testimonial.name}
+            width="80"
+            height="80"
             className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-purple-100"
+            loading="lazy"
           />
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{testimonial.name}</h2>

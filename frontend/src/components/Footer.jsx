@@ -51,11 +51,27 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-6">
             <Link to="/" className="inline-flex items-center space-x-3 group">
               <div className="relative">
-                <img
-                  src="/assets/Route2Hire.png"
-                  alt="Route2Hire Logo"
-                  className="h-12 w-auto transition-transform duration-300 group-hover:scale-110"
-                />
+                <picture>
+                  {/* WebP for modern browsers - smallest file size */}
+                  <source 
+                    srcSet="/assets/Route2Hire-48.webp 1x, /assets/Route2Hire-96.webp 2x" 
+                    type="image/webp"
+                  />
+                  {/* Optimized PNG fallback */}
+                  <source 
+                    srcSet="/assets/Route2Hire-48.png 1x, /assets/Route2Hire-96.png 2x" 
+                    type="image/png"
+                  />
+                  {/* Final fallback */}
+                  <img
+                    src="/assets/Route2Hire-48.png"
+                    alt="Route2Hire Logo"
+                    width="48"
+                    height="48"
+                    className="h-12 w-12 transition-transform duration-300 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
               </div>
               <div>
