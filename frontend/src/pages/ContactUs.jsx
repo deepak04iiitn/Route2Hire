@@ -28,7 +28,7 @@ export default function ContactUs() {
     { name: 'Developer Jobs', icon: <FaTelegram />, link: 'https://t.me/trendingjobs4all_Dev', color: 'text-purple-500 bg-indigo-100' },
     { name: 'DevOps Jobs', icon: <FaTelegram />, link: 'https://t.me/trendingjobs4all_devops', color: 'text-purple-500 bg-purple-100' },
     { name: 'Internships', icon: <FaTelegram />, link: 'https://t.me/trendingjobs4all_intern', color: 'text-purple-500 bg-teal-100' },
-    { name: 'Email', icon: <FaEnvelope />, link: 'mailto:sandeep38yad@gmail.com', color: 'text-red-600 bg-red-100' },
+    { name: 'Email', icon: <FaEnvelope />, link: 'mailto:route2hire@gmail.com', color: 'text-red-600 bg-red-100' },
   ];
 
   return (
