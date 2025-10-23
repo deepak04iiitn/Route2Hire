@@ -115,7 +115,8 @@ export default function Header() {
     }
   };
 
-  const handleFeatureNavigation = (path) => {
+  const handleFeatureNavigation = (path, comingSoon) => {
+    if (comingSoon) return;
     setIsFeaturesOpen(false);
     navigate(path);
   };
@@ -241,12 +242,14 @@ export default function Header() {
   // Enhanced Features Dropdown
   const FeaturesDropdown = () => {
     const features = [
-      { path: '/interviewExp', icon: User, label: 'Interview Experiences', desc: 'Company wise' },
-      { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', desc: 'Get referred by peers' },
-      { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data' },
-      { path: '/resumeTemplates', icon: BookOpen, label: 'Resume Templates', desc: 'Professional templates' },
-      { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder', desc: 'Create your resume' },
-      { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise' }
+      { path: '/interviewExp', icon: MessageCircle, label: 'Interview Experiences', desc: 'Company wise', comingSoon: false },
+      { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', desc: 'Get referred by peers', comingSoon: false },
+      { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data', comingSoon: false },
+      { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', desc: 'Professional templates', comingSoon: false },
+      { path: '/resume-builder', icon: User, label: 'Resume Builder', desc: 'Create your resume', comingSoon: false },
+      { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise', comingSoon: false },
+      { path: '#', icon: BookOpen, label: 'Blogs', desc: 'Coming soon', comingSoon: true },
+      { path: '#', icon: Search, label: 'QA/SDET DSA Sheet', desc: 'Coming soon', comingSoon: true }
     ];
 
     return (
@@ -261,20 +264,43 @@ export default function Header() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-3">
-              {features.map(({ path, icon: Icon, label, desc }) => (
+              {features.map(({ path, icon: Icon, label, desc, comingSoon }) => (
                 <motion.div
-                  key={path}
-                  whileHover={{ x: 6 }}
-                  onClick={() => handleFeatureNavigation(path)}
-                  className="flex items-center space-x-3 p-4 rounded-xl hover:bg-blue-500 hover:text-white transition-all duration-300 cursor-pointer group"
+                  key={label}
+                  whileHover={!comingSoon ? { x: 6 } : {}}
+                  onClick={() => handleFeatureNavigation(path, comingSoon)}
+                  className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 ${
+                    comingSoon 
+                      ? 'opacity-60 cursor-not-allowed' 
+                      : 'hover:bg-blue-500 hover:text-white cursor-pointer group'
+                  }`}
                 >
-                  <div className="p-2 rounded-lg bg-blue-50 group-hover:bg-white/20 transition-colors">
-                    <Icon size={18} className="text-blue-600 group-hover:text-white" />
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 rounded-lg ${
+                      comingSoon 
+                        ? 'bg-gray-100' 
+                        : 'bg-blue-50 group-hover:bg-white/20'
+                    } transition-colors`}>
+                      <Icon size={18} className={
+                        comingSoon 
+                          ? 'text-gray-400' 
+                          : 'text-blue-600 group-hover:text-white'
+                      } />
+                    </div>
+                    <div>
+                      <p className="font-semibold">{label}</p>
+                      <p className={`text-xs ${
+                        comingSoon 
+                          ? 'text-slate-400' 
+                          : 'text-slate-500 group-hover:text-white/80'
+                      }`}>{desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold">{label}</p>
-                    <p className="text-xs text-slate-500 group-hover:text-white/80">{desc}</p>
-                  </div>
+                  {comingSoon && (
+                    <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                      Soon
+                    </span>
+                  )}
                 </motion.div>
               ))}
             </div>
@@ -389,24 +415,39 @@ export default function Header() {
                 
                 <div className="space-y-2">
                   {[
-                    { path: '/interviewExp', icon: User, label: 'Interview Experiences' },
-                    { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals' },
-                    { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights' },
-                    { path: '/resumeTemplates', icon: BookOpen, label: 'Resume Templates' },
-                    { path: '/resume-builder', icon: FileEdit, label: 'Resume Builder' },
-                    { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions' }
-                  ].map(({ path, icon: Icon, label }) => (
+                    { path: '/interviewExp', icon: MessageCircle, label: 'Interview Experiences', comingSoon: false },
+                    { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', comingSoon: false },
+                    { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', comingSoon: false },
+                    { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', comingSoon: false },
+                    { path: '/resume-builder', icon: User, label: 'Resume Builder', comingSoon: false },
+                    { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', comingSoon: false },
+                    { path: '#', icon: BookOpen, label: 'Blogs', comingSoon: true },
+                    { path: '#', icon: Search, label: 'QA/SDET DSA Sheet', comingSoon: true }
+                  ].map(({ path, icon: Icon, label, comingSoon }) => (
                     <motion.div
-                      key={path}
-                      whileTap={{ scale: 0.98 }}
+                      key={label}
+                      whileTap={!comingSoon ? { scale: 0.98 } : {}}
                       onClick={() => {
-                        closeMobileMenu();
-                        navigate(path);
+                        if (!comingSoon) {
+                          closeMobileMenu();
+                          navigate(path);
+                        }
                       }}
-                      className="flex items-center space-x-3 py-3 px-4 text-slate-700 hover:bg-blue-50 rounded-xl cursor-pointer transition-all duration-300"
+                      className={`flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-300 ${
+                        comingSoon 
+                          ? 'text-slate-400 cursor-not-allowed opacity-60' 
+                          : 'text-slate-700 hover:bg-blue-50 cursor-pointer'
+                      }`}
                     >
-                      <Icon size={18} />
-                      <span className="font-medium">{label}</span>
+                      <div className="flex items-center space-x-3">
+                        <Icon size={18} />
+                        <span className="font-medium">{label}</span>
+                      </div>
+                      {comingSoon && (
+                        <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                          Soon
+                        </span>
+                      )}
                     </motion.div>
                   ))}
                 </div>
