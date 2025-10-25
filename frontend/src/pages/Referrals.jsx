@@ -286,7 +286,7 @@ export default function Referrals() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="w-full overflow-hidden"
           >
-            <ReferralEmptyState />
+            <ReferralEmptyState onShareClick={toggleModal} />
           </motion.div>
         )}
 

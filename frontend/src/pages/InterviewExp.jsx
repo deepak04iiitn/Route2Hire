@@ -277,7 +277,7 @@ export default function InterviewExp() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="w-full overflow-hidden"
           >
-            <InterviewEmptyState />
+            <InterviewEmptyState onShareClick={toggleModal} />
           </motion.div>
         )}
 

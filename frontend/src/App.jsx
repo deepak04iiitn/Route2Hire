@@ -38,12 +38,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signoutSuccess, initializeSessionExpiry } from './redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import AdminBlogs from './pages/AdminBlogs';
+import Blogs from './pages/Blogs';
+import BlogDetail from './pages/BlogDetail';
+
 
 function SessionManager() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, sessionExpiry } = useSelector((state) => state.user);
   const timerRef = useRef(null);
+
 
   useEffect(() => {
     // On mount or user change, ensure we have an expiry
@@ -52,6 +57,7 @@ function SessionManager() {
     }
   }, [currentUser, sessionExpiry, dispatch]);
 
+
   useEffect(() => {
     // Clear any existing timers
     if (timerRef.current) {
@@ -59,10 +65,13 @@ function SessionManager() {
       timerRef.current = null;
     }
 
+
     if (!currentUser || !sessionExpiry) return;
+
 
     const now = Date.now();
     const msUntilExpiry = Math.max(0, sessionExpiry - now);
+
 
     if (msUntilExpiry === 0) {
       // Expired already
@@ -71,10 +80,12 @@ function SessionManager() {
       return;
     }
 
+
     timerRef.current = setTimeout(() => {
       dispatch(signoutSuccess());
       navigate('/sign-in');
     }, msUntilExpiry);
+
 
     return () => {
       if (timerRef.current) {
@@ -83,6 +94,7 @@ function SessionManager() {
       }
     };
   }, [currentUser, sessionExpiry, dispatch, navigate]);
+
 
   // Additionally, when the document becomes visible again, if expired, logout
   useEffect(() => {
@@ -98,8 +110,10 @@ function SessionManager() {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [currentUser, sessionExpiry, dispatch, navigate]);
 
+
   return null;
 }
+
 
 export default function App() {
   return (
@@ -129,10 +143,16 @@ export default function App() {
                 <Route path="/referral/:id" element={<ReferralDetailPage />} />
                 <Route path='/resumeTemplates' element={<ResumeTemplates />} />
                 <Route path='/myCorner' element={<MyCorner />} />
+                
+                {/* Private Routes for Admin */}
                 <Route element={<PrivateRoute />}>
                   <Route path='/dashboard' element={<Dashboard />} />
                   <Route path='/admin/interview-questions' element={<AdminInterviewQuestions />} />
+                  <Route path='/admin-blogs' element={<AdminBlogs />} />
+                  <Route path='/admin-blogs/:action' element={<AdminBlogs />} />
+                  <Route path='/admin-blogs/:action/:id' element={<AdminBlogs />} />
                 </Route>
+                
                 <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />
                 <Route path='/contactUs' element={<ContactUs />} />
                 <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
@@ -141,8 +161,15 @@ export default function App() {
                 <Route path='/newsletter' element={<Newsletter />} />
                 <Route path='/jobs' element={<Jobs />} />
                 <Route path='/resume-builder' element={<ResumeBuilder />} />
+                
+                {/* Interview Questions Routes */}
                 <Route path='/interview-questions' element={<InterviewQuestions />} />
                 <Route path='/interview-questions/:topicSlug' element={<InterviewQuestions />} />
+                
+                {/* Blog Routes */}
+                <Route path='/blogs' element={<Blogs />} />
+                <Route path='/blogs/category/:category' element={<Blogs />} />
+                <Route path='/blog/:slug' element={<BlogDetail />} />
               </Routes>
             </div>
             <Footer />

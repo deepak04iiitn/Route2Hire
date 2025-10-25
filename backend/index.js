@@ -20,6 +20,8 @@ import interviewQuestionRoutes from './routes/interviewQuestion.route.js';
 import interviewQuestionCommentRoutes from './routes/interviewQuestionComment.route.js';
 import sitemapRoutes from './routes/sitemap.route.js';
 import llmsRoutes from './routes/llms.route.js';
+import blogRoutes from './routes/blog.route.js';
+import blogCommentRoutes from './routes/blogComment.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
@@ -44,8 +46,8 @@ const app = express();
 // Configure CORS with specific options
 app.use(cors());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(cookieParser());
 
@@ -141,6 +143,8 @@ app.use('/backend/admin', adminRoutes);
 app.use('/backend/resume', resumeRoutes);
 app.use('/backend/interview-questions', interviewQuestionRoutes);
 app.use('/backend/interview-question-comments', interviewQuestionCommentRoutes);
+app.use('/backend/blogs', blogRoutes);
+app.use('/backend/blog-comments', blogCommentRoutes);
 app.use('/', sitemapRoutes);
 app.use('/', llmsRoutes);
 

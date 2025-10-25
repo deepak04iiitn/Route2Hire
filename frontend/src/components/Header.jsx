@@ -248,7 +248,7 @@ export default function Header() {
       { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', desc: 'Professional templates', comingSoon: false },
       { path: '/resume-builder', icon: User, label: 'Resume Builder', desc: 'Create your resume', comingSoon: false },
       { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise', comingSoon: false },
-      { path: '#', icon: BookOpen, label: 'Blogs', desc: 'Coming soon', comingSoon: true },
+      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: true },
       { path: '#', icon: Search, label: 'QA/SDET DSA Sheet', desc: 'Coming soon', comingSoon: true }
     ];
 
@@ -421,7 +421,7 @@ export default function Header() {
                     { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', comingSoon: false },
                     { path: '/resume-builder', icon: User, label: 'Resume Builder', comingSoon: false },
                     { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', comingSoon: false },
-                    { path: '#', icon: BookOpen, label: 'Blogs', comingSoon: true },
+                    { path: '/blogs', icon: BookOpen, label: 'Blogs', comingSoon: true },
                     { path: '#', icon: Search, label: 'QA/SDET DSA Sheet', comingSoon: true }
                   ].map(({ path, icon: Icon, label, comingSoon }) => (
                     <motion.div

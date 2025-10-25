@@ -8,7 +8,15 @@ import { Readable } from 'stream';
 const router = express.Router();
 
 // Multer memory storage for direct stream upload to Cloudinary
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: {
+    fieldSize: 10 * 1024 * 1024, // 10MB for field values (rich text content)
+    fileSize: 5 * 1024 * 1024,   // 5MB for file uploads
+    fields: 20,                   // Maximum number of fields
+    files: 10                     // Maximum number of files (more for interview questions)
+  }
+});
 
 // Helper to upload a buffer to Cloudinary and return the secure URL
 const uploadBufferToCloudinary = (buffer, folder = 'interview-answers') => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FileSearch } from 'lucide-react';
 
-export default function EmptyState() {
+export default function InterviewEmptyState({ onShareClick }) {
   return (
     <div className="w-full py-12 flex flex-col items-center justify-center">
       <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-8 rounded-3xl">
@@ -17,6 +17,7 @@ export default function EmptyState() {
           </p>
           <div className="mt-8 text-center">
             <button 
+              onClick={onShareClick}
               className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl shadow-md hover:shadow-xl transition-all duration-300 gap-2"
             >
               Share Your Experience

@@ -286,7 +286,7 @@ export default function SalaryStructures() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="w-full overflow-hidden"
           >
-            <SalaryEmptyState />
+            <SalaryEmptyState onShareClick={toggleModal} />
           </motion.div>
         )}
 
