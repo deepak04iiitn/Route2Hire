@@ -57,6 +57,7 @@ const generateSitemapXML = (urls) => {
     { url: '/jobs', priority: '0.90' },
     { url: '/resume-builder', priority: '0.70' },
     { url: '/interview-questions', priority: '0.80' },
+    { url: '/dsa-tracker', priority: '0.80' },
     { url: '/dashboard', priority: '0.60' },
     { url: '/admin/interview-questions', priority: '0.50' }
   ];

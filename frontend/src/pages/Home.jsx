@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspens
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { MessageFilled, RiseOutlined, CloseOutlined, SendOutlined, BarChartOutlined, UsergroupAddOutlined, RocketOutlined, TrophyOutlined, CrownOutlined, FormOutlined } from '@ant-design/icons';
+import { Code } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import '../styles/Home.css';
 import { debounce, preloadCriticalResources } from '../utils/performanceOptimizations';
@@ -255,6 +256,54 @@ ${question}`;
 
       <div className="relative z-10">
         
+        {/* QA/SDET DSA Sheet Banner - Prominent Announcement */}
+        <section className="py-4 sm:py-6">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div 
+              onClick={() => navigate('/dsa-tracker')}
+              className="group cursor-pointer relative overflow-hidden bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-emerald-400/30 shadow-2xl hover:shadow-emerald-500/25 transition-all duration-500 hover:scale-[1.02]"
+            >
+              {/* Animated Background Effects */}
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl animate-pulse"></div>
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
+              
+              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-xl rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                    <Code className="text-white text-xl sm:text-2xl" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg sm:text-2xl md:text-3xl font-black text-white mb-1 sm:mb-2">
+                      NEW: QA/SDET DSA Sheet
+                    </h3>
+                    <p className="text-emerald-100 text-sm sm:text-base md:text-lg font-medium">
+                      Master Data Structures & Algorithms for QA/SDET roles • Track your progress • Ace technical interviews
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="hidden sm:flex items-center gap-2 bg-white/20 backdrop-blur-xl rounded-full px-3 py-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-white text-sm font-semibold">Live Now</span>
+                  </div>
+                  <button className="bg-white/20 hover:bg-white/30 backdrop-blur-xl text-white font-bold px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl transition-all duration-300 flex items-center gap-2 group-hover:scale-105 shadow-lg">
+                    <span className="text-sm sm:text-base">Start Learning</span>
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              
+              {/* Floating Elements */}
+              <div className="absolute top-2 right-8 text-white/30 text-2xl animate-bounce" style={{animationDelay: '0.5s'}}>💻</div>
+              <div className="absolute bottom-2 left-8 text-white/30 text-xl animate-bounce" style={{animationDelay: '1.5s'}}>⚡</div>
+            </div>
+          </div>
+        </section>
+
         {/* Hero Section - Centered */}
         <section className="py-12 sm:py-20 md:py-32">
           <div className="container mx-auto px-4 sm:px-6 text-center">
@@ -293,13 +342,13 @@ ${question}`;
             {/* Premium CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-12 sm:mb-16 px-4">
               <button
-                onClick={() => handleModalOpen('chat')}
-                className="group relative inline-flex items-center justify-center gap-3 sm:gap-4 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 hover:from-blue-500 hover:via-purple-500 hover:to-blue-500 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-2xl text-base sm:text-lg font-bold transition-all duration-500 hover:scale-105 shadow-2xl hover:shadow-blue-500/25 border border-white/10 w-full sm:w-auto max-w-xs sm:max-w-none"
+                onClick={() => navigate('/dsa-tracker')}
+                className="group relative inline-flex items-center justify-center gap-3 sm:gap-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:via-teal-500 hover:to-cyan-500 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-2xl text-base sm:text-lg font-bold transition-all duration-500 hover:scale-105 shadow-2xl hover:shadow-emerald-500/25 border border-emerald-400/30 w-full sm:w-auto max-w-xs sm:max-w-none"
               >
-                <MessageFilled className="text-xl sm:text-2xl flex-shrink-0" />
-                <span className="whitespace-nowrap">Launch AI Assistant</span>
+                <Code className="text-xl sm:text-2xl flex-shrink-0" />
+                <span className="whitespace-nowrap">QA/SDET DSA Sheet</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
               </button>
               
               <button
@@ -365,17 +414,17 @@ ${question}`;
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
-              {/* AI Assistant Card */}
+              {/* QA/SDET DSA Sheet Card */}
               <div 
-                onClick={() => handleModalOpen('chat')}
-                className="group cursor-pointer bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/20 hover:border-blue-500/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20"
+                onClick={() => navigate('/dsa-tracker')}
+                className="group cursor-pointer bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-emerald-400/30 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/20"
               >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
-                  <MessageFilled className="text-white text-xl sm:text-2xl" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                  <Code className="text-white text-xl sm:text-2xl" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 text-center">AI Assistant</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 text-center">DSA Sheet</h3>
                 <p className="text-white/70 text-center leading-relaxed text-sm sm:text-base">
-                  Get personalized career advice and job recommendations
+                  Master Data Structures & Algorithms for QA/SDET roles
                 </p>
               </div>
 

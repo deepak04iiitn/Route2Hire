@@ -19,7 +19,8 @@ import {
   MessageCircle,
   Search,
   Star,
-  FileEdit
+  FileEdit,
+  Code
 } from 'lucide-react';
 import { signoutSuccess } from '../redux/user/userSlice';
 
@@ -243,13 +244,13 @@ export default function Header() {
   const FeaturesDropdown = () => {
     const features = [
       { path: '/interviewExp', icon: MessageCircle, label: 'Interview Experiences', desc: 'Company wise', comingSoon: false },
+      { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise', comingSoon: false },
+      { path: '/dsa-tracker', icon: Code, label: 'QA/SDET DSA Sheet', desc: 'Track your progress', comingSoon: false },
       { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', desc: 'Get referred by peers', comingSoon: false },
       { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data', comingSoon: false },
       { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', desc: 'Professional templates', comingSoon: false },
       { path: '/resume-builder', icon: User, label: 'Resume Builder', desc: 'Create your resume', comingSoon: false },
-      { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise', comingSoon: false },
-      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: true },
-      { path: '#', icon: Search, label: 'QA/SDET DSA Sheet', desc: 'Coming soon', comingSoon: true }
+      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: true }
     ];
 
     return (
@@ -260,7 +261,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute right-0 mt-3 w-80 rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden z-50"
+            className="absolute right-0 mt-3 w-[28rem] rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden z-50"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-3">
@@ -416,13 +417,13 @@ export default function Header() {
                 <div className="space-y-2">
                   {[
                     { path: '/interviewExp', icon: MessageCircle, label: 'Interview Experiences', comingSoon: false },
+                    { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', comingSoon: false },
+                    { path: '/dsa-tracker', icon: Code, label: 'QA/SDET DSA Sheet', comingSoon: false },
                     { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', comingSoon: false },
                     { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', comingSoon: false },
                     { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', comingSoon: false },
                     { path: '/resume-builder', icon: User, label: 'Resume Builder', comingSoon: false },
-                    { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', comingSoon: false },
-                    { path: '/blogs', icon: BookOpen, label: 'Blogs', comingSoon: true },
-                    { path: '#', icon: Search, label: 'QA/SDET DSA Sheet', comingSoon: true }
+                    { path: '/blogs', icon: BookOpen, label: 'Blogs', comingSoon: true }
                   ].map(({ path, icon: Icon, label, comingSoon }) => (
                     <motion.div
                       key={label}

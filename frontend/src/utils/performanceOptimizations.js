@@ -81,7 +81,7 @@ export const cleanupMemory = () => {
 
 // Bundle size analyzer helper
 export const analyzeBundleSize = () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.log('Bundle analysis:', {
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,

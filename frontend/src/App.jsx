@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import FlashStrip from './components/FlashStrip';
 import Profile from './pages/Profile';
 import Trends from './pages/Trends';
 import FullJd from './pages/FullJd';
@@ -41,6 +42,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import AdminBlogs from './pages/AdminBlogs';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
+import DSAProblemTracker from './pages/DSAProblemTracker';
 
 
 function SessionManager() {
@@ -122,6 +124,7 @@ export default function App() {
           <div className="flex flex-col min-h-screen">
             <SessionManager />
             <Header />
+            <FlashStrip />
             <div className="flex-grow">
               <Routes>
                 <Route path='/' element={<Home />} />
@@ -170,6 +173,9 @@ export default function App() {
                 <Route path='/blogs' element={<Blogs />} />
                 <Route path='/blogs/category/:category' element={<Blogs />} />
                 <Route path='/blog/:slug' element={<BlogDetail />} />
+                
+                {/* DSA Problem Tracker Route */}
+                <Route path='/dsa-tracker' element={<DSAProblemTracker />} />
               </Routes>
             </div>
             <Footer />

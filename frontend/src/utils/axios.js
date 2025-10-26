@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an axios instance with default config
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3000',  // Use environment variable if available
+    baseURL: import.meta.env.VITE_API_URL || '',  // Use proxy in development, full URL in production
     withCredentials: true,  // Important for cookies/auth
     headers: {
         'Content-Type': 'application/json'

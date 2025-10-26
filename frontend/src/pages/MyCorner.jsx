@@ -134,7 +134,7 @@ export default function MyCorner() {
         </button>
 
         {/* Header - Only visible on desktop */}
-        <div className="p-4 flex items-center space-x-4 hidden md:flex">
+        <div className="p-4 items-center space-x-4 hidden md:flex">
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
             <Menu className="text-white" size={24} />
           </div>

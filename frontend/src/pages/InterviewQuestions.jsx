@@ -359,7 +359,7 @@ export default function InterviewQuestions() {
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
       {/* Sidebar Toggle Button for mobile and tablet */}
       <button
-        className="xl:hidden fixed top-14 sm:top-16 md:top-20 right-2 sm:right-3 md:right-4 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 md:p-3 rounded-full shadow-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-300 touch-manipulation"
+        className="xl:hidden fixed top-14 sm:top-16 md:top-20 right-2 sm:right-3 md:right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 md:p-3 rounded-full shadow-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-300 touch-manipulation"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         aria-label="Toggle sidebar"
       >
@@ -369,7 +369,7 @@ export default function InterviewQuestions() {
       {/* Backdrop for mobile and tablet */}
       {isSidebarOpen && window.innerWidth < 1280 && (
         <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 xl:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 xl:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -377,7 +377,7 @@ export default function InterviewQuestions() {
       {/* Sidebar - Responsive width and positioning */}
       <div
         className={`
-          w-full sm:w-80 lg:w-96 xl:w-80 2xl:w-96 bg-white/90 backdrop-blur-xl border-r border-white/20 shadow-2xl z-40 transition-all duration-500 fixed inset-y-0 overflow-y-auto
+          w-full sm:w-80 lg:w-96 xl:w-80 2xl:w-96 bg-white/90 backdrop-blur-xl border-r border-white/20 shadow-2xl z-30 transition-all duration-500 fixed inset-y-0 overflow-y-auto
           ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} right-0
           xl:left-0 xl:right-auto xl:translate-x-0 xl:relative
         `}

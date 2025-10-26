@@ -1,0 +1,1610 @@
+[
+  {
+    "Problem Name": "Reverse a String",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/reverse-string/"
+  },
+  {
+    "Problem Name": "Reverse Words in a String",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/reverse-words-in-a-string/"
+  },
+  {
+    "Problem Name": "Reverse Words in a String III",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/reverse-words-in-a-string-iii/"
+  },
+  {
+    "Problem Name": "Valid Palindrome",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-palindrome/"
+  },
+  {
+    "Problem Name": "Valid Palindrome II",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-palindrome-ii/"
+  },
+  {
+    "Problem Name": "Palindrome Number",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/palindrome-number/"
+  },
+  {
+    "Problem Name": "Longest Palindromic Substring",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-palindromic-substring/"
+  },
+  {
+    "Problem Name": "Longest Palindromic Subsequence",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-palindromic-subsequence/"
+  },
+  {
+    "Problem Name": "Valid Anagram",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-anagram/"
+  },
+  {
+    "Problem Name": "Group Anagrams",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/group-anagrams/"
+  },
+  {
+    "Problem Name": "Find All Anagrams in a String",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-all-anagrams-in-a-string/"
+  },
+  {
+    "Problem Name": "First Unique Character in a String",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/first-unique-character-in-a-string/"
+  },
+  {
+    "Problem Name": "String to Integer (atoi)",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/string-to-integer-atoi/"
+  },
+  {
+    "Problem Name": "Implement strStr()",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/"
+  },
+  {
+    "Problem Name": "Longest Common Prefix",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/longest-common-prefix/"
+  },
+  {
+    "Problem Name": "Longest Substring Without Repeating Characters",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+  },
+  {
+    "Problem Name": "Longest Repeating Character Replacement",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-repeating-character-replacement/"
+  },
+  {
+    "Problem Name": "Minimum Window Substring",
+    "Category": "String",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/minimum-window-substring/"
+  },
+  {
+    "Problem Name": "Permutation in String",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/permutation-in-string/"
+  },
+  {
+    "Problem Name": "Count and Say",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/count-and-say/"
+  },
+  {
+    "Problem Name": "Add Binary",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/add-binary/"
+  },
+  {
+    "Problem Name": "Multiply Strings",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/multiply-strings/"
+  },
+  {
+    "Problem Name": "Valid Parentheses",
+    "Category": "String",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-parentheses/"
+  },
+  {
+    "Problem Name": "Generate Parentheses",
+    "Category": "String",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/generate-parentheses/"
+  },
+  {
+    "Problem Name": "Longest Valid Parentheses",
+    "Category": "String",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/longest-valid-parentheses/"
+  },
+  {
+    "Problem Name": "Two Sum",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/two-sum/"
+  },
+  {
+    "Problem Name": "Three Sum",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/3sum/"
+  },
+  {
+    "Problem Name": "Four Sum",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/4sum/"
+  },
+  {
+    "Problem Name": "Two Sum II - Input Array is Sorted",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/"
+  },
+  {
+    "Problem Name": "Find Duplicates in Array",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-all-duplicates-in-an-array/"
+  },
+  {
+    "Problem Name": "Contains Duplicate",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/contains-duplicate/"
+  },
+  {
+    "Problem Name": "Contains Duplicate II",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/contains-duplicate-ii/"
+  },
+  {
+    "Problem Name": "Remove Duplicates from Sorted Array",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"
+  },
+  {
+    "Problem Name": "Remove Duplicates from Sorted Array II",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/"
+  },
+  {
+    "Problem Name": "Missing Number",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/missing-number/"
+  },
+  {
+    "Problem Name": "Find Missing Number in Array",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/find-the-missing-number/"
+  },
+  {
+    "Problem Name": "First Missing Positive",
+    "Category": "Array",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/first-missing-positive/"
+  },
+  {
+    "Problem Name": "Maximum Subarray",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/maximum-subarray/"
+  },
+  {
+    "Problem Name": "Maximum Product Subarray",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/maximum-product-subarray/"
+  },
+  {
+    "Problem Name": "Maximum Sum Circular Subarray",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/maximum-sum-circular-subarray/"
+  },
+  {
+    "Problem Name": "Merge Sorted Arrays",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/merge-sorted-array/"
+  },
+  {
+    "Problem Name": "Merge Intervals",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/merge-intervals/"
+  },
+  {
+    "Problem Name": "Insert Interval",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/insert-interval/"
+  },
+  {
+    "Problem Name": "Rotate Array",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/rotate-array/"
+  },
+  {
+    "Problem Name": "Rotate Image",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/rotate-image/"
+  },
+  {
+    "Problem Name": "Best Time to Buy and Sell Stock",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+  },
+  {
+    "Problem Name": "Best Time to Buy and Sell Stock II",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/"
+  },
+  {
+    "Problem Name": "Best Time to Buy and Sell Stock III",
+    "Category": "Array",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/"
+  },
+  {
+    "Problem Name": "Product of Array Except Self",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/product-of-array-except-self/"
+  },
+  {
+    "Problem Name": "Find Peak Element",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-peak-element/"
+  },
+  {
+    "Problem Name": "Search in Rotated Sorted Array",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/search-in-rotated-sorted-array/"
+  },
+  {
+    "Problem Name": "Search in Rotated Sorted Array II",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/"
+  },
+  {
+    "Problem Name": "Find Minimum in Rotated Sorted Array",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/"
+  },
+  {
+    "Problem Name": "Container With Most Water",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/container-with-most-water/"
+  },
+  {
+    "Problem Name": "Trapping Rain Water",
+    "Category": "Array",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/trapping-rain-water/"
+  },
+  {
+    "Problem Name": "Jump Game",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/jump-game/"
+  },
+  {
+    "Problem Name": "Jump Game II",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/jump-game-ii/"
+  },
+  {
+    "Problem Name": "Move Zeroes",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/move-zeroes/"
+  },
+  {
+    "Problem Name": "Sort Colors",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/sort-colors/"
+  },
+  {
+    "Problem Name": "Next Permutation",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/next-permutation/"
+  },
+  {
+    "Problem Name": "Majority Element",
+    "Category": "Array",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/majority-element/"
+  },
+  {
+    "Problem Name": "Majority Element II",
+    "Category": "Array",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/majority-element-ii/"
+  },
+  {
+    "Problem Name": "Reverse Linked List",
+    "Category": "Linked List",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/reverse-linked-list/"
+  },
+  {
+    "Problem Name": "Reverse Linked List II",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/reverse-linked-list-ii/"
+  },
+  {
+    "Problem Name": "Linked List Cycle",
+    "Category": "Linked List",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/linked-list-cycle/"
+  },
+  {
+    "Problem Name": "Linked List Cycle II",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/linked-list-cycle-ii/"
+  },
+  {
+    "Problem Name": "Merge Two Sorted Lists",
+    "Category": "Linked List",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/merge-two-sorted-lists/"
+  },
+  {
+    "Problem Name": "Merge k Sorted Lists",
+    "Category": "Linked List",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/merge-k-sorted-lists/"
+  },
+  {
+    "Problem Name": "Remove Nth Node From End of List",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/"
+  },
+  {
+    "Problem Name": "Delete Node in a Linked List",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/delete-node-in-a-linked-list/"
+  },
+  {
+    "Problem Name": "Palindrome Linked List",
+    "Category": "Linked List",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/palindrome-linked-list/"
+  },
+  {
+    "Problem Name": "Intersection of Two Linked Lists",
+    "Category": "Linked List",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/intersection-of-two-linked-lists/"
+  },
+  {
+    "Problem Name": "Middle of Linked List",
+    "Category": "Linked List",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/middle-of-the-linked-list/"
+  },
+  {
+    "Problem Name": "Reorder List",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/reorder-list/"
+  },
+  {
+    "Problem Name": "Add Two Numbers",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/add-two-numbers/"
+  },
+  {
+    "Problem Name": "Copy List with Random Pointer",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/copy-list-with-random-pointer/"
+  },
+  {
+    "Problem Name": "Flatten a Multilevel Doubly Linked List",
+    "Category": "Linked List",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/"
+  },
+  {
+    "Problem Name": "Valid Parentheses",
+    "Category": "Stack",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-parentheses/"
+  },
+  {
+    "Problem Name": "Min Stack",
+    "Category": "Stack",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/min-stack/"
+  },
+  {
+    "Problem Name": "Implement Stack using Queues",
+    "Category": "Stack",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/implement-stack-using-queues/"
+  },
+  {
+    "Problem Name": "Implement Queue using Stacks",
+    "Category": "Queue",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/implement-queue-using-stacks/"
+  },
+  {
+    "Problem Name": "Evaluate Reverse Polish Notation",
+    "Category": "Stack",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/evaluate-reverse-polish-notation/"
+  },
+  {
+    "Problem Name": "Daily Temperatures",
+    "Category": "Stack",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/daily-temperatures/"
+  },
+  {
+    "Problem Name": "Next Greater Element I",
+    "Category": "Stack",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/next-greater-element-i/"
+  },
+  {
+    "Problem Name": "Next Greater Element II",
+    "Category": "Stack",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/next-greater-element-ii/"
+  },
+  {
+    "Problem Name": "Largest Rectangle in Histogram",
+    "Category": "Stack",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/largest-rectangle-in-histogram/"
+  },
+  {
+    "Problem Name": "Maximal Rectangle",
+    "Category": "Stack",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/maximal-rectangle/"
+  },
+  {
+    "Problem Name": "Basic Calculator",
+    "Category": "Stack",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/basic-calculator/"
+  },
+  {
+    "Problem Name": "Basic Calculator II",
+    "Category": "Stack",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/basic-calculator-ii/"
+  },
+  {
+    "Problem Name": "Binary Search",
+    "Category": "Binary Search",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/binary-search/"
+  },
+  {
+    "Problem Name": "Search in Rotated Sorted Array",
+    "Category": "Binary Search",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/search-in-rotated-sorted-array/"
+  },
+  {
+    "Problem Name": "Find First and Last Position of Element",
+    "Category": "Binary Search",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/"
+  },
+  {
+    "Problem Name": "Search Insert Position",
+    "Category": "Binary Search",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/search-insert-position/"
+  },
+  {
+    "Problem Name": "Sqrt(x)",
+    "Category": "Binary Search",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/sqrtx/"
+  },
+  {
+    "Problem Name": "Valid Perfect Square",
+    "Category": "Binary Search",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-perfect-square/"
+  },
+  {
+    "Problem Name": "Search a 2D Matrix",
+    "Category": "Binary Search",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/search-a-2d-matrix/"
+  },
+  {
+    "Problem Name": "Search a 2D Matrix II",
+    "Category": "Binary Search",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/search-a-2d-matrix-ii/"
+  },
+  {
+    "Problem Name": "Find Minimum in Rotated Sorted Array",
+    "Category": "Binary Search",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/"
+  },
+  {
+    "Problem Name": "Median of Two Sorted Arrays",
+    "Category": "Binary Search",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/median-of-two-sorted-arrays/"
+  },
+  {
+    "Problem Name": "Merge Sort Implementation",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://www.geeksforgeeks.org/merge-sort/"
+  },
+  {
+    "Problem Name": "Quick Sort Implementation",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://www.geeksforgeeks.org/quick-sort/"
+  },
+  {
+    "Problem Name": "Sort Colors",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/sort-colors/"
+  },
+  {
+    "Problem Name": "Sort List",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/sort-list/"
+  },
+  {
+    "Problem Name": "Insertion Sort List",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/insertion-sort-list/"
+  },
+  {
+    "Problem Name": "Kth Largest Element in an Array",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/kth-largest-element-in-an-array/"
+  },
+  {
+    "Problem Name": "Top K Frequent Elements",
+    "Category": "Sorting",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/top-k-frequent-elements/"
+  },
+  {
+    "Problem Name": "Two Sum using HashMap",
+    "Category": "Hash Table",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/two-sum/"
+  },
+  {
+    "Problem Name": "Valid Anagram using HashMap",
+    "Category": "Hash Table",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/valid-anagram/"
+  },
+  {
+    "Problem Name": "Group Anagrams using HashMap",
+    "Category": "Hash Table",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/group-anagrams/"
+  },
+  {
+    "Problem Name": "Longest Consecutive Sequence",
+    "Category": "Hash Table",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-consecutive-sequence/"
+  },
+  {
+    "Problem Name": "Subarray Sum Equals K",
+    "Category": "Hash Table",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/subarray-sum-equals-k/"
+  },
+  {
+    "Problem Name": "Happy Number",
+    "Category": "Hash Table",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/happy-number/"
+  },
+  {
+    "Problem Name": "Isomorphic Strings",
+    "Category": "Hash Table",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/isomorphic-strings/"
+  },
+  {
+    "Problem Name": "Word Pattern",
+    "Category": "Hash Table",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/word-pattern/"
+  },
+  {
+    "Problem Name": "LRU Cache",
+    "Category": "Hash Table",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/lru-cache/"
+  },
+  {
+    "Problem Name": "Maximum Depth of Binary Tree",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/maximum-depth-of-binary-tree/"
+  },
+  {
+    "Problem Name": "Minimum Depth of Binary Tree",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/minimum-depth-of-binary-tree/"
+  },
+  {
+    "Problem Name": "Validate Binary Search Tree",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/validate-binary-search-tree/"
+  },
+  {
+    "Problem Name": "Binary Tree Inorder Traversal",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-inorder-traversal/"
+  },
+  {
+    "Problem Name": "Binary Tree Preorder Traversal",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-preorder-traversal/"
+  },
+  {
+    "Problem Name": "Binary Tree Postorder Traversal",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-postorder-traversal/"
+  },
+  {
+    "Problem Name": "Binary Tree Level Order Traversal",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-level-order-traversal/"
+  },
+  {
+    "Problem Name": "Binary Tree Zigzag Level Order Traversal",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/"
+  },
+  {
+    "Problem Name": "Symmetric Tree",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/symmetric-tree/"
+  },
+  {
+    "Problem Name": "Invert Binary Tree",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/invert-binary-tree/"
+  },
+  {
+    "Problem Name": "Same Tree",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/same-tree/"
+  },
+  {
+    "Problem Name": "Subtree of Another Tree",
+    "Category": "Tree",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/subtree-of-another-tree/"
+  },
+  {
+    "Problem Name": "Lowest Common Ancestor of BST",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"
+  },
+  {
+    "Problem Name": "Lowest Common Ancestor of Binary Tree",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/"
+  },
+  {
+    "Problem Name": "Binary Tree Right Side View",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-right-side-view/"
+  },
+  {
+    "Problem Name": "Count Complete Tree Nodes",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/count-complete-tree-nodes/"
+  },
+  {
+    "Problem Name": "Serialize and Deserialize Binary Tree",
+    "Category": "Tree",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"
+  },
+  {
+    "Problem Name": "Binary Tree Maximum Path Sum",
+    "Category": "Tree",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/binary-tree-maximum-path-sum/"
+  },
+  {
+    "Problem Name": "Flatten Binary Tree to Linked List",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/"
+  },
+  {
+    "Problem Name": "Kth Smallest Element in BST",
+    "Category": "Tree",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"
+  },
+  {
+    "Problem Name": "Number of Islands",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/number-of-islands/"
+  },
+  {
+    "Problem Name": "Clone Graph",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/clone-graph/"
+  },
+  {
+    "Problem Name": "Course Schedule",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/course-schedule/"
+  },
+  {
+    "Problem Name": "Course Schedule II",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/course-schedule-ii/"
+  },
+  {
+    "Problem Name": "Pacific Atlantic Water Flow",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/pacific-atlantic-water-flow/"
+  },
+  {
+    "Problem Name": "Graph Valid Tree",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/graph-valid-tree/"
+  },
+  {
+    "Problem Name": "Number of Connected Components",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/"
+  },
+  {
+    "Problem Name": "Word Ladder",
+    "Category": "Graph",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/word-ladder/"
+  },
+  {
+    "Problem Name": "Network Delay Time",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/network-delay-time/"
+  },
+  {
+    "Problem Name": "Cheapest Flights Within K Stops",
+    "Category": "Graph",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/cheapest-flights-within-k-stops/"
+  },
+  {
+    "Problem Name": "Kth Largest Element in a Stream",
+    "Category": "Heap",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/kth-largest-element-in-a-stream/"
+  },
+  {
+    "Problem Name": "Last Stone Weight",
+    "Category": "Heap",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/last-stone-weight/"
+  },
+  {
+    "Problem Name": "K Closest Points to Origin",
+    "Category": "Heap",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/k-closest-points-to-origin/"
+  },
+  {
+    "Problem Name": "Top K Frequent Elements",
+    "Category": "Heap",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/top-k-frequent-elements/"
+  },
+  {
+    "Problem Name": "Find Median from Data Stream",
+    "Category": "Heap",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/find-median-from-data-stream/"
+  },
+  {
+    "Problem Name": "Merge k Sorted Lists",
+    "Category": "Heap",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/merge-k-sorted-lists/"
+  },
+  {
+    "Problem Name": "Task Scheduler",
+    "Category": "Heap",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/task-scheduler/"
+  },
+  {
+    "Problem Name": "Sliding Window Maximum",
+    "Category": "Heap",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/sliding-window-maximum/"
+  },
+  {
+    "Problem Name": "Implement Trie (Prefix Tree)",
+    "Category": "Trie",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/implement-trie-prefix-tree/"
+  },
+  {
+    "Problem Name": "Design Add and Search Words Data Structure",
+    "Category": "Trie",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/design-add-and-search-words-data-structure/"
+  },
+  {
+    "Problem Name": "Word Search II",
+    "Category": "Trie",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/word-search-ii/"
+  },
+  {
+    "Problem Name": "Replace Words",
+    "Category": "Trie",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/replace-words/"
+  },
+  {
+    "Problem Name": "Longest Word in Dictionary",
+    "Category": "Trie",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-word-in-dictionary/"
+  },
+  {
+    "Problem Name": "Climbing Stairs",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/climbing-stairs/"
+  },
+  {
+    "Problem Name": "House Robber",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/house-robber/"
+  },
+  {
+    "Problem Name": "House Robber II",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/house-robber-ii/"
+  },
+  {
+    "Problem Name": "House Robber III",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/house-robber-iii/"
+  },
+  {
+    "Problem Name": "Coin Change",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/coin-change/"
+  },
+  {
+    "Problem Name": "Coin Change II",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/coin-change-ii/"
+  },
+  {
+    "Problem Name": "Longest Increasing Subsequence",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-increasing-subsequence/"
+  },
+  {
+    "Problem Name": "Longest Common Subsequence",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-common-subsequence/"
+  },
+  {
+    "Problem Name": "Edit Distance",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/edit-distance/"
+  },
+  {
+    "Problem Name": "Decode Ways",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/decode-ways/"
+  },
+  {
+    "Problem Name": "Unique Paths",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/unique-paths/"
+  },
+  {
+    "Problem Name": "Unique Paths II",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/unique-paths-ii/"
+  },
+  {
+    "Problem Name": "Minimum Path Sum",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/minimum-path-sum/"
+  },
+  {
+    "Problem Name": "Maximum Product Subarray",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/maximum-product-subarray/"
+  },
+  {
+    "Problem Name": "Word Break",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/word-break/"
+  },
+  {
+    "Problem Name": "Word Break II",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/word-break-ii/"
+  },
+  {
+    "Problem Name": "Combination Sum IV",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/combination-sum-iv/"
+  },
+  {
+    "Problem Name": "Partition Equal Subset Sum",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/partition-equal-subset-sum/"
+  },
+  {
+    "Problem Name": "Target Sum",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/target-sum/"
+  },
+  {
+    "Problem Name": "Longest Palindromic Substring",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-palindromic-substring/"
+  },
+  {
+    "Problem Name": "Palindromic Substrings",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/palindromic-substrings/"
+  },
+  {
+    "Problem Name": "Jump Game",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/jump-game/"
+  },
+  {
+    "Problem Name": "Jump Game II",
+    "Category": "Dynamic Programming",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/jump-game-ii/"
+  },
+  {
+    "Problem Name": "Permutations",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/permutations/"
+  },
+  {
+    "Problem Name": "Permutations II",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/permutations-ii/"
+  },
+  {
+    "Problem Name": "Combinations",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/combinations/"
+  },
+  {
+    "Problem Name": "Combination Sum",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/combination-sum/"
+  },
+  {
+    "Problem Name": "Combination Sum II",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/combination-sum-ii/"
+  },
+  {
+    "Problem Name": "Subsets",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/subsets/"
+  },
+  {
+    "Problem Name": "Subsets II",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/subsets-ii/"
+  },
+  {
+    "Problem Name": "Letter Combinations of a Phone Number",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/"
+  },
+  {
+    "Problem Name": "Palindrome Partitioning",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/palindrome-partitioning/"
+  },
+  {
+    "Problem Name": "N-Queens",
+    "Category": "Backtracking",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/n-queens/"
+  },
+  {
+    "Problem Name": "N-Queens II",
+    "Category": "Backtracking",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/n-queens-ii/"
+  },
+  {
+    "Problem Name": "Word Search",
+    "Category": "Backtracking",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/word-search/"
+  },
+  {
+    "Problem Name": "Sudoku Solver",
+    "Category": "Backtracking",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/sudoku-solver/"
+  },
+  {
+    "Problem Name": "Best Time to Buy and Sell Stock",
+    "Category": "Greedy",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+  },
+  {
+    "Problem Name": "Jump Game",
+    "Category": "Greedy",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/jump-game/"
+  },
+  {
+    "Problem Name": "Jump Game II",
+    "Category": "Greedy",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/jump-game-ii/"
+  },
+  {
+    "Problem Name": "Gas Station",
+    "Category": "Greedy",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/gas-station/"
+  },
+  {
+    "Problem Name": "Candy",
+    "Category": "Greedy",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/candy/"
+  },
+  {
+    "Problem Name": "Minimum Number of Arrows to Burst Balloons",
+    "Category": "Greedy",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/"
+  },
+  {
+    "Problem Name": "Non-overlapping Intervals",
+    "Category": "Greedy",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/non-overlapping-intervals/"
+  },
+  {
+    "Problem Name": "Partition Labels",
+    "Category": "Greedy",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/partition-labels/"
+  },
+  {
+    "Problem Name": "Single Number",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/single-number/"
+  },
+  {
+    "Problem Name": "Single Number II",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/single-number-ii/"
+  },
+  {
+    "Problem Name": "Single Number III",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/single-number-iii/"
+  },
+  {
+    "Problem Name": "Number of 1 Bits",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/number-of-1-bits/"
+  },
+  {
+    "Problem Name": "Counting Bits",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/counting-bits/"
+  },
+  {
+    "Problem Name": "Reverse Bits",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/reverse-bits/"
+  },
+  {
+    "Problem Name": "Power of Two",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/power-of-two/"
+  },
+  {
+    "Problem Name": "Power of Three",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/power-of-three/"
+  },
+  {
+    "Problem Name": "Power of Four",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/power-of-four/"
+  },
+  {
+    "Problem Name": "Missing Number using XOR",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/missing-number/"
+  },
+  {
+    "Problem Name": "Sum of Two Integers",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/sum-of-two-integers/"
+  },
+  {
+    "Problem Name": "Bitwise AND of Numbers Range",
+    "Category": "Bit Manipulation",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/bitwise-and-of-numbers-range/"
+  },
+  {
+    "Problem Name": "FizzBuzz",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/fizz-buzz/"
+  },
+  {
+    "Problem Name": "Fibonacci Series",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/program-for-nth-fibonacci-number/"
+  },
+  {
+    "Problem Name": "N-th Tribonacci Number",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/n-th-tribonacci-number/"
+  },
+  {
+    "Problem Name": "Prime Number Check",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/check-for-prime-number/"
+  },
+  {
+    "Problem Name": "Count Primes",
+    "Category": "Math",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/count-primes/"
+  },
+  {
+    "Problem Name": "Factorial of a Number",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/program-for-factorial-of-a-number/"
+  },
+  {
+    "Problem Name": "Check Even or Odd",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/check-whether-given-number-even-odd/"
+  },
+  {
+    "Problem Name": "Reverse Integer",
+    "Category": "Math",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/reverse-integer/"
+  },
+  {
+    "Problem Name": "Plus One",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/plus-one/"
+  },
+  {
+    "Problem Name": "Excel Sheet Column Number",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/excel-sheet-column-number/"
+  },
+  {
+    "Problem Name": "Excel Sheet Column Title",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/excel-sheet-column-title/"
+  },
+  {
+    "Problem Name": "Roman to Integer",
+    "Category": "Math",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/roman-to-integer/"
+  },
+  {
+    "Problem Name": "Integer to Roman",
+    "Category": "Math",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/integer-to-roman/"
+  },
+  {
+    "Problem Name": "Spiral Matrix",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/spiral-matrix/"
+  },
+  {
+    "Problem Name": "Spiral Matrix II",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/spiral-matrix-ii/"
+  },
+  {
+    "Problem Name": "Rotate Image",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/rotate-image/"
+  },
+  {
+    "Problem Name": "Set Matrix Zeroes",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/set-matrix-zeroes/"
+  },
+  {
+    "Problem Name": "Valid Sudoku",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/valid-sudoku/"
+  },
+  {
+    "Problem Name": "Word Search",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/word-search/"
+  },
+  {
+    "Problem Name": "Game of Life",
+    "Category": "Matrix",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/game-of-life/"
+  },
+  {
+    "Problem Name": "Two Sum II - Input Array is Sorted",
+    "Category": "Two Pointers",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/"
+  },
+  {
+    "Problem Name": "3Sum",
+    "Category": "Two Pointers",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/3sum/"
+  },
+  {
+    "Problem Name": "3Sum Closest",
+    "Category": "Two Pointers",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/3sum-closest/"
+  },
+  {
+    "Problem Name": "4Sum",
+    "Category": "Two Pointers",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/4sum/"
+  },
+  {
+    "Problem Name": "Remove Duplicates from Sorted Array",
+    "Category": "Two Pointers",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"
+  },
+  {
+    "Problem Name": "Container With Most Water",
+    "Category": "Two Pointers",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/container-with-most-water/"
+  },
+  {
+    "Problem Name": "Trapping Rain Water",
+    "Category": "Two Pointers",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/trapping-rain-water/"
+  },
+  {
+    "Problem Name": "Maximum Average Subarray I",
+    "Category": "Sliding Window",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/maximum-average-subarray-i/"
+  },
+  {
+    "Problem Name": "Longest Substring Without Repeating Characters",
+    "Category": "Sliding Window",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+  },
+  {
+    "Problem Name": "Minimum Size Subarray Sum",
+    "Category": "Sliding Window",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/minimum-size-subarray-sum/"
+  },
+  {
+    "Problem Name": "Longest Repeating Character Replacement",
+    "Category": "Sliding Window",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/longest-repeating-character-replacement/"
+  },
+  {
+    "Problem Name": "Permutation in String",
+    "Category": "Sliding Window",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/permutation-in-string/"
+  },
+  {
+    "Problem Name": "Find All Anagrams in a String",
+    "Category": "Sliding Window",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/find-all-anagrams-in-a-string/"
+  },
+  {
+    "Problem Name": "Minimum Window Substring",
+    "Category": "Sliding Window",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/minimum-window-substring/"
+  },
+  {
+    "Problem Name": "Sliding Window Maximum",
+    "Category": "Sliding Window",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/sliding-window-maximum/"
+  },
+  {
+    "Problem Name": "Fibonacci using Recursion",
+    "Category": "Recursion",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/program-for-nth-fibonacci-number/"
+  },
+  {
+    "Problem Name": "Factorial using Recursion",
+    "Category": "Recursion",
+    "Difficulty": "Easy",
+    "Problem Link": "https://www.geeksforgeeks.org/program-for-factorial-of-a-number/"
+  },
+  {
+    "Problem Name": "Reverse String using Recursion",
+    "Category": "Recursion",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/reverse-string/"
+  },
+  {
+    "Problem Name": "Power of Two using Recursion",
+    "Category": "Recursion",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/power-of-two/"
+  },
+  {
+    "Problem Name": "Pow(x, n)",
+    "Category": "Recursion",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/powx-n/"
+  },
+  {
+    "Problem Name": "K-th Symbol in Grammar",
+    "Category": "Recursion",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/k-th-symbol-in-grammar/"
+  },
+  {
+    "Problem Name": "Merge Sort",
+    "Category": "Divide and Conquer",
+    "Difficulty": "Medium",
+    "Problem Link": "https://www.geeksforgeeks.org/merge-sort/"
+  },
+  {
+    "Problem Name": "Quick Sort",
+    "Category": "Divide and Conquer",
+    "Difficulty": "Medium",
+    "Problem Link": "https://www.geeksforgeeks.org/quick-sort/"
+  },
+  {
+    "Problem Name": "Binary Search",
+    "Category": "Divide and Conquer",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/binary-search/"
+  },
+  {
+    "Problem Name": "Maximum Subarray",
+    "Category": "Divide and Conquer",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/maximum-subarray/"
+  },
+  {
+    "Problem Name": "Median of Two Sorted Arrays",
+    "Category": "Divide and Conquer",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/median-of-two-sorted-arrays/"
+  },
+  {
+    "Problem Name": "Count of Smaller Numbers After Self",
+    "Category": "Divide and Conquer",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/count-of-smaller-numbers-after-self/"
+  },
+  {
+    "Problem Name": "Implement Queue using Stacks",
+    "Category": "Design",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/implement-queue-using-stacks/"
+  },
+  {
+    "Problem Name": "Implement Stack using Queues",
+    "Category": "Design",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/implement-stack-using-queues/"
+  },
+  {
+    "Problem Name": "Min Stack",
+    "Category": "Design",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/min-stack/"
+  },
+  {
+    "Problem Name": "LRU Cache",
+    "Category": "Design",
+    "Difficulty": "Medium",
+    "Problem Link": "https://leetcode.com/problems/lru-cache/"
+  },
+  {
+    "Problem Name": "LFU Cache",
+    "Category": "Design",
+    "Difficulty": "Hard",
+    "Problem Link": "https://leetcode.com/problems/lfu-cache/"
+  },
+  {
+    "Problem Name": "Design HashMap",
+    "Category": "Design",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/design-hashmap/"
+  },
+  {
+    "Problem Name": "Design HashSet",
+    "Category": "Design",
+    "Difficulty": "Easy",
+    "Problem Link": "https://leetcode.com/problems/design-hashset/"
+  }
+]
