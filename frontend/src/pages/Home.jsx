@@ -377,16 +377,16 @@ ${question}`;
                 <div className="text-white/60 font-medium text-sm sm:text-base">Fresh Jobs</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">350+</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">500+</div>
                 <div className="text-white/60 font-medium text-sm sm:text-base">Active Users</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">95%</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">90%</div>
                 <div className="text-white/60 font-medium text-sm sm:text-base">Success Rate</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">24/7</div>
-                <div className="text-white/60 font-medium text-sm sm:text-base">AI Support</div>
+                <div className="text-white/60 font-medium text-sm sm:text-base">Support</div>
               </div>
             </div>
             
