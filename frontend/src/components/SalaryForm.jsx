@@ -154,7 +154,7 @@ export default function SalaryForm({ toggleModal, onSubmitSuccess }) {
                   id="ctc"
                   value={formData.ctc}
                   className="block w-full rounded-lg sm:rounded-xl border-0 bg-white/80 backdrop-blur-sm shadow-sm ring-1 ring-emerald-200 focus:ring-2 focus:ring-emerald-500 transition-all duration-200 px-3 py-3 sm:px-4 sm:py-4 text-slate-800 placeholder-slate-400 text-sm sm:text-base font-medium"
-                  placeholder="Enter your total CTC (e.g., 12 LPA, $80k)"
+                  placeholder="Enter your total CTC (e.g., 12 LPA, ₹80L)"
                   onChange={handleChange}
                   required
                 />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { X, Building, MapPin, Linkedin, Award, DollarSign, TrendingUp, Users, Target, Banknote, ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
+import { X, Building, MapPin, Linkedin, Award, IndianRupee, TrendingUp, Users, Target, Banknote, ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import SalaryCommentSection from '../components/SalaryCommentSection';
@@ -240,7 +240,7 @@ export default function SalaryDetailPage() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="text-center">
                   <div className="p-4 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-2xl mb-3">
-                    <DollarSign className="mx-auto text-green-400" size={32} />
+                    <IndianRupee className="mx-auto text-green-400" size={32} />
                   </div>
                   <p className="text-3xl font-bold text-white">{salary.ctc}</p>
                   <p className="text-green-400 font-medium">Total CTC (LPA)</p>

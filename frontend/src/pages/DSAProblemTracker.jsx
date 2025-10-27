@@ -533,7 +533,7 @@ const DSAProblemTracker = () => {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
-                className="flex items-center justify-center gap-4 mb-6"
+                className="flex items-center justify-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 mb-6"
               >
                 <motion.div 
                   whileHover={{ 
@@ -542,20 +542,20 @@ const DSAProblemTracker = () => {
                     boxShadow: "0 20px 40px rgba(99, 102, 241, 0.3)"
                   }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative group"
+                  className="relative group flex-shrink-0"
                 >
-                  <div className="p-4 bg-indigo-600 rounded-3xl shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <Code className="h-10 w-10 text-white" />
+                  <div className="p-2.5 sm:p-3 md:p-3.5 bg-indigo-600 rounded-2xl sm:rounded-3xl shadow-lg group-hover:shadow-xl transition-all duration-300">
+                    <Code className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10 text-white" />
                   </div>
                   {/* Animated background glow */}
-                  <div className="absolute inset-0 bg-indigo-400 rounded-3xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10"></div>
+                  <div className="absolute inset-0 bg-indigo-400 rounded-2xl sm:rounded-3xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10"></div>
                 </motion.div>
                 
                 <motion.h1 
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight"
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 tracking-tight"
                 >
                   QA/SDET DSA Problems
                 </motion.h1>
@@ -568,10 +568,10 @@ const DSAProblemTracker = () => {
                 transition={{ delay: 0.4, duration: 0.5 }}
                 className="max-w-4xl mx-auto"
               >
-                <p className="text-xl md:text-2xl text-slate-600 leading-relaxed mb-4 font-medium">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-600 leading-relaxed mb-4 font-medium">
                   Master Data Structures & Algorithms with real interview questions
                 </p>
-                <p className="text-lg text-slate-500 leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg text-slate-500 leading-relaxed">
                   These questions have been taken from a large pool of real interview experiences. Practice and Ace your next interview.
                 </p>
               </motion.div>
@@ -915,18 +915,18 @@ const DSAProblemTracker = () => {
                   {/* Category Header */}
                   <button
                     onClick={() => toggleCategory(category)}
-                    className="w-full px-6 py-5 flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition-colors border-b border-slate-200"
+                    className="w-full px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition-colors border-b border-slate-200"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                       {expandedCategories[category] ? (
-                        <ChevronDown className="h-6 w-6 text-indigo-600" />
+                        <ChevronDown className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600 flex-shrink-0" />
                       ) : (
-                        <ChevronRight className="h-6 w-6 text-indigo-600" />
+                        <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600 flex-shrink-0" />
                       )}
-                      <h2 className="text-xl font-bold text-slate-900">{category}</h2>
+                      <h2 className="text-base sm:text-lg md:text-xl font-bold text-slate-900 truncate">{category}</h2>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-4 py-1.5 bg-white border border-slate-200 rounded-full text-sm font-bold text-slate-700">
+                    <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-white border border-slate-200 rounded-full text-xs sm:text-sm font-bold text-slate-700 whitespace-nowrap">
                         {['Easy', 'Medium', 'Hard'].reduce(
                           (sum, diff) => sum + (filteredProblems[category][diff]?.length || 0),
                           0
