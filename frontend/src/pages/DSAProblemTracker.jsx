@@ -433,23 +433,23 @@ const DSAProblemTracker = () => {
 
   const categoryOrder = [
     'Array',
+    'String',
     'Math',
-    'Sorting',
     'Hash Table',
-    'Matrix',
     'Two Pointers',
-    'Sliding Window',
-    'Divide and Conquer',
-    'Bit Manipulation',
-    'Linked List',
-    'Greedy',
-    'Recursion',
-    'Backtracking',
-    'Binary Search',
-    'Heap',
+    'Sorting',
     'Stack',
     'Queue',
-    'String',
+    'Matrix',
+    'Sliding Window',
+    'Linked List',
+    'Binary Search',
+    'Bit Manipulation',
+    'Greedy',
+    'Recursion',
+    'Divide and Conquer',
+    'Heap',
+    'Backtracking',
     'Tree',
     'Graph',
     'Dynamic Programming',
@@ -491,22 +491,31 @@ const DSAProblemTracker = () => {
         <title>QA/SDET DSA Sheet | Real Coding Problems & Interview Questions</title>
         <meta
           name="description"
-          content="Solve QA and SDET DSA problems with real interview questions. Practice Data Structures & Algorithms for QA automation, SDET, and software testing roles. Includes categorized DSA problems with difficulty levels, patterns, and solutions."
+          content="Master QA and SDET DSA problems with real interview questions. Practice Data Structures & Algorithms for QA automation, SDET, and software testing roles. Explore categorized DSA questions with difficulty levels, patterns, and solutions for QA engineers, SDETs, and automation testers."
         />
         <meta
           name="keywords"
-          content="QA DSA problems, SDET DSA questions, QA coding interview questions, SDET interview problems, QA automation DSA sheet, QA data structures algorithms, QA test engineer coding questions, SDET preparation, Striver SDE Sheet QA, DSA for testers, QA interview roadmap, SDET roadmap, software testing coding challenges"
+          content="qa dsa sheet, QA DSA Sheet, QA/SDET DSA Sheet, qa/sdet dsa sheet, sdet dsa sheet, SDET DSA Sheet, qa automation dsa sheet, QA Automation DSA Sheet, sdet coding sheet, SDET Coding Sheet, qa coding sheet, QA Coding Sheet, qa interview dsa sheet, QA Interview DSA Sheet, sdet interview dsa sheet, SDET Interview DSA Sheet, 
+          qa dsa problems, QA DSA Problems, sdet dsa problems, SDET DSA Problems, qa dsa questions, QA DSA Questions, sdet dsa questions, SDET DSA Questions, qa coding problems, QA Coding Problems, sdet coding problems, SDET Coding Problems, qa dsa practice, QA DSA Practice, sdet dsa practice, SDET DSA Practice, qa dsa challenges, QA DSA Challenges, sdet dsa challenges, SDET DSA Challenges, qa dsa examples, QA DSA Examples, sdet dsa examples, SDET DSA Examples, qa dsa exercises, QA DSA Exercises, sdet dsa exercises, SDET DSA Exercises,
+          qa interview questions, QA Interview Questions, sdet interview questions, SDET Interview Questions, qa coding interview questions, QA Coding Interview Questions, sdet coding interview questions, SDET Coding Interview Questions, qa automation interview questions, QA Automation Interview Questions, sdet interview preparation, SDET Interview Preparation, qa interview preparation, QA Interview Preparation, qa interview roadmap, QA Interview Roadmap, sdet interview roadmap, SDET Interview Roadmap,
+          data structures and algorithms for qa, Data Structures and Algorithms for QA, data structures and algorithms for sdet, Data Structures and Algorithms for SDET, qa dsa topics, QA DSA Topics, sdet dsa topics, SDET DSA Topics, dsa for qa engineers, DSA for QA Engineers, dsa for sdet, DSA for SDET, dsa for test engineers, DSA for Test Engineers, dsa for automation engineers, DSA for Automation Engineers, dsa for software testers, DSA for Software Testers,
+          best dsa sheet for qa, best dsa sheet for sdet, qa dsa sheet with solutions, sdet dsa sheet with answers, qa dsa sheet with explanations, qa coding questions for interview, sdet dsa interview questions, dsa for qa automation engineer, dsa for manual tester, dsa for automation tester, dsa for qa fresher, dsa for sdet interview, qa automation dsa questions, sdet data structure questions, qa coding challenges, sdet coding challenges, qa dsa roadmap, sdet dsa roadmap,
+          striver sde sheet for qa, Striver SDE Sheet for QA, striver sde sheet for sdet, Striver SDE Sheet for SDET, love babbar dsa sheet for qa, Love Babbar DSA Sheet for QA, sde sheet for test engineers, SDE Sheet for Test Engineers, dsa sheet for qa testers, DSA Sheet for QA Testers, dsa sheet for sdet preparation, DSA Sheet for SDET Preparation,
+          qa coding practice, QA Coding Practice, sdet coding practice, SDET Coding Practice, qa algorithms practice, QA Algorithms Practice, sdet algorithms practice, SDET Algorithms Practice, qa automation coding problems, QA Automation Coding Problems, sdet coding interview prep, SDET Coding Interview Prep, qa test engineer coding questions, QA Test Engineer Coding Questions, qa engineer coding interview, QA Engineer Coding Interview, qa coding patterns, QA Coding Patterns, sdet coding patterns, SDET Coding Patterns,
+          QA DSA SHEET, SDET DSA SHEET, QA AUTOMATION DSA SHEET, QA CODING QUESTIONS, SDET INTERVIEW QUESTIONS, QA DSA PROBLEMS, SDET CODING PROBLEMS, DSA FOR QA ENGINEERS, DSA FOR SDET, QA INTERVIEW ROADMAP, SDET INTERVIEW ROADMAP, QA DSA PRACTICE, SDET DSA PRACTICE,
+          what is the best dsa sheet for qa engineers, real dsa problems for sdet interview, qa automation engineer dsa practice, how to prepare dsa for qa interview, qa dsa coding questions with solutions, top dsa problems for sdet interview, qa and sdet coding interview guide, dsa for test automation and qa engineers, qa and sdet interview preparation roadmap, qa dsa sheet for beginners"
         />
         <meta property="og:title" content="QA/SDET DSA Sheet | Real Interview Questions & Coding Problems" />
         <meta
           property="og:description"
-          content="Master Data Structures & Algorithms tailored for QA & SDET roles. Solve real interview-based DSA questions for test automation, QA engineering, and SDET interviews."
+          content="Practice QA and SDET DSA questions designed for automation and testing engineers. Learn and solve real-world Data Structures & Algorithms problems tailored for QA, SDET, and QA automation interviews."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://yourwebsite.com/qa-sdet-dsa-sheet" />
         <meta property="og:image" content="https://yourwebsite.com/og-image.png" />
         <meta name="robots" content="index, follow" />
       </Helmet>
+
 
 
       <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">

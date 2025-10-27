@@ -6,16 +6,18 @@ import ShareModal from './ShareModal';
 
 const FlashStrip = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [baseScrollY, setBaseScrollY] = useState(0);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const location = useLocation();
 
-  // Show strip on page change (if not permanently dismissed and not on home page)
+  // Show strip on page change (if not dismissed for this session and not on home page)
   useEffect(() => {
-    const isDismissed = localStorage.getItem('flashStripDismissed');
+    const isDismissed = sessionStorage.getItem('flashStripDismissed');
     const isHomePage = location.pathname === '/';
     
     if (!isDismissed && !isHomePage) {
       setIsVisible(true);
+      setBaseScrollY(window.scrollY || 0);
     } else {
       setIsVisible(false);
     }
@@ -24,18 +26,19 @@ const FlashStrip = () => {
   // Handle scroll to hide the strip
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      const currentY = window.scrollY || 0;
+      if (currentY - baseScrollY > 100) {
         setIsVisible(false);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [baseScrollY]);
 
   const handleDismiss = () => {
     setIsVisible(false);
-    localStorage.setItem('flashStripDismissed', 'true');
+    sessionStorage.setItem('flashStripDismissed', 'true');
   };
 
   const handleShareClick = () => {
