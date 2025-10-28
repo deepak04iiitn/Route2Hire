@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { FaThumbsUp, FaThumbsDown, FaSearch, FaSort, FaPlus, FaTrash, FaEdit, FaBars, FaTimes, FaHeart, FaBookmark, FaShare } from 'react-icons/fa';
+import { FaThumbsUp, FaThumbsDown, FaSearch, FaSort, FaPlus, FaTrash, FaEdit, FaHeart, FaBookmark, FaShare } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import InterviewCommentSection from '../components/InterviewCommentSection';
@@ -63,7 +63,7 @@ export default function InterviewQuestions() {
   };
 
   const navigate = useNavigate();
-  const { topicSlug } = useParams();
+  const { topicSlug, questionId } = useParams();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -82,14 +82,23 @@ export default function InterviewQuestions() {
         if (topicSlug) {
           const questionBySlug = res.data.find(q => slugify(q.topic) === topicSlug);
           if (questionBySlug) {
-            setSelectedTopic(questionBySlug._id);
+            // If questionId is provided, prefer it, else use first with this topic
+            const candidate = questionId
+              ? res.data.find(q => q._id === questionId) || questionBySlug
+              : questionBySlug;
+            setSelectedTopic(candidate._id);
+            if (!questionId) {
+              navigate(`/interview-questions/${slugify(candidate.topic)}/${candidate._id}`, { replace: true });
+            }
           } else if (res.data.length > 0) {
-            setSelectedTopic(res.data[0]._id);
-            navigate(`/interview-questions/${slugify(res.data[0].topic)}`, { replace: true });
+            const first = res.data[0];
+            setSelectedTopic(first._id);
+            navigate(`/interview-questions/${slugify(first.topic)}/${first._id}`, { replace: true });
           }
         } else if (res.data.length > 0) {
-          setSelectedTopic(res.data[0]._id);
-          navigate(`/interview-questions/${slugify(res.data[0].topic)}`, { replace: true });
+          const first = res.data[0];
+          setSelectedTopic(first._id);
+          navigate(`/interview-questions/${slugify(first.topic)}/${first._id}`, { replace: true });
         }
         
         setLoading(false);
@@ -101,7 +110,7 @@ export default function InterviewQuestions() {
     };
 
     fetchQuestions();
-  }, [searchTerm, sortBy, sortOrder, topicSlug]);
+  }, [searchTerm, sortBy, sortOrder, topicSlug, questionId]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -357,13 +366,14 @@ export default function InterviewQuestions() {
       </Helmet>
 
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
-      {/* Sidebar Toggle Button for mobile and tablet */}
+      {/* Sidebar Toggle Arrow - right edge */}
       <button
-        className="xl:hidden fixed top-14 sm:top-16 md:top-20 right-2 sm:right-3 md:right-4 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 md:p-3 rounded-full shadow-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-300 touch-manipulation"
+        className="xl:hidden fixed top-1/2 -translate-y-1/2 right-0 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 rounded-l-xl shadow-2xl backdrop-blur-sm border border-white/20 hover:translate-x-0.5 transition-all duration-300 touch-manipulation"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         aria-label="Toggle sidebar"
       >
-        {isSidebarOpen ? <FaTimes size={14} className="sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" /> : <FaBars size={14} className="sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />}
+        {/* Using unicode arrows to avoid extra icon deps in this file */}
+        <span className="text-lg">{isSidebarOpen ? '›' : '‹'}</span>
       </button>
 
       {/* Backdrop for mobile and tablet */}
@@ -390,7 +400,7 @@ export default function InterviewQuestions() {
               className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all duration-200"
               aria-label="Close sidebar"
             >
-              <FaTimes size={18} className="sm:w-5 sm:h-5" />
+              <span className="text-xl">×</span>
             </button>
           )}
 
@@ -423,7 +433,7 @@ export default function InterviewQuestions() {
                   const question = questions.find(q => q.topic === topic);
                   if (question) {
                     setSelectedTopic(question._id);
-                    navigate(`/interview-questions/${slugify(question.topic)}`);
+                    navigate(`/interview-questions/${slugify(question.topic)}/${question._id}`);
                     if (window.innerWidth < 1280) {
                       setIsSidebarOpen(false);
                     }

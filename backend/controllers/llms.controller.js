@@ -102,6 +102,11 @@ const generateLLMSText = (dynamicContent) => {
       description: 'Allow users to create professional resumes and access career resources for job opportunities.'
     },
     {
+      url: '/roadmaps',
+      title: 'Career Roadmaps (Coming Soon)',
+      description: 'Planned skill roadmaps for QA, SDET, and Test Automation roles to guide learners.'
+    },
+    {
       url: '/interview-questions',
       title: 'Interview Questions Bank',
       description: 'Prepare candidates with categorized real interview questions and detailed explanations for IT job interviews.'
@@ -149,7 +154,8 @@ const generateLLMSText = (dynamicContent) => {
     dynamicContent.interviewExperiences.slice(0, 20).forEach(exp => {
       const company = exp.company || 'Unknown Company';
       const position = exp.position || 'Unknown Position';
-      content += `- [${company} - ${position} Interview Experience](${baseUrl}/interview-experience/${exp._id}): Real interview experience shared by ${exp.fullName || 'Anonymous'} for ${position} position at ${company}.\n`;
+      const slug = createSlug(`${company}-${position}`);
+      content += `- [${company} - ${position} Interview Experience](${baseUrl}/interview-experience/${slug}/${exp._id}): Real interview experience shared by ${exp.fullName || 'Anonymous'} for ${position} position at ${company}.\n`;
     });
   }
 
@@ -159,7 +165,8 @@ const generateLLMSText = (dynamicContent) => {
       const company = salary.company || 'Unknown Company';
       const position = salary.position || 'Unknown Position';
       const ctc = salary.ctc || 'Not disclosed';
-      content += `- [${company} - ${position} Salary Data](${baseUrl}/salary/${salary._id}): Salary information for ${position} at ${company} with CTC of ${ctc}.\n`;
+      const slug = createSlug(`${company}-${position}`);
+      content += `- [${company} - ${position} Salary Data](${baseUrl}/salaryStructures/${slug}/${salary._id}): Salary information for ${position} at ${company} with CTC of ${ctc}.\n`;
     });
   }
 
@@ -170,7 +177,9 @@ const generateLLMSText = (dynamicContent) => {
       const positions = referral.positions && referral.positions.length > 0 
         ? referral.positions.map(p => p.position).join(', ')
         : 'Various positions';
-      content += `- [${company} Job Referrals](${baseUrl}/referral/${referral._id}): Job referral opportunities at ${company} for positions: ${positions}.\n`;
+      const primary = referral.positions && referral.positions.length > 0 ? referral.positions[0].position : 'role';
+      const slug = createSlug(`${company}-${primary}`);
+      content += `- [${company} Job Referrals](${baseUrl}/referral/${slug}/${referral._id}): Job referral opportunities at ${company} for positions: ${positions}.\n`;
     });
   }
 
@@ -179,7 +188,7 @@ const generateLLMSText = (dynamicContent) => {
     dynamicContent.interviewQuestions.slice(0, 20).forEach(question => {
       const topic = question.topic || 'Interview Questions';
       const topicSlug = createSlug(topic);
-      content += `- [${topic} Interview Questions](${baseUrl}/interview-questions/${topicSlug}): Real interview questions and answers for ${topic} preparation.\n`;
+      content += `- [${topic} Interview Questions](${baseUrl}/interview-questions/${topicSlug}/${question._id}): Real interview questions and answers for ${topic} preparation.\n`;
     });
   }
 

@@ -47,6 +47,7 @@ const generateSitemapXML = (urls) => {
     { url: '/salaryStructures', priority: '0.80' },
     { url: '/referrals', priority: '0.80' },
     { url: '/resumeTemplates', priority: '0.70' },
+    { url: '/roadmaps', priority: '0.60' },
     { url: '/myCorner', priority: '0.60' },
     { url: '/BuyMeACoffee', priority: '0.50' },
     { url: '/contactUs', priority: '0.60' },
@@ -106,9 +107,9 @@ export const generateSitemap = async (req, res) => {
       interviewQuestions,
       jobs
     ] = await Promise.all([
-      InterviewExperience.find({}, '_id updatedAt').lean().limit(10000), // Limit to prevent huge sitemaps
-      Salary.find({}, '_id updatedAt').lean().limit(10000),
-      Referral.find({}, '_id updatedAt').lean().limit(10000),
+      InterviewExperience.find({}, '_id company position updatedAt').lean().limit(10000), // Include fields for slug
+      Salary.find({}, '_id company position updatedAt').lean().limit(10000),
+      Referral.find({}, '_id company positions updatedAt').lean().limit(10000),
       InterviewQuestion.find({}, '_id topic updatedAt').lean().limit(10000),
       mongoose.connection.db.collection('naukri').find(
         { 
@@ -126,8 +127,9 @@ export const generateSitemap = async (req, res) => {
 
     // Add interview experience URLs
     interviewExperiences.forEach(exp => {
+      const slug = createSlug(`${exp.company || 'company'}-${exp.position || 'role'}`);
       dynamicUrls.push({
-        url: `/interview-experience/${exp._id}`,
+        url: `/interview-experience/${slug}/${exp._id}`,
         priority: '0.70',
         lastmod: exp.updatedAt ? new Date(exp.updatedAt).toISOString().split('T')[0] : null
       });
@@ -135,8 +137,9 @@ export const generateSitemap = async (req, res) => {
 
     // Add salary record URLs
     salaryRecords.forEach(salary => {
+      const slug = createSlug(`${salary.company || 'company'}-${salary.position || 'role'}`);
       dynamicUrls.push({
-        url: `/salary/${salary._id}`,
+        url: `/salaryStructures/${slug}/${salary._id}`,
         priority: '0.70',
         lastmod: salary.updatedAt ? new Date(salary.updatedAt).toISOString().split('T')[0] : null
       });
@@ -144,8 +147,12 @@ export const generateSitemap = async (req, res) => {
 
     // Add referral URLs
     referrals.forEach(referral => {
+      const primaryPosition = Array.isArray(referral.positions) && referral.positions.length > 0 
+        ? referral.positions[0].position 
+        : 'role';
+      const slug = createSlug(`${referral.company || 'company'}-${primaryPosition}`);
       dynamicUrls.push({
-        url: `/referral/${referral._id}`,
+        url: `/referral/${slug}/${referral._id}`,
         priority: '0.70',
         lastmod: referral.updatedAt ? new Date(referral.updatedAt).toISOString().split('T')[0] : null
       });
@@ -155,7 +162,7 @@ export const generateSitemap = async (req, res) => {
     interviewQuestions.forEach(question => {
       const topicSlug = createSlug(question.topic);
       dynamicUrls.push({
-        url: `/interview-questions/${topicSlug}`,
+        url: `/interview-questions/${topicSlug}/${question._id}`,
         priority: '0.70',
         lastmod: question.updatedAt ? new Date(question.updatedAt).toISOString().split('T')[0] : null
       });

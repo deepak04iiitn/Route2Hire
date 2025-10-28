@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, Briefcase, Building, User, Calendar, Award, MessageSquare, Linkedin, Sparkles } from 'lucide-react';
+import { X, Star, Briefcase, Building, User, Calendar, Award, MessageSquare, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 
@@ -102,7 +102,7 @@ export default function InterviewForm({ toggleModal }) {
           <div className="flex items-start sm:items-center justify-between mb-6 sm:mb-8">
             <div className="flex items-start sm:items-center space-x-3">
               <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl shadow-lg flex-shrink-0">
-                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="min-w-0">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent leading-tight">
@@ -326,7 +326,7 @@ export default function InterviewForm({ toggleModal }) {
               whileTap={{ scale: 0.98 }}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
             >
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
               <span>Share My Experience</span>
             </motion.button>
           </div>

@@ -139,12 +139,18 @@ export default function App() {
                 <Route path="/mypolls" element={<MyPolls />} />
                 <Route path="/interviewExp" element={<InterviewExp />} />
                 <Route path="/interview-experiences" element={<InterviewExp />} />
-                <Route path="/interview-experience/:id" element={<InterviewDetailPage />} />
+                <Route path="/interview-experience/:slug/:experienceId" element={<InterviewExp />} />
+                <Route path="/interview-experience/:experienceId" element={<InterviewExp />} />
                 <Route path="/salaryStructures" element={<SalaryStructures />} />
+                <Route path="/salaryStructures/:slug/:salaryId" element={<SalaryStructures />} />
+                <Route path="/salaryStructures/:salaryId" element={<SalaryStructures />} />
                 <Route path="/salary/:id" element={<SalaryDetailPage />} />
                 <Route path="/referrals" element={<Referrals />} />
+                <Route path="/referral/:slug/:id" element={<ReferralDetailPage />} />
                 <Route path="/referral/:id" element={<ReferralDetailPage />} />
                 <Route path='/resumeTemplates' element={<ResumeTemplates />} />
+                <Route path='/resumeTemplates/:slug/:templateId' element={<ResumeTemplates />} />
+                <Route path='/resumeTemplates/:templateId' element={<ResumeTemplates />} />
                 <Route path='/myCorner' element={<MyCorner />} />
                 
                 {/* Private Routes for Admin */}
@@ -168,6 +174,7 @@ export default function App() {
                 {/* Interview Questions Routes */}
                 <Route path='/interview-questions' element={<InterviewQuestions />} />
                 <Route path='/interview-questions/:topicSlug' element={<InterviewQuestions />} />
+                <Route path='/interview-questions/:topicSlug/:questionId' element={<InterviewQuestions />} />
                 
                 {/* Blog Routes */}
                 <Route path='/blogs' element={<Blogs />} />

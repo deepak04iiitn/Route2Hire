@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Building, User, Heart, MessageCircle, ExternalLink, Sparkles, Trophy, Linkedin, Phone, Briefcase } from 'lucide-react';
+import { Building, User, Users, Heart, MessageCircle, ExternalLink, Sparkles, Trophy, Linkedin, Phone, Briefcase } from 'lucide-react';
 
 export default function ReferralSidebar({ 
   referrals, 
@@ -63,7 +63,7 @@ export default function ReferralSidebar({
           <div className="flex items-center gap-3 mb-4 w-full">
             <div className="relative flex-shrink-0">
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25">
-                <Sparkles size={isMobile ? 20 : 24} className="text-white" />
+                <Users size={isMobile ? 20 : 24} className="text-white" />
               </div>
               <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/30 to-green-600/30 rounded-2xl blur-lg"></div>
             </div>

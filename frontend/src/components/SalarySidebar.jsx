@@ -17,7 +17,8 @@ const SalarySidebar = ({
   selectedSalary, 
   onSalarySelect, 
   isMobile = false, 
-  isFullWidth = false 
+  isFullWidth = false,
+  compact = false,
 }) => {
   const formatCurrency = (amount) => {
     if (!amount) return 'Not specified';
@@ -103,7 +104,7 @@ const SalarySidebar = ({
   };
 
   const getHeaderClasses = () => {
-    if (isMobile && !isFullWidth) {
+    if (compact || (isMobile && !isFullWidth)) {
       return "hidden";
     } else {
       return "relative px-6 py-5 border-b border-gray-200/80 bg-gradient-to-r from-slate-50 via-blue-50/30 to-purple-50/30";
@@ -167,40 +168,42 @@ const SalarySidebar = ({
               >
                 {/* Card container */}
                 <div className={`
-                  relative rounded-xl p-6 border transition-all duration-300 w-full backdrop-blur-sm
+                  relative rounded-xl ${compact ? 'p-4' : 'p-6'} border transition-all duration-300 w-full backdrop-blur-sm
                   ${selectedSalary?._id === salary._id
                     ? `bg-gradient-to-br ${salaryTier.bgColor} ${salaryTier.borderColor} shadow-md`
                     : 'bg-gradient-to-br from-white to-gray-50/50 border-gray-200/80 hover:border-gray-300/80 hover:shadow-lg hover:from-white hover:to-blue-50/20'
                   }
                 `}>
                   {/* Company and Position */}
-                  <div className="flex items-start justify-between gap-4 mb-5">
+                  <div className={`flex items-start justify-between gap-4 ${compact ? 'mb-3' : 'mb-5'}` }>
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                      <div className={`w-14 h-14 ${getCompanyAvatarColor(index)} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg transform transition-transform duration-200 group-hover:scale-105`}>
-                        <span className="text-sm font-bold text-white">
+                      <div className={`${compact ? 'w-10 h-10' : 'w-14 h-14'} ${getCompanyAvatarColor(index)} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                        <span className={`${compact ? 'text-xs' : 'text-sm'} font-bold text-white`}>
                           {getCompanyInitials(salary.company)}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-1 group-hover:text-blue-900 transition-colors duration-200">
+                        <h3 className={`font-bold text-gray-900 ${compact ? 'text-sm' : 'text-lg'} leading-tight line-clamp-1`}>
                           {salary.company || 'Unknown Company'}
                         </h3>
-                        <p className="text-sm text-gray-600 line-clamp-1 mt-1.5 font-medium">
+                        <p className={`${compact ? 'text-xs mt-1' : 'text-sm mt-1.5'} text-gray-600 line-clamp-1 font-medium`}>
                           {salary.position || 'Unknown Position'}
                         </p>
                       </div>
                     </div>
                     
                     {/* Tier Badge */}
-                    <div className={`px-4 py-2 rounded-full text-xs font-bold ${salaryTier.color} flex-shrink-0 shadow-md transform transition-transform duration-200 group-hover:scale-105`}>
-                      {salaryTier.tier}
-                    </div>
+                    {!compact && (
+                      <div className={`px-4 py-2 rounded-full text-xs font-bold ${salaryTier.color} flex-shrink-0 shadow-md`}>
+                        {salaryTier.tier}
+                      </div>
+                    )}
                   </div>
 
                   {/* CTC Display */}
-                  <div className="mb-5">
-                    <div className="flex items-center gap-3 text-3xl font-black">
-                      <TrendingUp size={24} className="text-emerald-500 flex-shrink-0 drop-shadow-sm" />
+                  <div className={`${compact ? 'mb-2' : 'mb-5'}`}>
+                    <div className={`flex items-center gap-3 ${compact ? 'text-xl' : 'text-3xl'} font-black`}>
+                      <TrendingUp size={compact ? 18 : 24} className="text-emerald-500 flex-shrink-0" />
                       <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
                         {formatCurrency(salary.ctc)} lpa
                       </span>
@@ -208,6 +211,7 @@ const SalarySidebar = ({
                   </div>
 
                   {/* Metadata */}
+                  {!compact && (
                   <div className="flex flex-wrap gap-2.5 mb-5">
                     {/* Experience */}
                     <div className="flex items-center gap-2 text-sm font-semibold text-purple-700 bg-gradient-to-r from-purple-100 to-purple-200 px-4 py-2 rounded-full shadow-sm border border-purple-200/50">
@@ -235,9 +239,10 @@ const SalarySidebar = ({
                       <span>{salary.numberOfDislikes || 0}</span>
                     </div>
                   </div>
+                  )}
 
                   {/* Salary Breakdown */}
-                  {(salary.baseSalary || salary.variablePay) && (
+                  {!compact && (salary.baseSalary || salary.variablePay) && (
                     <div className="bg-gradient-to-r from-gray-50 to-blue-50/50 rounded-xl p-5 mb-5 border border-gray-200/50 shadow-inner">
                       <div className="space-y-3">
                         {salary.baseSalary && (
@@ -261,7 +266,7 @@ const SalarySidebar = ({
                   )}
 
                   {/* Skills/Tags */}
-                  {(salary.tags || salary.skills) && (
+                  {!compact && (salary.tags || salary.skills) && (
                     <div className="flex flex-wrap gap-2">
                       {(salary.tags || salary.skills)?.slice(0, 3).map((tag, tagIndex) => {
                         const tagColors = [
@@ -286,15 +291,7 @@ const SalarySidebar = ({
                     </div>
                   )}
 
-                  {/* View Details Hint */}
-                  {isFullWidth && (
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-4">
-                      <div className="flex items-center gap-2 text-xs text-blue-600 font-bold bg-blue-50 px-3 py-2 rounded-full border border-blue-200/50">
-                        <span>Click to view details</span>
-                        <ArrowUpRight size={14} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-                      </div>
-                    </div>
-                  )}
+                  
 
                   {/* Decorative gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-blue-500/5 rounded-xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

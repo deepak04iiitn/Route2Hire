@@ -10,7 +10,8 @@ export default function ResumeSidebar({
   selectedTemplate, 
   onTemplateSelect, 
   isMobile = false, 
-  isFullWidth = false 
+  isFullWidth = false,
+  compact = false,
 }) {
   const [downloading, setDownloading] = useState({});
   const [error, setError] = useState({});
@@ -154,7 +155,7 @@ export default function ResumeSidebar({
   };
 
   const getHeaderClasses = () => {
-    if (isMobile && !isFullWidth) {
+    if (compact || (isMobile && !isFullWidth)) {
       return "hidden";
     } else {
       return "relative p-4 sm:p-6 lg:p-8 xl:p-10 border-b border-white/20 bg-gradient-to-br from-blue-50/80 via-green-50/60 to-indigo-50/80 rounded-t-3xl overflow-hidden";
@@ -253,7 +254,7 @@ export default function ResumeSidebar({
                   )}
 
                   {/* Resume Preview Section */}
-                  <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
+                  <div className={`relative ${compact ? 'hidden' : 'h-48 sm:h-56 lg:h-64'} bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden`}>
                     {previewUrls[template._id] ? (
                       <>
                         {/* PDF Preview as background */}
@@ -338,88 +339,22 @@ export default function ResumeSidebar({
                         </div>
                         
                         {/* LinkedIn Link */}
-                        {template.linkedin !== 'Not Provided' && (
-                          <motion.div
-                            className="flex-shrink-0"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <button
-                              className="p-2 rounded-full hover:bg-indigo-100 transition-colors relative group"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleLinkedInClick(template.linkedin);
-                              }}
-                            >
-                              <Linkedin size={16} className="text-indigo-600" />
-                              <span className="absolute -bottom-8 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity z-10">
-                                Connect with provider
-                              </span>
-                            </button>
-                          </motion.div>
-                        )}
+                        {/* LinkedIn removed from sidebar */}
                       </div>
                     </div>
 
                     {/* Years of Experience */}
-                    <div className="flex items-center gap-2 mb-4 w-full">
+                    <div className="flex items-center gap-2 mb-1 w-full">
                       <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 bg-gradient-to-r from-slate-100/80 to-slate-200/60 px-3 py-1.5 rounded-xl border border-slate-200/50 shadow-sm backdrop-blur-sm flex-shrink-0">
                         <Clock size={12} className="text-slate-500 flex-shrink-0" />
                         <span className="whitespace-nowrap">{template.yearsOfExperience} years experience</span>
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex justify-between items-center pt-3 border-t border-slate-200/50 w-full">
-                      <div className="flex items-center space-x-3">
-                        <motion.button
-                          className="flex items-center text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
-                          onClick={(e) => handleLike(e, template)}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <ThumbsUp className="mr-1" size={14} />
-                          {likes[template._id] || 0}
-                        </motion.button>
-                        <motion.button
-                          className="flex items-center text-xs sm:text-sm text-blue-600 hover:text-blue-800 font-medium"
-                          onClick={(e) => handleDislike(e, template)}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <ThumbsDown className="mr-1" size={14} />
-                          {dislikes[template._id] || 0}
-                        </motion.button>
-                      </div>
-                      
-                      <motion.button
-                        className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-full transition-colors text-xs sm:text-sm font-medium"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCommentModal(template._id);
-                        }}
-                      >
-                        <MessageCircle size={14} />
-                        <span>Comments</span>
-                      </motion.button>
-                    </div>
+                    {/* Action buttons removed for minimal sidebar */}
 
                     {/* Premium hover hint */}
-                    {isFullWidth && (
-                      <motion.div 
-                        className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300 w-full"
-                        initial={{ y: 10 }}
-                        animate={{ y: 0 }}
-                      >
-                        <div className="flex items-center gap-2 text-xs text-blue-600 font-semibold bg-gradient-to-r from-blue-50/80 to-green-50/60 px-3 py-2 rounded-lg border border-blue-200/40 w-fit">
-                          <Sparkles size={12} className="flex-shrink-0" />
-                          <span className="whitespace-nowrap">Professional resume template</span>
-                          <ExternalLink size={12} className="flex-shrink-0" />
-                        </div>
-                      </motion.div>
-                    )}
+                    {/* Professional template hint removed */}
                   </div>
                 </div>
               </motion.div>
