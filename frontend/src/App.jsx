@@ -21,6 +21,7 @@ import ResumeTemplates from './pages/ResumeTemplates';
 import MyCorner from './pages/MyCorner';
 import PremiumSubscription from './pages/PremiumSubscription';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import Dashboard from './pages/Dashboard';
 import ContactUs from './pages/ContactUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -155,8 +156,8 @@ export default function App() {
                 <Route path='/resumeTemplates/:templateId' element={<ResumeTemplates />} />
                 <Route path='/myCorner' element={<MyCorner />} />
                 
-                {/* Private Routes for Admin */}
-                <Route element={<PrivateRoute />}>
+                {/* Admin-only Routes */}
+                <Route element={<AdminRoute />}>
                   <Route path='/dashboard' element={<Dashboard />} />
                   <Route path='/admin/interview-questions' element={<AdminInterviewQuestions />} />
                   <Route path='/admin-blogs' element={<AdminBlogs />} />
