@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Target, Zap, Shield, ArrowRight, Sparkles, Star, Briefcase, Users } from 'lucide-react';
 
 export default function About() {
@@ -127,13 +128,13 @@ export default function About() {
             </p>
             
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <button className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-200 flex items-center gap-2">
+              <Link to="/jobs" className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-200 flex items-center gap-2">
                 Explore Jobs
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-4 bg-white border-2 border-purple-200 text-purple-700 rounded-xl font-medium hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 shadow-sm">
+              </Link>
+              <Link to="/contactUs" className="px-8 py-4 bg-white border-2 border-purple-200 text-purple-700 rounded-xl font-medium hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 shadow-sm">
                 Contact Us
-              </button>
+              </Link>
             </div>
           </div>
         </div>
