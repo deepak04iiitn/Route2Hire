@@ -43,6 +43,8 @@ import AdminBlogs from './pages/AdminBlogs';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
 import DSAProblemTracker from './pages/DSAProblemTracker';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function SessionManager() {
@@ -187,6 +189,7 @@ export default function App() {
             </div>
             <Footer />
             <GlobalPollModal />
+            <ToastContainer position="bottom-right" autoClose={2500} hideProgressBar={false} newestOnTop theme="colored" closeOnClick pauseOnFocusLoss={false} draggable pauseOnHover />
           </div>
         </BrowserRouter>
     </HelmetProvider>

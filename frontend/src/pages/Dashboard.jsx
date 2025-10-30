@@ -9,7 +9,7 @@ import {
   FaLink, 
   FaBars, 
   FaTimes,
-  FaCheck, FaTrash, FaExclamationTriangle 
+  FaCheck, FaTrash, FaExclamationTriangle, FaBug, FaLightbulb, FaSort 
 } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import PlatformStatistics from '../components/PlatformStatistics';
@@ -23,6 +23,8 @@ const Dashboard = () => {
   const [referrals, setReferrals] = useState([]);
   const [salaries, setSalaries] = useState([]);
   const [resumeTemplates, setResumeTemplates] = useState([]);
+  const [bugReports, setBugReports] = useState([]);
+  const [featureRequests, setFeatureRequests] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState('');
@@ -32,6 +34,14 @@ const Dashboard = () => {
   const [userFilterDate, setUserFilterDate] = useState('');
   const [filteredUsersCount, setFilteredUsersCount] = useState(null);
   const [visitedUsersCount, setVisitedUsersCount] = useState(null);
+  const [bugQuery, setBugQuery] = useState('');
+  const [bugStatus, setBugStatus] = useState('');
+  const [bugSortBy, setBugSortBy] = useState('createdAt');
+  const [bugOrder, setBugOrder] = useState('desc');
+  const [featureQuery, setFeatureQuery] = useState('');
+  const [featureStatus, setFeatureStatus] = useState('');
+  const [featureSortBy, setFeatureSortBy] = useState('createdAt');
+  const [featureOrder, setFeatureOrder] = useState('desc');
   
   const sidebarRef = useRef(null);
 
@@ -59,6 +69,12 @@ const Dashboard = () => {
         case 'resumeTemplates':
           fetchResumeTemplates();
           break;
+        case 'bugs':
+          fetchBugReports(true);
+          break;
+        case 'features':
+          fetchFeatureRequests(true);
+          break;
       }
     }
   }, [currentUser.isUserAdmin, activeTab, userFilterDate]);
@@ -80,6 +96,54 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBugReports = async (resetPage = false) => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (bugQuery) params.set('search', bugQuery);
+      if (bugStatus) params.set('status', bugStatus);
+      params.set('sortBy', bugSortBy);
+      params.set('order', bugOrder);
+      params.set('page', String(resetPage ? 1 : page));
+      params.set('limit', String(ITEMS_PER_PAGE));
+      const res = await fetch(`/backend/bugs?${params.toString()}`, { credentials: 'include' });
+      const data = await res.json();
+      if (res.ok) {
+        if (resetPage || page === 1) setBugReports(data.items);
+        else setBugReports(prev => [...prev, ...data.items]);
+        setShowMore((data.items || []).length === ITEMS_PER_PAGE);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchFeatureRequests = async (resetPage = false) => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (featureQuery) params.set('search', featureQuery);
+      if (featureStatus) params.set('status', featureStatus);
+      params.set('sortBy', featureSortBy);
+      params.set('order', featureOrder);
+      params.set('page', String(resetPage ? 1 : page));
+      params.set('limit', String(ITEMS_PER_PAGE));
+      const res = await fetch(`/backend/feature-requests?${params.toString()}`, { credentials: 'include' });
+      const data = await res.json();
+      if (res.ok) {
+        if (resetPage || page === 1) setFeatureRequests(data.items);
+        else setFeatureRequests(prev => [...prev, ...data.items]);
+        setShowMore((data.items || []).length === ITEMS_PER_PAGE);
+      }
+    } catch (e) {
+      console.log(e);
     } finally {
       setLoading(false);
     }
@@ -220,6 +284,12 @@ const Dashboard = () => {
       case 'resumeTemplates':
         fetchResumeTemplates();
         break;
+      case 'bugs':
+        fetchBugReports();
+        break;
+      case 'features':
+        fetchFeatureRequests();
+        break;
     }
   };
 
@@ -245,6 +315,12 @@ const Dashboard = () => {
         case 'resumeTemplates':
           endpoint = `/backend/resumeTemplates/delete/${itemToDelete}`;
           break;
+      case 'bugs':
+        // no delete; skip
+        break;
+      case 'features':
+        // no delete; skip
+        break;
       }
         
       const res = await fetch(endpoint, {
@@ -835,6 +911,178 @@ const Dashboard = () => {
     </div>
   );
 
+  const BugsTable = () => (
+    <div className="w-full mt-6">
+      <div className="flex flex-col md:flex-row gap-3 md:items-end md:justify-between p-4">
+        <div className="flex gap-2 items-center">
+          <input
+            value={bugQuery}
+            onChange={(e) => setBugQuery(e.target.value)}
+            placeholder="Search email or description"
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          />
+          <select
+            value={bugStatus}
+            onChange={(e) => setBugStatus(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          >
+            <option value="">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+          <select
+            value={bugSortBy}
+            onChange={(e) => setBugSortBy(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          >
+            <option value="createdAt">Date</option>
+            <option value="status">Status</option>
+          </select>
+          <select
+            value={bugOrder}
+            onChange={(e) => setBugOrder(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          >
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
+          <button
+            onClick={() => { setPage(1); fetchBugReports(true); }}
+            className="px-3 py-2 rounded-md bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+      <table className="w-full">
+        <thead>
+          <tr className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800">
+            {['Date', 'Email', 'Bug Description', 'Status'].map((h) => (
+              <th key={h} className="px-6 py-5 text-left">
+                <span className="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">{h}</span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+          {bugReports.map((b) => (
+            <tr key={b._id} className="hover:bg-blue-50/50 dark:hover:bg-gray-700/50">
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{new Date(b.createdAt).toLocaleString()}</td>
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{b.email}</td>
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xl break-words">{b.description}</td>
+              <td className="px-6 py-4">
+                <select
+                  value={b.status}
+                  onChange={async (e) => {
+                    const res = await fetch(`/backend/bugs/${b._id}/status`, {
+                      method: 'PATCH',
+                      headers: { 'Content-Type': 'application/json' },
+                      credentials: 'include',
+                      body: JSON.stringify({ status: e.target.value })
+                    });
+                    if (res.ok) {
+                      setBugReports((prev) => prev.map((x) => x._id === b._id ? { ...x, status: e.target.value } : x));
+                    }
+                  }}
+                  className="px-2 py-1 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  const FeaturesTable = () => (
+    <div className="w-full mt-6">
+      <div className="flex flex-col md:flex-row gap-3 md:items-end md:justify-between p-4">
+        <div className="flex gap-2 items-center">
+          <input
+            value={featureQuery}
+            onChange={(e) => setFeatureQuery(e.target.value)}
+            placeholder="Search email or request"
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          />
+          <select
+            value={featureStatus}
+            onChange={(e) => setFeatureStatus(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          >
+            <option value="">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Implemented">Implemented</option>
+          </select>
+          <select
+            value={featureSortBy}
+            onChange={(e) => setFeatureSortBy(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          >
+            <option value="createdAt">Date</option>
+            <option value="status">Status</option>
+          </select>
+          <select
+            value={featureOrder}
+            onChange={(e) => setFeatureOrder(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+          >
+            <option value="desc">Desc</option>
+            <option value="asc">Asc</option>
+          </select>
+          <button
+            onClick={() => { setPage(1); fetchFeatureRequests(true); }}
+            className="px-3 py-2 rounded-md bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+      <table className="w-full">
+        <thead>
+          <tr className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800">
+            {['Date', 'Email', 'Request Description', 'Status'].map((h) => (
+              <th key={h} className="px-6 py-5 text-left">
+                <span className="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">{h}</span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+          {featureRequests.map((f) => (
+            <tr key={f._id} className="hover:bg-blue-50/50 dark:hover:bg-gray-700/50">
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{new Date(f.createdAt).toLocaleString()}</td>
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{f.email}</td>
+              <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xl break-words">{f.description}</td>
+              <td className="px-6 py-4">
+                <select
+                  value={f.status}
+                  onChange={async (e) => {
+                    const res = await fetch(`/backend/feature-requests/${f._id}/status`, {
+                      method: 'PATCH',
+                      headers: { 'Content-Type': 'application/json' },
+                      credentials: 'include',
+                      body: JSON.stringify({ status: e.target.value })
+                    });
+                    if (res.ok) {
+                      setFeatureRequests((prev) => prev.map((x) => x._id === f._id ? { ...x, status: e.target.value } : x));
+                    }
+                  }}
+                  className="px-2 py-1 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Implemented">Implemented</option>
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
 
   const SidebarItem = ({ icon: Icon, label, tab }) => (
     <button
@@ -974,6 +1222,8 @@ const Dashboard = () => {
           <SidebarItem icon={FaLink} label="Referrals" tab="referrals" />
           <SidebarItem icon={FaMoneyBillWave} label="Salary Structures" tab="salaries" />
           <SidebarItem icon={FaFileAlt} label="Resume Templates" tab="resumeTemplates" />
+          <SidebarItem icon={FaBug} label="Bugs" tab="bugs" />
+          <SidebarItem icon={FaLightbulb} label="Feature Requests" tab="features" />
         </nav>
       </div>
 
@@ -996,6 +1246,8 @@ const Dashboard = () => {
           activeTab === 'interviewExperiences' ? interviewExperiences.length > 0 :
           activeTab === 'salaries' ? salaries.length > 0 :
           activeTab === 'resumeTemplates' ? resumeTemplates.length > 0 :
+          activeTab === 'bugs' ? bugReports.length > 0 :
+          activeTab === 'features' ? featureRequests.length > 0 :
           referrals.length > 0
         ) ? (
           <div className="animate-fade-in">
@@ -1007,6 +1259,8 @@ const Dashboard = () => {
                  activeTab === 'interviewExperiences' ? <InterviewExperiencesTable /> : 
                  activeTab === 'salaries' ? <SalariesTable /> :
                  activeTab === 'resumeTemplates' ? <ResumeTemplatesTable /> :
+                 activeTab === 'bugs' ? <BugsTable /> :
+                 activeTab === 'features' ? <FeaturesTable /> :
                  <ReferralsTable />}
               </div>
             </div>

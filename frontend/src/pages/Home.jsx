@@ -6,6 +6,7 @@ import { Code } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import '../styles/Home.css';
 import { debounce, preloadCriticalResources } from '../utils/performanceOptimizations';
+import FeedbackFab from '../components/FeedbackFab';
 
 const FadedJobTablePreview = lazy(() => import('../components/FadedJobTablePreview'));
 const TestimonialSection = lazy(() => import('../components/TestimonialSection'));
@@ -252,60 +253,67 @@ ${question}`;
         <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-tr from-teal-500/30 to-blue-500/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
+      <FeedbackFab />
       </div>
 
       <div className="relative z-10">
         
-        {/* QA/SDET DSA Sheet Banner - Prominent Announcement */}
-        <section className="py-4 sm:py-6">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div 
+        {/* QA/SDET DSA Sheet Marquee Strip */}
+        <section className="py-3 mt-12 md:mt-16 mb-2">
+          <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden">
+            <div
               onClick={() => navigate('/dsa-tracker')}
-              className="group cursor-pointer relative overflow-hidden bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-emerald-400/30 shadow-2xl hover:shadow-emerald-500/25 transition-all duration-500 hover:scale-[1.02]"
+              role="button"
+              tabIndex={0}
+              aria-label="Open QA/SDET DSA Sheet"
+              className="relative overflow-hidden rounded-none cursor-pointer shadow-lg bg-gradient-to-r from-yellow-100 to-amber-100 border border-amber-300"
+              style={{ 
+                boxShadow: '0 0 20px rgba(251, 191, 36, 0.35), 0 0 40px rgba(245, 158, 11, 0.25)'
+              }}
             >
-              {/* Animated Background Effects */}
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-cyan-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
-              
-              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-4 sm:gap-6">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-xl rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-lg">
-                    <Code className="text-white text-xl sm:text-2xl" />
+              {/* Glowing top/bottom borders */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-70" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-70" />
+              {/* Moving flash overlays */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 animate-[shine_2.5s_linear_infinite]" />
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-amber-200/30 to-transparent skew-x-12 animate-[shine_3s_linear_infinite_1.2s]" />
+              </div>
+              {/* edge fade to avoid hard cuts */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-yellow-100 to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-amber-100 to-transparent" />
+              <div className="py-4 pointer-events-none">
+                <div
+                  className="flex w-max whitespace-nowrap will-change-transform text-amber-800 text-sm sm:text-base font-semibold tracking-wide"
+                  style={{ animation: 'marquee-dsa 22s linear infinite' }}
+                >
+                  {/* Group A */}
+                  <div className="flex items-center gap-12 pr-12">
+                    <span>NEW: QA/SDET DSA Sheet — track your progress and ace interviews</span>
+                    <span>Launch: Learn DSA tailored for QA/SDET roles — live now</span>
+                    <span>Practice smarter with curated problems and progress tracking</span>
+                    <span>Visit DSA Sheet to get started today →</span>
                   </div>
-                  <div className="text-left">
-                    <h3 className="text-lg sm:text-2xl md:text-3xl font-black text-white mb-1 sm:mb-2">
-                      NEW: QA/SDET DSA Sheet
-                    </h3>
-                    <p className="text-emerald-100 text-sm sm:text-base md:text-lg font-medium">
-                      Master Data Structures & Algorithms for QA/SDET roles • Track your progress • Ace technical interviews
-                    </p>
+                  {/* Group B (duplicate for seamless loop) */}
+                  <div aria-hidden="true" className="flex items-center gap-12 pr-12">
+                    <span>NEW: QA/SDET DSA Sheet — track your progress and ace interviews</span>
+                    <span>Launch: Learn DSA tailored for QA/SDET roles — live now</span>
+                    <span>Practice smarter with curated problems and progress tracking</span>
+                    <span>Visit DSA Sheet to get started today →</span>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="hidden sm:flex items-center gap-2 bg-white/20 backdrop-blur-xl rounded-full px-3 py-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-white text-sm font-semibold">Live Now</span>
-                  </div>
-                  <button className="bg-white/20 hover:bg-white/30 backdrop-blur-xl text-white font-bold px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl transition-all duration-300 flex items-center gap-2 group-hover:scale-105 shadow-lg">
-                    <span className="text-sm sm:text-base">Start Learning</span>
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
                 </div>
               </div>
-              
-              {/* Floating Elements */}
-              <div className="absolute top-2 right-8 text-white/30 text-2xl animate-bounce" style={{animationDelay: '0.5s'}}>💻</div>
-              <div className="absolute bottom-2 left-8 text-white/30 text-xl animate-bounce" style={{animationDelay: '1.5s'}}>⚡</div>
             </div>
           </div>
+          <style>
+            {`@keyframes marquee-dsa { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+              @keyframes shine { from { transform: translateX(-100%) skewX(-12deg); } to { transform: translateX(100%) skewX(-12deg); } }
+            `}
+          </style>
         </section>
 
         {/* Hero Section - Centered */}
-        <section className="py-12 sm:py-20 md:py-32">
+        <section className="pt-6 sm:pt-10 md:pt-14 pb-12 sm:pb-20 md:pb-32">
           <div className="container mx-auto px-4 sm:px-6 text-center">
             {/* SEO-only H1 (keeps design intact while improving semantics) */}
             <h1 className="sr-only">
