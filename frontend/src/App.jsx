@@ -46,6 +46,9 @@ import BlogDetail from './pages/BlogDetail';
 import DSAProblemTracker from './pages/DSAProblemTracker';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import RoadmapPage from './pages/RoadmapPage';
+// import RoadmapList from './pages/RoadmapList';
+// import CreateRoadmap from './pages/CreateRoadmap';
 
 
 function SessionManager() {
@@ -186,6 +189,13 @@ export default function App() {
                 
                 {/* DSA Problem Tracker Route */}
                 <Route path='/dsa-tracker' element={<DSAProblemTracker />} />
+
+                {/* Roadmap Route */}
+                {/* <Route path="/roadmaps" element={<RoadmapList />} />
+                <Route path="/roadmaps/create" element={<CreateRoadmap />} />
+                <Route path="/roadmaps/edit/:role" element={<CreateRoadmap />} />
+                <Route path="/roadmaps/:role" element={<RoadmapPage />} /> */}
+
               </Routes>
             </div>
             <Footer />

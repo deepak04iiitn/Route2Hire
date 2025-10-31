@@ -30,6 +30,7 @@ import cors from 'cors';
 import path from 'path';
 import cron from 'node-cron';
 import resumeRoutes from './routes/resumeRoutes.js';
+import roadmapRoutes from './routes/roadmap.route.js';
 import './utils/cloudinary.js';
 
 dotenv.config();
@@ -151,6 +152,7 @@ app.use('/backend/blog-comments', blogCommentRoutes);
 app.use('/backend/dsa-problems', dsaProblemRoutes);
 app.use('/backend/bugs', bugReportRoutes);
 app.use('/backend/feature-requests', featureRequestRoutes);
+app.use('/backend/roadmaps', roadmapRoutes);
 app.use('/', sitemapRoutes);
 app.use('/', llmsRoutes);
 
