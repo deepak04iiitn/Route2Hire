@@ -341,6 +341,7 @@ export default function RoadmapPage() {
           <RelatedLinks type="general" />
         </div>
       </div>
+      </div>
     </>
   );
 }
