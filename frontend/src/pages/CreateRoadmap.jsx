@@ -625,6 +625,7 @@ export default function CreateRoadmap() {
           <RelatedLinks type="general" />
         </div>
       </div>
+      </div>
     </>
   );
 }
