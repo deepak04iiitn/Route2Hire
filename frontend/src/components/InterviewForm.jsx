@@ -33,21 +33,27 @@ export default function InterviewForm({ toggleModal }) {
     setError('');
     setSuccess('');
 
-    if (!formData.fullName || !formData.company || !formData.position || !formData.yoe || !formData.verdict || !formData.experience || !formData.rating) {
-      setError('All fields are required, including rating');
+    if (!formData.company || !formData.position || !formData.experience || !formData.rating) {
+      setError('Company, Position, Experience, and Rating are required');
       return;
     }
 
     try {
+      // Set default values for optional fields
+      const submissionData = {
+        ...formData,
+        fullName: formData.fullName.trim() || 'Anonymous',
+        yoe: formData.yoe ? Number(formData.yoe) : 0,
+        verdict: formData.verdict || 'N/A',
+        userRef: currentUser._id,
+      };
+
       const response = await fetch('/backend/interviews/createInterviewExp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          userRef : currentUser._id,
-        }),
+        body: JSON.stringify(submissionData),
       });
 
       if (!response.ok) {
@@ -152,7 +158,7 @@ export default function InterviewForm({ toggleModal }) {
                 <div className="space-y-2">
                   <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 flex items-center space-x-2">
                     <User className="w-3 h-3 sm:w-4 sm:h-4 text-slate-500 flex-shrink-0" />
-                    <span>Full Name</span>
+                    <span>Full Name <span className="text-slate-400">(Optional)</span></span>
                   </label>
                   <input
                     type="text"
@@ -167,7 +173,7 @@ export default function InterviewForm({ toggleModal }) {
                 <div className="space-y-2">
                   <label htmlFor="yoe" className="block text-sm font-medium text-slate-700 flex items-center space-x-2">
                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-slate-500 flex-shrink-0" />
-                    <span>Years of Experience</span>
+                    <span>Years of Experience <span className="text-slate-400">(Optional)</span></span>
                   </label>
                   <input
                     type="number"
@@ -237,7 +243,7 @@ export default function InterviewForm({ toggleModal }) {
                 <div className="space-y-2 sm:col-span-2 lg:col-span-1">
                   <label htmlFor="verdict" className="block text-sm font-medium text-slate-700 flex items-center space-x-2">
                     <Award className="w-3 h-3 sm:w-4 sm:h-4 text-slate-500 flex-shrink-0" />
-                    <span>Interview Result</span>
+                    <span>Interview Result <span className="text-slate-400">(Optional)</span></span>
                   </label>
                   <select
                     id="verdict"
@@ -245,7 +251,7 @@ export default function InterviewForm({ toggleModal }) {
                     className="block w-full rounded-lg sm:rounded-xl border-0 bg-white/60 backdrop-blur-sm shadow-sm ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500 transition-all duration-200 px-3 py-2.5 sm:px-4 sm:py-3 text-slate-800 text-sm sm:text-base"
                     onChange={handleChange}
                   >
-                    <option value="">Select result</option>
+                    <option value="">Select result (Optional)</option>
                     <option value="selected">✅ Selected</option>
                     <option value="rejected">❌ Rejected</option>
                   </select>

@@ -4,8 +4,9 @@ const interviewExperienceSchema = new mongoose.Schema(
 {
   fullName: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
+    default: 'Anonymous',
   },
 
   company: {
@@ -27,13 +28,15 @@ const interviewExperienceSchema = new mongoose.Schema(
 
   yoe: {
     type: Number,
-    required: true,
+    required: false,
+    default: 0,
   },
 
   verdict: {
     type: String,
-    required: true,
+    required: false,
     enum: ['selected', 'rejected', 'N/A'],
+    default: 'N/A',
   },
 
   rating: {

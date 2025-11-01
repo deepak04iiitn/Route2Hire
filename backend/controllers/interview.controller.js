@@ -7,25 +7,39 @@ export const createExperience = async(req, res, next) => {
 
     const { fullName, company, position, experience, yoe, verdict, rating, userRef, linkedin } = req.body;
 
-    if (!fullName || !company || !position || !experience || !yoe || !verdict || !rating || 
-        fullName === '' || company === '' || position === '' || experience === '' || yoe === '' || verdict === '' || rating === '') {
-        return next(errorHandler(400, 'All fields are required!'));
+    // Validate required fields only (fullName, yoe, and verdict are optional)
+    if (!company || !position || !experience || !rating || 
+        company === '' || position === '' || experience === '' || rating === '') {
+        return next(errorHandler(400, 'Company, Position, Experience, and Rating are required!'));
     }
+
+    // Set default values for optional fields if not provided
+    const submissionData = {
+        fullName: (fullName && fullName.trim()) || 'Anonymous',
+        yoe: yoe ? Number(yoe) : 0,
+        verdict: verdict || 'N/A',
+        company,
+        position,
+        experience,
+        rating,
+        linkedin,
+        userRef
+    };
 
     if(!userRef || userRef === '') {
         return next(errorHandler(401, 'Please sign in to continue!'));
     }
 
     const newExperience = new InterviewExperience({
-        fullName,
-        company,
-        position,
-        experience,
-        yoe,
-        verdict,
-        rating,
-        linkedin,
-        userRef
+        fullName: submissionData.fullName,
+        company: submissionData.company,
+        position: submissionData.position,
+        experience: submissionData.experience,
+        yoe: submissionData.yoe,
+        verdict: submissionData.verdict,
+        rating: submissionData.rating,
+        linkedin: submissionData.linkedin,
+        userRef: submissionData.userRef
     });
 
     try {
