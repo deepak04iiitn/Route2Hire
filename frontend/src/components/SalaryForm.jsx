@@ -206,7 +206,7 @@ export default function SalaryForm({ toggleModal, onSubmitSuccess }) {
               <div className="space-y-4 sm:space-y-6">
                 <h3 className="text-base sm:text-lg font-semibold text-slate-800 flex items-center space-x-2">
                   <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 flex-shrink-0" />
-                  <span>Current Position</span>
+                  <span>Company Info</span>
                 </h3>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
