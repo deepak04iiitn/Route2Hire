@@ -189,10 +189,10 @@ export default function App() {
                 <Route path='/dsa-tracker' element={<DSAProblemTracker />} />
 
                 {/* Roadmap Route */}
-                {/* <Route path="/roadmaps" element={<RoadmapList />} />
+                <Route path="/roadmaps" element={<RoadmapList />} />
                 <Route path="/roadmaps/create" element={<CreateRoadmap />} />
                 <Route path="/roadmaps/edit/:role" element={<CreateRoadmap />} />
-                <Route path="/roadmaps/:role" element={<RoadmapPage />} /> */}
+                <Route path="/roadmaps/:role" element={<RoadmapPage />} />
 
               </Routes>
             </div>
