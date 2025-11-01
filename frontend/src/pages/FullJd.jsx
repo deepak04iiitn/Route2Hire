@@ -6,6 +6,8 @@ import Modal from "react-modal";
 import { ShareSocial } from "react-share-social";
 import { Helmet } from "react-helmet-async";
 import CommentSection from "../components/CommentSection";
+import Breadcrumb from "../components/Breadcrumb";
+import RelatedLinks from "../components/RelatedLinks";
 import { useSelector } from "react-redux";
 
 Modal.setAppElement("#root");
@@ -257,14 +259,22 @@ const checkIfJobIsSaved = async (jobId) => {
           }
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={job ? `https://route2hire.com/job/${job._id}` : "https://route2hire.com/jobs"} />
+        <meta property="og:url" content={job ? `https://route2hire.com/fulljd/${url || job._id}/${job._id}` : "https://route2hire.com/jobs"} />
         <meta property="og:image" content="https://route2hire.com/logo.png" />
-        <link rel="canonical" href={job ? `https://route2hire.com/job/${job._id}` : "https://route2hire.com/jobs"} />
+        <link rel="canonical" href={job ? `https://route2hire.com/fulljd/${url || job._id}/${job._id}` : "https://route2hire.com/jobs"} />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8 px-4 lg:px-8 mt-16">
         {job ? (
         <div className="max-w-5xl mx-auto">
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb 
+            items={[
+              { label: 'Jobs', path: '/jobs' },
+              { label: `${job.company} - ${job.title}` }
+            ]}
+          />
+          
           {/* Header Card */}
           <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 lg:p-12 shadow-2xl mb-8 hover:shadow-3xl transition-all duration-500">
             {/* Top Section */}
@@ -402,7 +412,7 @@ const checkIfJobIsSaved = async (jobId) => {
           </div>
 
           {/* Comments Section */}
-          <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 lg:p-12 shadow-2xl">
+          <div className="bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl p-8 lg:p-12 shadow-2xl mb-8">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center">
                 <span className="text-white font-bold">💬</span>
@@ -414,6 +424,9 @@ const checkIfJobIsSaved = async (jobId) => {
             </div>
             <CommentSection jobId={job._id} />
           </div>
+
+          {/* Related Links Section */}
+          <RelatedLinks type="job" />
 
           {/* Share Modal */}
         <Modal

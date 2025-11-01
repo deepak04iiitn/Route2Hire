@@ -13,6 +13,8 @@ import {
   Globe
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 export default function CookiePolicy() {
   const [activeSection, setActiveSection] = useState(null);
@@ -110,6 +112,15 @@ export default function CookiePolicy() {
       </Helmet>
 
       <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb Navigation */}
+        <div className="max-w-4xl mx-auto mb-6 pt-20">
+          <Breadcrumb 
+            items={[
+              { label: 'Cookie Policy' }
+            ]}
+          />
+        </div>
+        
         <div className="w-full bg-white shadow-2xl rounded-2xl overflow-hidden mt-20">
           {/* Header */}
           <motion.div 
@@ -219,6 +230,11 @@ export default function CookiePolicy() {
           <div className="bg-green-600 text-white py-4 text-center">
             <p>&copy; {new Date().getFullYear()} Route2Hire. All Rights Reserved.</p>
           </div>
+        </div>
+        
+        {/* Related Links Section */}
+        <div className="max-w-4xl mx-auto mt-8 pb-8">
+          <RelatedLinks type="general" />
         </div>
       </div>
     </>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Coffee, Gift, Heart, CreditCard, Send } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 const BuyMeCoffee = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -74,8 +76,16 @@ const BuyMeCoffee = () => {
       </Helmet>
 
       <div 
-        className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50 via-white to-amber-100 relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-amber-50 via-white to-amber-100 relative overflow-hidden mt-20"
       >
+      {/* Breadcrumb Navigation */}
+      <div className="absolute top-20 left-4 sm:left-8 z-10">
+        <Breadcrumb 
+          items={[
+            { label: 'Support Us' }
+          ]}
+        />
+      </div>
       {/* Subtle Coffee Bean Background Animations */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -173,6 +183,11 @@ const BuyMeCoffee = () => {
             </div>
           </div>
         )}
+        
+        {/* Related Links Section */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-4">
+          <RelatedLinks type="general" />
+        </div>
       </div>
       </div>
     </>

@@ -11,6 +11,8 @@ import {
   Puzzle
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { useSelector } from 'react-redux';
 import MyInterviews from '../components/MyInterviews';
 import MyReferrals from '../components/MyReferrals';
@@ -184,8 +186,21 @@ export default function MyCorner() {
       </div>
 
       {/* Main Content Area - Adjust top padding and height for mobile */}
-      <div className="flex-1 overflow-auto bg-gray-50 w-full pt-16 md:pt-0 h-[calc(100vh-64px)] md:h-full">
+      <div className="flex-1 overflow-auto bg-gray-50 w-full pt-16 md:pt-0 h-[calc(100vh-64px)] md:h-full relative">
+        {/* Breadcrumb Navigation */}
+        <div className="absolute top-4 left-4 z-10 hidden md:block">
+          <Breadcrumb 
+            items={[
+              { label: 'My Corner' }
+            ]}
+          />
+        </div>
         {getActiveComponent()}
+        
+        {/* Related Links Section */}
+        <div className="px-4 pb-8 mt-8">
+          <RelatedLinks type="general" />
+        </div>
       </div>
       </div>
     </>

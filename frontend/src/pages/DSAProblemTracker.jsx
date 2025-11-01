@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { ChevronDown, ChevronRight, Check, Star, Pencil, Search, Filter, X, Grid3X3, BarChart3, CheckCircle, Code, Target, Bookmark } from 'lucide-react';
@@ -511,15 +513,25 @@ const DSAProblemTracker = () => {
           content="Practice QA and SDET DSA questions designed for automation and testing engineers. Learn and solve real-world Data Structures & Algorithms problems tailored for QA, SDET, and QA automation interviews."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourwebsite.com/qa-sdet-dsa-sheet" />
-        <meta property="og:image" content="https://yourwebsite.com/og-image.png" />
+        <meta property="og:url" content="https://route2hire.com/dsa-tracker" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
         <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://route2hire.com/dsa-tracker" />
       </Helmet>
 
 
 
       <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto mt-20">
+          {/* Breadcrumb Navigation */}
+          <div className="mb-6">
+            <Breadcrumb 
+              items={[
+                { label: 'DSA Problem Tracker' }
+              ]}
+            />
+          </div>
+          
           {/* Header */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -1112,6 +1124,11 @@ const DSAProblemTracker = () => {
                 </motion.div>
               ))
             )}
+          </div>
+          
+          {/* Related Links Section */}
+          <div className="mt-12">
+            <RelatedLinks type="general" />
           </div>
         </div>
       </div>

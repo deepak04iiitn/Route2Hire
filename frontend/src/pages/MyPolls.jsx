@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import PollCard from '../components/PollCard';
 import { Spinner, Button } from 'flowbite-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -137,6 +139,15 @@ const MyPolls = () => {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
+      {/* Breadcrumb Navigation */}
+      <div className="container mx-auto px-6 py-6 relative z-10">
+        <Breadcrumb 
+          items={[
+            { label: 'My Polls' }
+          ]}
+        />
+      </div>
+      
       {/* Enhanced animated background elements */}
       <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-violet-400/10 to-indigo-400/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute top-40 right-20 w-48 h-48 bg-gradient-to-br from-rose-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse animation-delay-300" />
@@ -292,6 +303,11 @@ const MyPolls = () => {
             </div>
           </motion.div>
         )}
+        
+        {/* Related Links Section */}
+        <div className="mt-12 mb-12">
+          <RelatedLinks type="general" />
+        </div>
       </motion.div>
       
       <style jsx>{`

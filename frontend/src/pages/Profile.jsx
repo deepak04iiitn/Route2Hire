@@ -5,6 +5,8 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { Camera, LogOut, Trash2, Building, Mail, User, Edit3, Shield, Star } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import 'react-circular-progressbar/dist/styles.css';
 import { app } from '../firebase.js';
 import { 
@@ -223,6 +225,15 @@ export default function Profile() {
       </Helmet>
 
       <div className="mt-20 min-h-screen bg-gradient-to-br from-slate-50 via-violet-50/30 to-indigo-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/30 py-8 px-4 relative overflow-hidden">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-2xl mx-auto px-4 mb-6">
+        <Breadcrumb 
+          items={[
+            { label: 'My Profile' }
+          ]}
+        />
+      </div>
+      
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-violet-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />

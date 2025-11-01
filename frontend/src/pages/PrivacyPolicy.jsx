@@ -8,6 +8,8 @@ import {
   FileText 
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 export default function PrivacyPolicy() {
   const [activeSection, setActiveSection] = useState(null);
@@ -75,6 +77,15 @@ export default function PrivacyPolicy() {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-4xl mx-auto mb-6 pt-20">
+        <Breadcrumb 
+          items={[
+            { label: 'Privacy Policy' }
+          ]}
+        />
+      </div>
+      
       <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden">
         {/* Header */}
         <motion.div 
@@ -160,6 +171,11 @@ export default function PrivacyPolicy() {
         <div className="bg-blue-600 text-white py-4 text-center">
           <p>&copy; 2024 Route2Hire. All Rights Reserved.</p>
         </div>
+      </div>
+      
+      {/* Related Links Section */}
+      <div className="max-w-4xl mx-auto mt-8 pb-8">
+        <RelatedLinks type="general" />
       </div>
       </div>
     </>

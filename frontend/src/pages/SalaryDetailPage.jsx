@@ -4,6 +4,8 @@ import { X, Building, MapPin, Linkedin, Award, IndianRupee, TrendingUp, Users, T
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import SalaryCommentSection from '../components/SalaryCommentSection';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 
@@ -188,6 +190,16 @@ export default function SalaryDetailPage() {
         </div>
 
         <div className="relative z-10">
+          {/* Breadcrumb Navigation */}
+          <div className="px-8 mb-6">
+            <Breadcrumb 
+              items={[
+                { label: 'Salary Insights', path: '/salaryStructures' },
+                { label: salary?.company || 'Company', path: `/salaryStructures?company=${encodeURIComponent(salary?.company || '')}` },
+                { label: salary?.position || 'Salary Details' }
+              ]}
+            />
+          </div>
           {/* Header */}
           <motion.div 
             className="px-8 py-6 border-b border-white/10 backdrop-blur-xl bg-white/5 mb-8"
@@ -397,6 +409,11 @@ export default function SalaryDetailPage() {
                 <span>Join Discussion</span>
               </motion.button>
             </motion.div>
+
+            {/* Related Links Section */}
+            <div className="px-8 mt-8">
+              <RelatedLinks type="salary" />
+            </div>
           </div>
         </div>
       </motion.div>

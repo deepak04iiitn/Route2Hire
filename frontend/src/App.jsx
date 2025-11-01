@@ -8,7 +8,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import FlashStrip from './components/FlashStrip';
 import Profile from './pages/Profile';
-import Trends from './pages/Trends';
 import FullJd from './pages/FullJd';
 import MyJobs from './pages/MyJobs';
 import PublicPolls from './pages/PublicPolls';
@@ -138,7 +137,6 @@ export default function App() {
                 <Route path='/sign-in' element={<SignIn />} />
                 <Route path='/sign-up' element={<SignUp />} />
                 <Route path='/profile' element={<Profile />} />
-                <Route path='/trends' element={<Trends />} />
                 <Route path='/fulljd/:url/:id' element={<FullJd />} />
                 <Route path="/my-jobs" element={<MyJobs />} />
                 <Route path='/publicpolls' element={<PublicPolls />} />
@@ -183,9 +181,9 @@ export default function App() {
                 <Route path='/interview-questions/:topicSlug/:questionId' element={<InterviewQuestions />} />
                 
                 {/* Blog Routes */}
-                <Route path='/blogs' element={<Blogs />} />
+                {/* <Route path='/blogs' element={<Blogs />} />
                 <Route path='/blogs/category/:category' element={<Blogs />} />
-                <Route path='/blog/:slug' element={<BlogDetail />} />
+                <Route path='/blog/:slug' element={<BlogDetail />} /> */}
                 
                 {/* DSA Problem Tracker Route */}
                 <Route path='/dsa-tracker' element={<DSAProblemTracker />} />

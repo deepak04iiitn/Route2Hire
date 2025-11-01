@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { FaPlus, FaTrash, FaSave, FaArrowLeft, FaBook, FaLightbulb, FaRocket } from 'react-icons/fa';
@@ -179,19 +182,24 @@ export default function CreateRoadmap() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <>
+      <Helmet>
+        <title>{isEditMode ? 'Edit Roadmap' : 'Create Roadmap'} | Route2Hire</title>
+      </Helmet>
+      <div className="min-h-screen bg-slate-50">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-20">
+        <Breadcrumb 
+          items={[
+            { label: 'Roadmaps', path: '/roadmaps' },
+            { label: isEditMode ? 'Edit Roadmap' : 'Create Roadmap' }
+          ]}
+        />
+      </div>
+      
       {/* Header Section */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <motion.button
-            onClick={() => navigate('/roadmaps')}
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4 transition-colors"
-            whileHover={{ x: -4 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaArrowLeft />
-            <span className="font-medium">Back to Roadmaps</span>
-          </motion.button>
 
           <div className="flex items-start justify-between">
             <div>
@@ -611,7 +619,12 @@ export default function CreateRoadmap() {
             </motion.button>
           </motion.div>
         </form>
+        
+        {/* Related Links Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20">
+          <RelatedLinks type="general" />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

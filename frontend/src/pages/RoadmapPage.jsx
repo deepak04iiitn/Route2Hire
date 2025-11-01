@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import SkillSection from '../components/roadmap/SkillSection';
@@ -150,7 +153,21 @@ export default function RoadmapPage() {
   const categories = [...new Set(roadmapData?.nodes.map(node => node.category).filter(Boolean))];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <>
+      <Helmet>
+        <title>{roadmapData?.title || 'Learning Roadmap'} | Route2Hire</title>
+      </Helmet>
+      <div className="min-h-screen bg-slate-50">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">
+        <Breadcrumb 
+          items={[
+            { label: 'Roadmaps', path: '/roadmaps' },
+            { label: roadmapData?.title || 'Roadmap' }
+          ]}
+        />
+      </div>
+      
       {showConfetti && <ConfettiEffect />}
       
       {/* Decorative background elements */}
@@ -318,7 +335,12 @@ export default function RoadmapPage() {
             <p className="text-slate-500">Try adjusting your search or filter criteria</p>
           </motion.div>
         )}
+        
+        {/* Related Links Section */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20">
+          <RelatedLinks type="general" />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

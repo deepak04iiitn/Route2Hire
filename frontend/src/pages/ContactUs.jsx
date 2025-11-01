@@ -7,6 +7,8 @@ import {
   FaLinkedin,
 } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 export default function ContactUs() {
   const socialLinks = [
@@ -62,6 +64,14 @@ export default function ContactUs() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
+          {/* Breadcrumb Navigation */}
+          <div className="mb-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Contact Us' }
+              ]}
+            />
+          </div>
           <motion.div 
             className="text-center mb-12"
             initial={{ y: -50, opacity: 0 }}
@@ -169,6 +179,11 @@ export default function ContactUs() {
               We value your privacy and promise to use your contact information responsibly.
             </p>
           </motion.div>
+          
+          {/* Related Links Section */}
+          <div className="mt-12">
+            <RelatedLinks type="general" />
+          </div>
         </motion.div>
       </div>
     </>

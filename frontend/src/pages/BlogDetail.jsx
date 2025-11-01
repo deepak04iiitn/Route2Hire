@@ -6,6 +6,8 @@ import { FaCalendar, FaClock, FaHeart, FaEye, FaTag, FaUser, FaArrowLeft, FaEdit
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import BlogCommentSection from '../components/BlogCommentSection';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 export default function BlogDetail() {
   const { currentUser } = useSelector((state) => state.user);
@@ -95,19 +97,22 @@ export default function BlogDetail() {
         <meta name="description" content={blog.excerpt} />
         <meta property="og:title" content={blog.title} />
         <meta property="og:description" content={blog.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://route2hire.com/blog/${blog.slug}`} />
         {blog.featuredImage && <meta property="og:image" content={blog.featuredImage} />}
+        <link rel="canonical" href={`https://route2hire.com/blog/${blog.slug}`} />
       </Helmet>
 
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Back Button */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <Link
-            to="/blogs"
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline mb-6"
-          >
-            <FaArrowLeft className="mr-2" />
-            Back to Blogs
-          </Link>
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb 
+            items={[
+              { label: 'Blogs', path: '/blogs' },
+              blog.category ? { label: blog.category, path: `/blogs/category/${blog.category}` } : null,
+              { label: blog.title }
+            ].filter(Boolean)}
+          />
         </div>
 
         {/* Blog Content */}
@@ -236,9 +241,12 @@ export default function BlogDetail() {
           </div>
 
           {/* Comments Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
             <BlogCommentSection blogId={blog._id} />
           </div>
+
+          {/* Related Links Section */}
+          <RelatedLinks type="general" />
         </article>
       </div>
     </>

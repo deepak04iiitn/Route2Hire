@@ -3,6 +3,8 @@ import { ArrowLeft, Building, BookOpen, Calendar, MapPin, Clock, Users, Star, Qu
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import InterviewCommentSection from '../components/InterviewCommentSection';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
@@ -366,7 +368,7 @@ export default function InterviewDetailPage() {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
 
@@ -568,14 +570,26 @@ export default function InterviewDetailPage() {
           }
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={experience ? `https://route2hire.com/interview-experience/${experience._id}` : "https://route2hire.com/interview-experiences"} />
+        <meta property="og:url" content={experience ? (slug ? `https://route2hire.com/interview-experience/${slug}/${experience._id}` : `https://route2hire.com/interview-experience/${experience._id}`) : "https://route2hire.com/interview-experiences"} />
         <meta property="og:image" content="https://route2hire.com/logo.png" />
-        <link rel="canonical" href={experience ? `https://route2hire.com/interview-experience/${experience._id}` : "https://route2hire.com/interview-experiences"} />
+        <link rel="canonical" href={experience ? (slug ? `https://route2hire.com/interview-experience/${slug}/${experience._id}` : `https://route2hire.com/interview-experience/${experience._id}`) : "https://route2hire.com/interview-experiences"} />
       </Helmet>
 
       <div className="min-h-screen relative">
         <BackgroundPattern />
         <FloatingElements />
+        <div className="relative z-10 pt-20 pb-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto mb-6">
+            {/* Breadcrumb Navigation */}
+            <Breadcrumb 
+              items={[
+                { label: 'Interview Experiences', path: '/interviewExp' },
+                { label: experience.company || 'Company', path: `/interviewExp?company=${encodeURIComponent(experience.company || '')}` },
+                { label: experience.position || 'Interview Experience' }
+              ]}
+            />
+          </div>
+        </div>
         <ResponsiveBookExperience 
           experience={experience} 
           handleLike={handleLike}
@@ -586,6 +600,13 @@ export default function InterviewDetailPage() {
           isDisliked={isDisliked}
           currentUser={currentUser}
         />
+        
+        {/* Related Links Section */}
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pb-8">
+          <div className="max-w-7xl mx-auto">
+            <RelatedLinks type="interview" />
+          </div>
+        </div>
       </div>
     </>
   );

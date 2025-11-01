@@ -250,8 +250,8 @@ export default function Header() {
       { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data', comingSoon: false },
       { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', desc: 'Professional templates', comingSoon: false },
       { path: '/resume-builder', icon: User, label: 'Resume Builder', desc: 'Create your resume', comingSoon: false },
-      { path: '/roadmaps', icon: Puzzle, label: 'Roadmaps', desc: 'Skill paths for roles', comingSoon: true },
-      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: true }
+      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: true },
+      { path: '/roadmaps', icon: Puzzle, label: 'Roadmaps', desc: 'Skill paths for roles', comingSoon: true }
     ];
 
     return (

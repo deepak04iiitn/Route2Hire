@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TrashIcon, BriefcaseIcon, MapPinIcon, ClockIcon, BookmarkIcon, StarIcon, ExternalLinkIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -93,6 +95,15 @@ export default function MyJobs() {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 mt-10">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
+        <Breadcrumb 
+          items={[
+            { label: 'My Saved Jobs' }
+          ]}
+        />
+      </div>
+      
       {/* Floating Header with Glass Effect */}
       <div className="relative overflow-hidden">
         {/* Background Pattern */}
@@ -243,6 +254,11 @@ export default function MyJobs() {
             ))}
           </div>
         )}
+        
+        {/* Related Links Section */}
+        <div className="mt-12 mb-8">
+          <RelatedLinks type="job" />
+        </div>
       </div>
       
       {/* Custom CSS for animations */}

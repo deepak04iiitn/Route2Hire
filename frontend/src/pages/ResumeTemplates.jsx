@@ -12,6 +12,8 @@ import ResumeTemplateForm from '../components/ResumeTemplateForm';
 import ResumeCommentSection from '../components/ResumeCommentSection';
 import ResumeEmptyState from '../components/ResumeEmptyState';
 import ResumeSidebar from '../components/ResumeSidebar';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import slugify from '../utils/slugify';
 
 export default function ResumeTemplates() {
@@ -28,7 +30,7 @@ export default function ResumeTemplates() {
   const { currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
-  const { templateId } = useParams();
+  const { templateId, slug } = useParams();
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
 
@@ -231,9 +233,9 @@ export default function ResumeTemplates() {
           content="Explore professional resume templates for QA, SDET, and Test Automation roles. Download ATS-friendly templates for software testing professionals."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://route2hire.com/resume-templates" />
+        <meta property="og:url" content={selectedTemplate && templateId ? (slug ? `https://route2hire.com/resumeTemplates/${slug}/${templateId}` : `https://route2hire.com/resumeTemplates/${templateId}`) : "https://route2hire.com/resume-templates"} />
         <meta property="og:image" content="https://route2hire.com/logo.png" />
-        <link rel="canonical" href="https://route2hire.com/resume-templates" />
+        <link rel="canonical" href={selectedTemplate && templateId ? (slug ? `https://route2hire.com/resumeTemplates/${slug}/${templateId}` : `https://route2hire.com/resumeTemplates/${templateId}`) : "https://route2hire.com/resume-templates"} />
       </Helmet>
 
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
@@ -302,6 +304,18 @@ export default function ResumeTemplates() {
 
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto pt-14 sm:pt-16 md:pt-20 xl:pt-24 p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mt-10 sm:mt-12 md:mt-16 xl:mt-0">
+          {/* Breadcrumb Navigation */}
+          {selectedTemplate && (
+            <div className="mb-4 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+              <Breadcrumb 
+                items={[
+                  { label: 'Resume Templates', path: '/resumeTemplates' },
+                  { label: `${selectedTemplate.company} - ${selectedTemplate.position}` }
+                ]}
+              />
+            </div>
+          )}
+          
           {isLoading ? (
             <div className="flex justify-center items-center h-64 sm:h-80 lg:h-96">
               <div className="relative">
@@ -373,6 +387,11 @@ export default function ResumeTemplates() {
               </div>
             </div>
           )}
+          
+          {/* Related Links Section */}
+          <div className="mt-8 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <RelatedLinks type="general" />
+          </div>
         </div>
 
         {/* Modals */}

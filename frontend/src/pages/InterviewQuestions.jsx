@@ -6,6 +6,8 @@ import { FaThumbsUp, FaThumbsDown, FaSearch, FaSort, FaPlus, FaTrash, FaEdit, Fa
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import InterviewCommentSection from '../components/InterviewCommentSection';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import slugify from '../utils/slugify';
 import StructuredAnswer from '../components/StructuredAnswer';
 import { Puzzle } from 'lucide-react';
@@ -465,6 +467,23 @@ export default function InterviewQuestions() {
 
       {/* Main Content - Responsive padding and spacing */}
       <div className="flex-1 overflow-y-auto pt-14 sm:pt-16 md:pt-20 xl:pt-24 p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mt-10 sm:mt-12 md:mt-16 xl:mt-0">
+        {/* Breadcrumb Navigation */}
+        {questions.length > 0 && (
+          <div className="mb-4 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Interview Questions', path: '/interview-questions' },
+                selectedTopic && questions.find(q => q._id === selectedTopic)
+                  ? { 
+                      label: questions.find(q => q._id === selectedTopic)?.topic || 'Topic', 
+                      path: `/interview-questions/${slugify(questions.find(q => q._id === selectedTopic)?.topic || '')}` 
+                    }
+                  : null,
+              ].filter(Boolean)}
+            />
+          </div>
+        )}
+        
         {loading ? (
           <div className="flex justify-center items-center h-64 sm:h-80 lg:h-96">
             <div className="relative">
@@ -797,6 +816,11 @@ export default function InterviewQuestions() {
                 </div>
               </div>
             )}
+            
+            {/* Related Links Section */}
+            <div className="mt-8 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+              <RelatedLinks type="interview" />
+            </div>
           </div>
         )}
       </div>

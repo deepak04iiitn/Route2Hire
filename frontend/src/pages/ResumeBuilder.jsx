@@ -6,6 +6,8 @@ import { Helmet } from 'react-helmet-async';
 import ResumeForm from '../components/resume/ResumeForm';
 import ResumePreview from '../components/resume/ResumePreview';
 import FieldSelection from '../components/resume/FieldSelection';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { FileText, Edit2, Trash2, Plus, Briefcase, FileEdit, Sparkles, Crown, FileSignature, LayoutTemplate, Eye, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { FaDownload } from 'react-icons/fa';
@@ -300,6 +302,15 @@ const ResumeBuilder = () => {
 
             <div className="relative z-10 py-8 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
+                    {/* Breadcrumb Navigation */}
+                    <div className="mb-6 mt-20">
+                        <Breadcrumb 
+                            items={[
+                                { label: 'Resume Builder' }
+                            ]}
+                        />
+                    </div>
+                    
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -507,6 +518,11 @@ const ResumeBuilder = () => {
                             </motion.div>
                         </motion.div>
                     )}
+                    
+                    {/* Related Links Section */}
+                    <div className="mt-12">
+                        <RelatedLinks type="general" />
+                    </div>
                 </div>
             </div>
             </div>

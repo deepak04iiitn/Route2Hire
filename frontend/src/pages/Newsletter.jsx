@@ -1,6 +1,8 @@
 import { useState, useEffect, memo } from 'react';
 import { CreditCard, UserCircle, Mail, Briefcase, MessageCircle, Send } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 const Modal = memo(({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -103,6 +105,14 @@ export default function Newsletter() {
           backgroundBlendMode: 'overlay'
         }}
       >
+      {/* Breadcrumb Navigation */}
+      <div className="absolute top-20 left-4 sm:left-8 z-10">
+        <Breadcrumb 
+          items={[
+            { label: 'Newsletter Subscription' }
+          ]}
+        />
+      </div>
       {/* Main Subscription Card */}
       <div className="relative bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 max-w-2xl w-full transform transition-all duration-300 hover:scale-[1.02]">
         <div className="text-center mb-6 sm:mb-8">
@@ -227,6 +237,11 @@ export default function Newsletter() {
           <form id="razorpay-form" className="text-center mt-4"></form>
         </div>
       </Modal>
+      
+      {/* Related Links Section */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-4 z-10">
+        <RelatedLinks type="general" />
+      </div>
       </div>
     </>
   );

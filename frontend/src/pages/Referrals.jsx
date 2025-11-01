@@ -8,6 +8,8 @@ import ReferralHeader from '../components/ReferralHeader';
 import ReferralFilterModal from '../components/ReferralFilterModal';
 import ReferralEmptyState from '../components/ReferralEmptyState';
 import ReferralSidebar from '../components/ReferralSidebar';
+import RelatedLinks from '../components/RelatedLinks';
+import Breadcrumb from '../components/Breadcrumb';
 import { Button } from 'flowbite-react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -246,6 +248,19 @@ export default function Referrals() {
 
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto pt-14 sm:pt-16 md:pt-20 xl:pt-24 p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mt-10 sm:mt-12 md:mt-16 xl:mt-0">
+          {/* Breadcrumb Navigation */}
+          <div className="mb-4 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Employee Referrals', path: '/referrals' },
+                selectedReferral ? { 
+                  label: selectedReferral.company || 'Company', 
+                  path: `/referrals?company=${encodeURIComponent(selectedReferral.company || '')}` 
+                } : null,
+              ].filter(Boolean)}
+            />
+          </div>
+          
           {isLoading ? (
             <div className="flex justify-center items-center h-64 sm:h-80 lg:h-96">
               <div className="relative">
@@ -268,6 +283,11 @@ export default function Referrals() {
               </div>
             </div>
           )}
+          
+          {/* Related Links Section */}
+          <div className="mt-8 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <RelatedLinks type="referral" />
+          </div>
         </div>
 
         {/* Modals */}

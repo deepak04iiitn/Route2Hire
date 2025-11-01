@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaSearch, FaCalendar, FaClock, FaHeart, FaEye, FaTag, FaPlus, FaTrash, FaEdit, FaBars, FaTimes, FaBookOpen, FaImage, FaSave, FaTimes as FaClose } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { toast } from 'react-toastify';
 import slugify from '../utils/slugify';
 import RichTextEditor from '../components/RichTextEditor';
@@ -280,8 +282,21 @@ export default function Blogs() {
   return (
     <>
       <Helmet>
-        <title>Blog Management | Professional Insights and Articles</title>
-        <meta name="description" content="Manage and create blog posts covering technology, development, and industry insights." />
+        <title>Blogs | Professional Insights and Articles - Route2Hire</title>
+        <meta name="description" content="Read professional blogs covering technology, development, QA, SDET careers, and industry insights on Route2Hire." />
+        <meta
+          name="keywords"
+          content="tech blogs, QA blogs, SDET articles, software development blogs, career insights, industry articles"
+        />
+        <meta property="og:title" content="Blogs | Route2Hire" />
+        <meta
+          property="og:description"
+          content="Read professional blogs covering technology, development, and industry insights."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href={`https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
       </Helmet>
 
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
@@ -421,6 +436,16 @@ export default function Blogs() {
 
         {/* Main Content - Responsive padding and spacing */}
         <div className="flex-1 overflow-y-auto pt-14 sm:pt-16 md:pt-20 xl:pt-24 p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mt-10 sm:mt-12 md:mt-16 xl:mt-0">
+          {/* Breadcrumb Navigation */}
+          <div className="mb-4 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Blogs', path: '/blogs' },
+                categoryParam && categoryParam !== 'all' ? { label: categoryParam, path: `/blogs/category/${categoryParam}` } : null,
+              ].filter(Boolean)}
+            />
+          </div>
+          
           {loading ? (
             <div className="flex justify-center items-center h-64 sm:h-80 lg:h-96">
               <div className="relative">
@@ -729,6 +754,11 @@ export default function Blogs() {
                   </div>
                 </div>
               )}
+              
+              {/* Related Links Section */}
+              <div className="mt-8 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+                <RelatedLinks type="general" />
+              </div>
             </div>
           )}
         </div>

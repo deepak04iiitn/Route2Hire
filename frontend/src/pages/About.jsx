@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { Target, Zap, Shield, ArrowRight, Sparkles, Star, Briefcase, Users } from 'lucide-react';
 
 export default function About() {
@@ -53,7 +56,37 @@ export default function About() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
+    <>
+      <Helmet>
+        <title>About Us | Route2Hire - Your Route to Meaningful Careers</title>
+        <meta
+          name="description"
+          content="Learn about Route2Hire, your trusted platform connecting talented professionals with meaningful career opportunities. Discover our mission, approach, and promise to help you thrive in your career journey."
+        />
+        <meta
+          name="keywords"
+          content="Route2Hire about, job platform, career opportunities, professional networking, job search platform, career development"
+        />
+        <meta property="og:title" content="About Us | Route2Hire" />
+        <meta
+          property="og:description"
+          content="Learn about Route2Hire, your trusted platform connecting talented professionals with meaningful career opportunities."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/about" />
+        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <link rel="canonical" href="https://route2hire.com/about" />
+      </Helmet>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
+        <Breadcrumb 
+          items={[
+            { label: 'About Us' }
+          ]}
+        />
+      </div>
+      
       <style>{`
         @keyframes fadeUp { 
           from { opacity: 0; transform: translateY(24px); } 
@@ -217,10 +250,16 @@ export default function About() {
         </div>
       </section>
 
-      
+      {/* Related Links Section */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RelatedLinks type="general" />
+        </div>
+      </section>
 
       {/* Footer spacing */}
       <div className="h-16"></div>
     </div>
+    </>
   );
 }

@@ -121,6 +121,7 @@ export default function Footer() {
               <li><FooterLink href="/about">About Us</FooterLink></li>
               <li><FooterLink href="/newsletter">Newsletter</FooterLink></li>
               <li><FooterLink href="/contactUs">Contact Us</FooterLink></li>
+              <li><FooterLink href="/BuyMeACoffee">Premium Subscription</FooterLink></li>
               <li><FooterLink href="/myCorner">My Corner</FooterLink></li>
             </ul>
           </div>
@@ -135,6 +136,7 @@ export default function Footer() {
               <li><FooterLink href="/privacyPolicy">Privacy Policy</FooterLink></li>
               <li><FooterLink href="/terms">Terms of Service</FooterLink></li>
               <li><FooterLink href="/cookies">Cookie Policy</FooterLink></li>
+              <li><FooterLink href="/sign-up">Sign Up</FooterLink></li>
               <li><FooterLink href="/contactUs">Help Center</FooterLink></li>
             </ul>
           </div>

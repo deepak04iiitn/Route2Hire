@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ThumbsUp, ThumbsDown, MessageCircle, Linkedin, Building2, User, Mail, Phone, Briefcase, Hash, ExternalLink, Heart, Share2, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import ReferralCommentSection from '../components/referralCommentSection';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
@@ -54,7 +56,7 @@ const CommentModal = ({ isOpen, onClose, referralId, companyName }) => {
 };
 
 export default function ReferralDetailPage() {
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const [referral, setReferral] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -246,9 +248,9 @@ export default function ReferralDetailPage() {
           }
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={referral ? `https://route2hire.com/referral/${referral._id}` : "https://route2hire.com/referrals"} />
+        <meta property="og:url" content={referral ? (slug ? `https://route2hire.com/referral/${slug}/${referral._id}` : `https://route2hire.com/referral/${referral._id}`) : "https://route2hire.com/referrals"} />
         <meta property="og:image" content="https://route2hire.com/logo.png" />
-        <link rel="canonical" href={referral ? `https://route2hire.com/referral/${referral._id}` : "https://route2hire.com/referrals"} />
+        <link rel="canonical" href={referral ? (slug ? `https://route2hire.com/referral/${slug}/${referral._id}` : `https://route2hire.com/referral/${referral._id}`) : "https://route2hire.com/referrals"} />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900">
@@ -268,6 +270,16 @@ export default function ReferralDetailPage() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6">
+          <Breadcrumb 
+            items={[
+              { label: 'Employee Referrals', path: '/referrals' },
+              { label: referral?.company || 'Company', path: `/referrals?company=${encodeURIComponent(referral?.company || '')}` },
+              { label: 'Referral Details' }
+            ]}
+          />
+        </div>
         {/* Hero Section */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 px-8 py-12 relative">
@@ -474,6 +486,11 @@ export default function ReferralDetailPage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Related Links Section */}
+          <div className="mt-8">
+            <RelatedLinks type="referral" />
           </div>
         </div>
       </div>

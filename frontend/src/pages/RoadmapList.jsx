@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { FaPlus, FaRoad, FaClock, FaChartLine, FaEdit, FaTrash, FaArrowRight, FaStar, FaFire } from 'react-icons/fa';
@@ -116,7 +119,19 @@ export default function RoadmapList() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-violet-50/40 mt-16">
+    <>
+      <Helmet>
+        <title>Learning Roadmaps | Route2Hire</title>
+      </Helmet>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-violet-50/40 mt-16">
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <Breadcrumb 
+          items={[
+            { label: 'Learning Roadmaps', path: '/roadmaps' }
+          ]}
+        />
+      </div>
       {/* Hero Header with Gradient Overlay */}
       <div className="relative bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-700 overflow-hidden">
         {/* Decorative Background Pattern */}
@@ -358,7 +373,12 @@ export default function RoadmapList() {
             })}
           </div>
         )}
+        
+        {/* Related Links Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20">
+          <RelatedLinks type="general" />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

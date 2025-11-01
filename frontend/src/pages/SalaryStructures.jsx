@@ -12,6 +12,8 @@ import SalaryForm from '../components/SalaryForm';
 import SalaryEmptyState from '../components/SalaryEmptyState';
 import SalarySidebar from '../components/SalarySidebar'; // You'll need to create this component
 import SalaryCommentSection from '../components/SalaryCommentSection';
+import RelatedLinks from '../components/RelatedLinks';
+import Breadcrumb from '../components/Breadcrumb';
 import slugify from '../utils/slugify';
 
 export default function SalaryStructures() {
@@ -32,7 +34,7 @@ export default function SalaryStructures() {
   const { currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
-  const { salaryId } = useParams();
+  const { salaryId, slug } = useParams();
 
   const [filters, setFilters] = useState({
     companySearch: '',
@@ -281,9 +283,9 @@ export default function SalaryStructures() {
           content="Compare salary structures for QA, SDET, and Test Automation roles. Get salary insights and compensation data for software testing professionals."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://route2hire.com/salary-structures" />
+        <meta property="og:url" content={selectedSalary && salaryId ? (slug ? `https://route2hire.com/salaryStructures/${slug}/${salaryId}` : `https://route2hire.com/salaryStructures/${salaryId}`) : "https://route2hire.com/salary-structures"} />
         <meta property="og:image" content="https://route2hire.com/logo.png" />
-        <link rel="canonical" href="https://route2hire.com/salary-structures" />
+        <link rel="canonical" href={selectedSalary && salaryId ? (slug ? `https://route2hire.com/salaryStructures/${slug}/${salaryId}` : `https://route2hire.com/salaryStructures/${salaryId}`) : "https://route2hire.com/salary-structures"} />
       </Helmet>
 
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
@@ -377,6 +379,19 @@ export default function SalaryStructures() {
 
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto pt-14 sm:pt-16 md:pt-20 xl:pt-24 p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mt-10 sm:mt-12 md:mt-16 xl:mt-0">
+          {/* Breadcrumb Navigation */}
+          <div className="mb-4 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <Breadcrumb 
+              items={[
+                { label: 'Salary Insights', path: '/salaryStructures' },
+                selectedSalary ? { 
+                  label: selectedSalary.company || 'Company', 
+                  path: `/salaryStructures?company=${encodeURIComponent(selectedSalary.company || '')}` 
+                } : null,
+              ].filter(Boolean)}
+            />
+          </div>
+          
           {isLoading ? (
             <div className="flex justify-center items-center h-64 sm:h-80 lg:h-96">
               <div className="relative">
@@ -527,6 +542,11 @@ export default function SalaryStructures() {
               </div>
             </div>
           )}
+          
+          {/* Related Links Section */}
+          <div className="mt-8 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
+            <RelatedLinks type="salary" />
+          </div>
         </div>
 
         {/* Modals */}
