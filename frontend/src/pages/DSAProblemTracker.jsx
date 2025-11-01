@@ -527,7 +527,7 @@ const DSAProblemTracker = () => {
           <div className="mb-6">
             <Breadcrumb 
               items={[
-                { label: 'DSA Problem Tracker' }
+                { label: 'QA SDET DSA Sheet' }
               ]}
             />
           </div>
