@@ -48,6 +48,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import RoadmapPage from './pages/RoadmapPage';
 import RoadmapList from './pages/RoadmapList';
 import CreateRoadmap from './pages/CreateRoadmap';
+import Community from './pages/Community';
 
 
 function SessionManager() {
@@ -193,6 +194,8 @@ export default function App() {
                 <Route path="/roadmaps/create" element={<CreateRoadmap />} />
                 <Route path="/roadmaps/edit/:role" element={<CreateRoadmap />} />
                 <Route path="/roadmaps/:role" element={<RoadmapPage />} />
+
+                <Route path="/route2hire-community" element={<Community />} />
 
               </Routes>
             </div>
