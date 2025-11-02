@@ -2,6 +2,7 @@ import InterviewExperience from '../models/interview.model.js';
 import Salary from '../models/salary.model.js';
 import Referral from '../models/referral.model.js';
 import InterviewQuestion from '../models/interviewQuestion.model.js';
+import Blog from '../models/blog.model.js';
 import mongoose from 'mongoose';
 
 // In-memory cache for llms.txt
@@ -145,6 +146,11 @@ const generateLLMSText = (dynamicContent) => {
       url: '/community',
       title: 'Community - Join Route2Hire',
       description: 'Join Route2Hire\'s vibrant community of 3500+ job seekers and tech enthusiasts. Connect on Telegram, WhatsApp, Instagram, and Topmate for instant job alerts, career tips, and professional networking opportunities.'
+    },
+    {
+      url: '/blogs',
+      title: 'Blogs & Articles',
+      description: 'Read professional blogs covering technology, development, QA, SDET careers, and industry insights on Route2Hire.'
     }
   ];
 
@@ -208,6 +214,16 @@ const generateLLMSText = (dynamicContent) => {
     });
   }
 
+  if (dynamicContent.blogs.length > 0) {
+    content += `\n## Professional Blogs & Articles\n\n`;
+    dynamicContent.blogs.slice(0, 20).forEach(blog => {
+      const title = blog.title || 'Blog Article';
+      const category = blog.category || 'General';
+      const excerpt = blog.excerpt || 'Professional insights and industry knowledge.';
+      content += `- [${title}](${baseUrl}/blogs/${blog.slug}/${blog._id}): ${excerpt} - Category: ${category}.\n`;
+    });
+  }
+
   content += `\n## About Route2Hire\n\n`;
   content += `Route2Hire is a comprehensive career platform designed for tech professionals. We provide:\n\n`;
   content += `- **Job Listings**: Curated high-quality job opportunities in tech and QA roles\n`;
@@ -215,6 +231,7 @@ const generateLLMSText = (dynamicContent) => {
   content += `- **Salary Transparency**: Anonymous salary data for informed career decisions\n`;
   content += `- **Referral Network**: Connect with professionals for job referrals\n`;
   content += `- **Career Resources**: Resume templates, interview tips, and career guidance\n`;
+  content += `- **Professional Blogs**: Expert articles on technology, development, QA, and SDET careers\n`;
   content += `- **Community Features**: Polls, discussions, and professional networking\n\n`;
   content += `Our platform helps professionals make informed career decisions, prepare for interviews, and connect with opportunities that match their skills and aspirations.\n\n`;
   content += `Last updated: ${new Date().toISOString().split('T')[0]}\n`;
@@ -239,7 +256,8 @@ export const generateLLMS = async (req, res) => {
       salaryRecords,
       referrals,
       interviewQuestions,
-      jobs
+      jobs,
+      blogs
     ] = await Promise.all([
       InterviewExperience.find({}, '_id company position fullName').lean().limit(20),
       Salary.find({}, '_id company position ctc').lean().limit(20),
@@ -254,7 +272,8 @@ export const generateLLMS = async (req, res) => {
           apply_link: { $regex: /^https?:\/\/.+\..+/i }
         },
         { projection: { _id: 1, job_title: 1, company: 1, location: 1 } }
-      ).limit(30).toArray()
+      ).limit(30).toArray(),
+      Blog.find({ published: true }, '_id title slug excerpt category').lean().limit(20)
     ]);
 
     const dynamicContent = {
@@ -262,7 +281,8 @@ export const generateLLMS = async (req, res) => {
       salaryRecords,
       referrals,
       interviewQuestions,
-      jobs
+      jobs,
+      blogs
     };
 
     // Generate llms.txt content
@@ -306,7 +326,8 @@ export const getLLMSStats = async (req, res) => {
       salaryCount,
       referralCount,
       questionCount,
-      jobCount
+      jobCount,
+      blogCount
     ] = await Promise.all([
       InterviewExperience.countDocuments(),
       Salary.countDocuments(),
@@ -318,11 +339,12 @@ export const getLLMSStats = async (req, res) => {
         apply_link: { $ne: 'about:blank' },
         apply_link: { $not: { $regex: /invalid-url|\/404\/|\/404$|not.found|not.available/i } },
         apply_link: { $regex: /^https?:\/\/.+\..+/i }
-      })
+      }),
+      Blog.countDocuments({ published: true })
     ]);
 
-    const totalDynamicItems = interviewCount + salaryCount + referralCount + questionCount + jobCount;
-    const staticItemCount = 22; // Count of static items
+    const totalDynamicItems = interviewCount + salaryCount + referralCount + questionCount + jobCount + blogCount;
+    const staticItemCount = 23; // Count of static items (updated to include /blogs)
     const totalItems = staticItemCount + totalDynamicItems;
 
     res.json({
@@ -335,6 +357,7 @@ export const getLLMSStats = async (req, res) => {
           referrals: referralCount,
           interviewQuestions: questionCount,
           jobs: jobCount,
+          blogs: blogCount,
           total: totalDynamicItems
         },
         totalItems,

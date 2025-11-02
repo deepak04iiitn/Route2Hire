@@ -8,6 +8,7 @@ import {
   updateBlog,
   deleteBlog,
   likeBlog,
+  dislikeBlog,
   getCategories,
   getTags,
 } from '../controllers/blog.controller.js';
@@ -116,5 +117,6 @@ router.put('/update/:id', verifyToken, upload.single('featuredImage'), async (re
 
 router.delete('/delete/:id', verifyToken, deleteBlog);
 router.post('/like/:id', verifyToken, likeBlog);
+router.post('/dislike/:id', verifyToken, dislikeBlog);
 
 export default router;

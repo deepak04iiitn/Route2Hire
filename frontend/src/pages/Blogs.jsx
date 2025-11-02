@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { FaSearch, FaCalendar, FaClock, FaHeart, FaEye, FaTag, FaPlus, FaTrash, FaEdit, FaBars, FaTimes, FaBookOpen, FaImage, FaSave, FaTimes as FaClose } from 'react-icons/fa';
+import { FaSearch, FaCalendar, FaClock, FaEye, FaTag, FaPlus, FaTrash, FaEdit, FaBookOpen, FaImage, FaSave, FaTimes as FaClose, FaUser } from 'react-icons/fa';
+import { ThumbsUp, ThumbsDown, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedLinks from '../components/RelatedLinks';
+import BlogCommentSection from '../components/BlogCommentSection';
 import { toast } from 'react-toastify';
-import slugify from '../utils/slugify';
 import RichTextEditor from '../components/RichTextEditor';
+import { fixListNumbering } from '../utils/fixListNumbering';
 
 export default function Blogs() {
   const { currentUser } = useSelector((state) => state.user);
@@ -37,9 +39,52 @@ export default function Blogs() {
   const [isEditing, setIsEditing] = useState(false);
   const [editBlogId, setEditBlogId] = useState(null);
   const [imageModal, setImageModal] = useState({ open: false, image: '' });
+  const contentRef = useRef(null);
 
   const navigate = useNavigate();
-  const { category: categoryParam } = useParams();
+  const location = useLocation();
+  const { category: categoryParam, slug, id } = useParams();
+
+  // Sync selectedCategory with categoryParam from URL
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory('all');
+    }
+  }, [categoryParam]);
+
+  // Helper function to validate MongoDB ObjectId
+  const isValidObjectId = (id) => {
+    // MongoDB ObjectId is 24 hex characters
+    return id && typeof id === 'string' && /^[0-9a-fA-F]{24}$/.test(id);
+  };
+
+  // Fetch blog by ID when id is in URL
+  useEffect(() => {
+    const fetchBlogById = async () => {
+      // Don't fetch if id is undefined, invalid, or if we're on a category route
+      // Also check if slug is "category" to avoid conflicts with category route
+      if (!id || !isValidObjectId(id) || categoryParam || slug === 'category') return;
+      
+      try {
+        setLoading(true);
+        const res = await axios.get(`/backend/blogs/${id}`);
+        setSelectedBlog(res.data);
+        setLoading(false);
+        setError(false);
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+        console.error('Error fetching blog:', error);
+        toast.error('Blog not found');
+      }
+    };
+
+    if (id && isValidObjectId(id) && !categoryParam && slug !== 'category') {
+      fetchBlogById();
+    }
+  }, [id, slug, categoryParam]);
 
   useEffect(() => {
   const fetchBlogs = async () => {
@@ -54,9 +99,13 @@ export default function Blogs() {
       const res = await axios.get(`/backend/blogs/get?${params.toString()}`);
       setBlogs(res.data.blogs);
         
-        // Set first blog as selected if none selected
-        if (res.data.blogs.length > 0 && !selectedBlog) {
-          setSelectedBlog(res.data.blogs[0]);
+        // Set first blog as selected if none selected and no id in URL, then navigate to its URL
+        // Only auto-select if we're on the base /blogs route (not category or specific blog)
+        if (res.data.blogs.length > 0 && !selectedBlog && !id && !categoryParam && location.pathname === '/blogs') {
+          const firstBlog = res.data.blogs[0];
+          setSelectedBlog(firstBlog);
+          // Navigate to the first blog's URL with slug and ID (slug is stored in title-category format in database)
+          navigate(`/blogs/${firstBlog.slug}/${firstBlog._id}`, { replace: true });
         }
         
       setLoading(false);
@@ -104,6 +153,15 @@ export default function Blogs() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (selectedBlog && contentRef.current) {
+      // Fix list numbering after content is rendered
+      setTimeout(() => {
+        fixListNumbering(contentRef.current);
+      }, 0);
+    }
+  }, [selectedBlog]);
+
   const handleLike = async (blogId) => {
     if (!currentUser) {
       toast.error('Please sign in to like blogs');
@@ -122,41 +180,46 @@ export default function Blogs() {
     }
   };
 
+  const handleDislike = async (blogId) => {
+    if (!currentUser) {
+      toast.error('Please sign in to dislike blogs');
+      return;
+    }
+
+    try {
+      const res = await axios.post(`/backend/blogs/dislike/${blogId}`);
+      setBlogs(blogs.map(blog => blog._id === blogId ? res.data : blog));
+      if (selectedBlog && selectedBlog._id === blogId) {
+        setSelectedBlog(res.data);
+      }
+    } catch (error) {
+      console.error('Error disliking blog:', error);
+      toast.error('Failed to dislike blog');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
     try {
       const payload = new FormData();
       payload.append('title', formData.title);
       payload.append('excerpt', formData.excerpt);
       payload.append('content', formData.content);
       payload.append('category', formData.category);
-      payload.append('tags', JSON.stringify(formData.tags));
+      formData.tags.forEach(tag => payload.append("tags[]", tag));
       payload.append('published', formData.published);
-      
-      if (formData.featuredImage) {
-        payload.append('featuredImage', formData.featuredImage);
-      }
-
+      if (formData.featuredImage) payload.append('featuredImage', formData.featuredImage);
       let res;
       if (isEditing) {
-        res = await axios.post(`/backend/blogs/update/${editBlogId}`, payload, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-          withCredentials: true,
-        });
+        res = await axios.put(`/backend/blogs/update/${editBlogId}`, payload, { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true });
         setBlogs(blogs.map(blog => blog._id === editBlogId ? res.data : blog));
-        toast.success('Blog updated successfully!');
+        toast.success('Blog updated!');
       } else {
-        res = await axios.post('/backend/blogs/create', payload, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-          withCredentials: true,
-        });
+        res = await axios.post('/backend/blogs/create', payload, { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true });
         setBlogs([...blogs, res.data]);
-        toast.success('Blog created successfully!');
+        toast.success('Blog created!');
       }
-      
-      // Reset form
       setShowForm(false);
       setIsEditing(false);
       setEditBlogId(null);
@@ -170,8 +233,7 @@ export default function Blogs() {
         featuredImage: null
       });
     } catch (error) {
-      console.error(`Error ${isEditing ? 'updating' : 'creating'} blog:`, error);
-      toast.error(`Failed to ${isEditing ? 'update' : 'create'} blog`);
+      toast.error('Failed to submit blog');
     } finally {
       setIsSubmitting(false);
     }
@@ -183,7 +245,7 @@ export default function Blogs() {
       excerpt: blog.excerpt,
       content: blog.content,
       category: blog.category,
-      tags: blog.tags || [],
+      tags: Array.isArray(blog.tags) ? blog.tags : [],
       published: blog.published,
       featuredImage: null
     });
@@ -214,23 +276,18 @@ export default function Blogs() {
   };
 
   const handleTagAdd = (e) => {
-    if (e.key === 'Enter' && e.target.value.trim()) {
-      const newTag = e.target.value.trim();
-      if (!formData.tags.includes(newTag)) {
-        setFormData({
-          ...formData,
-          tags: [...formData.tags, newTag]
-        });
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (e.target.value.trim()) {
+        const newTag = e.target.value.trim();
+        if (!formData.tags.includes(newTag)) setFormData({ ...formData, tags: [...formData.tags, newTag] });
+        e.target.value = '';
       }
-      e.target.value = '';
     }
   };
-
+  
   const handleTagRemove = (tagToRemove) => {
-    setFormData({
-      ...formData,
-      tags: formData.tags.filter(tag => tag !== tagToRemove)
-    });
+    setFormData({ ...formData, tags: formData.tags.filter(tag => tag !== tagToRemove) });
   };
 
   const openImageModal = (imageUrl) => {
@@ -282,37 +339,37 @@ export default function Blogs() {
   return (
     <>
       <Helmet>
-        <title>Blogs | Professional Insights and Articles - Route2Hire</title>
-        <meta name="description" content="Read professional blogs covering technology, development, QA, SDET careers, and industry insights on Route2Hire." />
+        <title>{selectedBlog && id ? `${selectedBlog.title} | Blogs and Articles - Route2Hire` : 'Blogs | Professional Insights and Articles - Route2Hire'}</title>
+        <meta name="description" content={selectedBlog && id ? selectedBlog.excerpt : "Read professional blogs covering technology, development, QA, SDET careers, and industry insights on Route2Hire."} />
         <meta
           name="keywords"
           content="tech blogs, QA blogs, SDET articles, software development blogs, career insights, industry articles"
         />
-        <meta property="og:title" content="Blogs | Route2Hire" />
+        <meta property="og:title" content={selectedBlog && id ? selectedBlog.title : "Blogs | Route2Hire"} />
         <meta
           property="og:description"
-          content="Read professional blogs covering technology, development, and industry insights."
+          content={selectedBlog && id ? selectedBlog.excerpt : "Read professional blogs covering technology, development, and industry insights."}
         />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
-        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
-        <link rel="canonical" href={`https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
+        <meta property="og:type" content={selectedBlog && id ? "article" : "website"} />
+        <meta property="og:url" content={selectedBlog && id ? `https://route2hire.com/blogs/${selectedBlog.slug}/${selectedBlog._id}` : `https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
+        <meta property="og:image" content={selectedBlog && id && selectedBlog.featuredImage ? selectedBlog.featuredImage : "https://route2hire.com/assets/Route2Hire.png"} />
+        <link rel="canonical" href={selectedBlog && id ? `https://route2hire.com/blogs/${selectedBlog.slug}/${selectedBlog._id}` : `https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
       </Helmet>
 
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
-        {/* Sidebar Toggle Button for mobile and tablet */}
+        {/* Sidebar Toggle Arrow - right edge */}
         <button
-          className="xl:hidden fixed top-14 sm:top-16 md:top-20 right-2 sm:right-3 md:right-4 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 md:p-3 rounded-full shadow-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-300 touch-manipulation"
+          className="xl:hidden fixed top-1/2 -translate-y-1/2 right-0 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 rounded-l-xl shadow-2xl backdrop-blur-sm border border-white/20 hover:translate-x-0.5 transition-all duration-300 touch-manipulation"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           aria-label="Toggle sidebar"
         >
-          {isSidebarOpen ? <FaTimes size={14} className="sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" /> : <FaBars size={14} className="sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />}
+          {isSidebarOpen ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </button>
 
         {/* Backdrop for mobile and tablet */}
         {isSidebarOpen && window.innerWidth < 1280 && (
           <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 xl:hidden"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 xl:hidden"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
@@ -320,7 +377,7 @@ export default function Blogs() {
         {/* Sidebar - Responsive width and positioning */}
         <div
           className={`
-            w-full sm:w-80 lg:w-96 xl:w-80 2xl:w-96 bg-white/90 backdrop-blur-xl border-r border-white/20 shadow-2xl z-40 transition-all duration-500 fixed inset-y-0 overflow-y-auto
+            w-full sm:w-80 lg:w-96 xl:w-80 2xl:w-96 bg-white/90 backdrop-blur-xl border-r border-white/20 shadow-2xl z-30 transition-all duration-500 fixed inset-y-0 overflow-y-auto
             ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} right-0
             xl:left-0 xl:right-auto xl:translate-x-0 xl:relative
           `}
@@ -333,7 +390,7 @@ export default function Blogs() {
                 className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all duration-200"
                 aria-label="Close sidebar"
               >
-                <FaTimes size={18} className="sm:w-5 sm:h-5" />
+                <X size={18} className="sm:w-5 sm:h-5" />
               </button>
             )}
 
@@ -395,7 +452,7 @@ export default function Blogs() {
                 <button
                   key={blog._id}
                   onClick={() => {
-                    setSelectedBlog(blog);
+                    navigate(`/blogs/${blog.slug}/${blog._id}`);
                     if (window.innerWidth < 1280) {
                       setIsSidebarOpen(false);
                     }
@@ -442,6 +499,7 @@ export default function Blogs() {
               items={[
                 { label: 'Blogs', path: '/blogs' },
                 categoryParam && categoryParam !== 'all' ? { label: categoryParam, path: `/blogs/category/${categoryParam}` } : null,
+                selectedBlog && id ? { label: selectedBlog.title } : null,
               ].filter(Boolean)}
             />
           </div>
@@ -676,13 +734,24 @@ export default function Blogs() {
                         <button
                           onClick={() => handleLike(selectedBlog._id)}
                           className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all duration-200 backdrop-blur-sm ${
-                            selectedBlog.likes.includes(currentUser?._id)
+                            selectedBlog.likes?.includes(currentUser?._id)
                               ? 'bg-white/30 text-white'
                               : 'bg-white/20 hover:bg-white/30 text-white'
                           }`}
                         >
-                          <FaHeart size={12} className="sm:w-3.5 sm:h-3.5" />
-                          <span className="font-medium text-xs sm:text-sm">{selectedBlog.numberOfLikes}</span>
+                          <ThumbsUp size={12} className="sm:w-3.5 sm:h-3.5" />
+                          <span className="font-medium text-xs sm:text-sm">{selectedBlog.numberOfLikes || 0}</span>
+                        </button>
+                        <button
+                          onClick={() => handleDislike(selectedBlog._id)}
+                          className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all duration-200 backdrop-blur-sm ${
+                            selectedBlog.dislikes?.includes(currentUser?._id)
+                              ? 'bg-white/30 text-white'
+                              : 'bg-white/20 hover:bg-white/30 text-white'
+                          }`}
+                        >
+                          <ThumbsDown size={12} className="sm:w-3.5 sm:h-3.5" />
+                          <span className="font-medium text-xs sm:text-sm">{selectedBlog.numberOfDislikes || 0}</span>
                         </button>
                       </div>
                     </div>
@@ -727,21 +796,38 @@ export default function Blogs() {
                       </div>
                     )}
 
+                    {/* Author Info */}
+                    {selectedBlog.author && (
+                      <div className="flex items-center gap-3 mb-6 pb-6 border-b border-gray-200">
+                        {selectedBlog.author?.profilePicture ? (
+                          <img
+                            src={selectedBlog.author.profilePicture}
+                            alt={selectedBlog.author.username}
+                            className="w-12 h-12 rounded-full"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                            <FaUser className="text-gray-500" />
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-semibold text-gray-900">
+                            {selectedBlog.author.username}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Blog Content */}
                     <div 
-                      className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-800 leading-relaxed"
+                      ref={contentRef}
+                      className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-800 leading-relaxed mb-8"
                       dangerouslySetInnerHTML={{ __html: selectedBlog.content }}
                     />
 
-                    {/* Read More Link */}
-                    <div className="mt-6 pt-6 border-t border-gray-200">
-                      <Link
-                        to={`/blog/${selectedBlog.slug}`}
-                        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                      >
-                        Read Full Article
-                        <span>→</span>
-                      </Link>
+                    {/* Comments Section */}
+                    <div className="mt-8 pt-8 border-t border-gray-200">
+                      <BlogCommentSection blogId={selectedBlog._id} />
                     </div>
                   </div>
                 </div>

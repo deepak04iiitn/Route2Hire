@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { FaCalendar, FaClock, FaHeart, FaEye, FaTag, FaUser, FaArrowLeft, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaCalendar, FaClock, FaEye, FaTag, FaUser, FaArrowLeft, FaEdit, FaTrash } from 'react-icons/fa';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import BlogCommentSection from '../components/BlogCommentSection';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedLinks from '../components/RelatedLinks';
+import { fixListNumbering } from '../utils/fixListNumbering';
 
 export default function BlogDetail() {
   const { currentUser } = useSelector((state) => state.user);
@@ -16,10 +18,20 @@ export default function BlogDetail() {
   const [error, setError] = useState(false);
   const { slug } = useParams();
   const navigate = useNavigate();
+  const contentRef = useRef(null);
 
   useEffect(() => {
     fetchBlog();
   }, [slug]);
+
+  useEffect(() => {
+    if (blog && contentRef.current) {
+      // Fix list numbering after content is rendered
+      setTimeout(() => {
+        fixListNumbering(contentRef.current);
+      }, 0);
+    }
+  }, [blog]);
 
   const fetchBlog = async () => {
     try {
@@ -45,6 +57,21 @@ export default function BlogDetail() {
     } catch (error) {
       console.error('Error liking blog:', error);
       toast.error('Failed to like blog');
+    }
+  };
+
+  const handleDislike = async () => {
+    if (!currentUser) {
+      toast.error('Please sign in to dislike this blog');
+      return;
+    }
+
+    try {
+      const res = await axios.post(`/backend/blogs/dislike/${blog._id}`);
+      setBlog(res.data);
+    } catch (error) {
+      console.error('Error disliking blog:', error);
+      toast.error('Failed to dislike blog');
     }
   };
 
@@ -163,7 +190,7 @@ export default function BlogDetail() {
               </span>
             </div>
 
-            {/* Admin Actions */}
+            {/* Admin Actions
             {currentUser?.isUserAdmin && (
               <div className="flex gap-3 mb-6">
                 <Link
@@ -181,7 +208,7 @@ export default function BlogDetail() {
                   Delete
                 </button>
               </div>
-            )}
+            )} */}
 
             {/* Tags */}
             {blog.tags && blog.tags.length > 0 && (
@@ -211,7 +238,7 @@ export default function BlogDetail() {
           </header>
 
           {/* Blog Content */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8" ref={contentRef}>
             <div
               className="prose prose-lg dark:prose-invert max-w-none
                 prose-headings:text-gray-900 dark:prose-headings:text-white
@@ -225,18 +252,29 @@ export default function BlogDetail() {
             />
           </div>
 
-          {/* Like Button */}
-          <div className="flex justify-center mb-8">
+          {/* Like/Dislike Buttons */}
+          <div className="flex justify-center mb-8 gap-4">
             <button
               onClick={handleLike}
-              className={`flex items-center space-x-3 px-8 py-3 rounded-full text-lg font-semibold transition-all ${
-                currentUser && blog.likes.includes(currentUser._id)
-                  ? 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900 hover:text-red-600'
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-200 backdrop-blur-sm ${
+                currentUser && blog.likes?.includes(currentUser._id)
+                  ? 'bg-green-500/30 text-gray-900 dark:text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-green-100 dark:hover:bg-green-900/30'
               }`}
             >
-              <FaHeart className="text-2xl" />
-              <span>{blog.numberOfLikes} Likes</span>
+              <ThumbsUp size={20} />
+              <span className="font-medium">{blog.numberOfLikes || 0}</span>
+            </button>
+            <button
+              onClick={handleDislike}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-200 backdrop-blur-sm ${
+                currentUser && blog.dislikes?.includes(currentUser._id)
+                  ? 'bg-red-500/30 text-gray-900 dark:text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900/30'
+              }`}
+            >
+              <ThumbsDown size={20} />
+              <span className="font-medium">{blog.numberOfDislikes || 0}</span>
             </button>
           </div>
 

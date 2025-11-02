@@ -491,7 +491,7 @@ export default function AdminBlogs() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
                             <button
-                              onClick={() => window.open(`/blog/${blog.slug}`, '_blank')}
+                              onClick={() => window.open(`/blogs/${blog.slug}/${blog._id}`, '_blank')}
                               className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                               title="View"
                             >

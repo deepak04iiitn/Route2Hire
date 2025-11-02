@@ -1,265 +1,279 @@
-import { useState, useEffect } from 'react';
+import { Alert, Button, Textarea , Modal } from 'flowbite-react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { FaThumbsUp, FaEdit, FaTrash, FaReply } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
+import BlogComment from './BlogComment';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
-export default function BlogCommentSection({ blogId }) {
-  const { currentUser } = useSelector((state) => state.user);
-  const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [editingCommentId, setEditingCommentId] = useState(null);
-  const [editedContent, setEditedContent] = useState('');
+export default function BlogCommentSection({blogId}) {
 
-  useEffect(() => {
-    fetchComments();
-  }, [blogId]);
+    const {currentUser} = useSelector((state) => state.user);
+    const [comment , setComment] = useState('');
+    const [commentError , setCommentError] = useState(null);
+    const [comments , setComments] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState(null);
 
-  const fetchComments = async () => {
-    try {
-      const res = await axios.get(`/backend/blog-comments/getblogcomments/${blogId}`);
-      setComments(res.data);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    }
-  };
+    const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!currentUser) {
-      toast.error('Please sign in to comment');
-      return;
-    }
+    const handleSubmit = async(e) => {
 
-    if (comment.trim().length === 0) {
-      toast.error('Comment cannot be empty');
-      return;
-    }
+        e.preventDefault();
 
-    if (comment.length > 500) {
-      toast.error('Comment must be less than 500 characters');
-      return;
-    }
+        if(comment.length > 200)
+        {
+            return;
+        }
 
-    setLoading(true);
-    try {
-      const res = await axios.post('/backend/blog-comments/create', {
-        content: comment,
-        blogId,
-        userId: currentUser._id,
-      });
-      setComments([res.data, ...comments]);
-      setComment('');
-      toast.success('Comment posted successfully!');
-    } catch (error) {
-      console.error('Error posting comment:', error);
-      toast.error('Failed to post comment');
-    } finally {
-      setLoading(false);
-    }
-  };
+        try {
 
-  const handleLike = async (commentId) => {
-    if (!currentUser) {
-      toast.error('Please sign in to like comments');
-      return;
+            const res = await fetch('/backend/blog-comments/create' , {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json',
+                },
+    
+                body : JSON.stringify({ content : comment , blogId , userId : currentUser._id }),
+            });
+    
+            const data = await res.json();
+    
+            if(res.ok)
+            {
+                setComment('');
+                setCommentError(null);
+                setComments([data , ...comments]);
+            }
+
+        } catch (error) {
+            setCommentError(error.message);
+        }
     }
 
-    try {
-      const res = await axios.put(`/backend/blog-comments/likeblogcomment/${commentId}`);
-      setComments(
-        comments.map((c) =>
-          c._id === commentId ? res.data : c
-        )
-      );
-    } catch (error) {
-      console.error('Error liking comment:', error);
-      toast.error('Failed to like comment');
-    }
-  };
+    useEffect(() => {
 
-  const handleEdit = async (commentId) => {
-    try {
-      const res = await axios.put(`/backend/blog-comments/editblogcomment/${commentId}`, {
-        content: editedContent,
-      });
-      setComments(
-        comments.map((c) =>
-          c._id === commentId ? { ...c, content: res.data.content } : c
-        )
-      );
-      setEditingCommentId(null);
-      setEditedContent('');
-      toast.success('Comment updated successfully!');
-    } catch (error) {
-      console.error('Error editing comment:', error);
-      toast.error('Failed to edit comment');
-    }
-  };
+        const getComments = async () => {
 
-  const handleDelete = async (commentId) => {
-    if (window.confirm('Are you sure you want to delete this comment?')) {
-      try {
-        await axios.delete(`/backend/blog-comments/deleteblogcomment/${commentId}`);
-        setComments(comments.filter((c) => c._id !== commentId));
-        toast.success('Comment deleted successfully!');
-      } catch (error) {
-        console.error('Error deleting comment:', error);
-        toast.error('Failed to delete comment');
-      }
-    }
-  };
+            try {
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
+                const res = await fetch(`/backend/blog-comments/getblogcomments/${blogId}`);
+
+                if(res.ok)
+                {
+                    const data = await res.json();
+                    setComments(data);
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        getComments();
+
+    } , [blogId])                      
+
+    const handleLike = async (commentId) => {
+
+        try {
+
+          if (!currentUser) 
+          {
+            navigate('/sign-in');
+            return;
+          }
+
+          const res = await fetch(`/backend/blog-comments/likeblogcomment/${commentId}`, {
+            method: 'PUT',
+          });
+
+          if (res.ok) 
+        {
+            const data = await res.json();
+
+            setComments(
+              comments.map((comment) =>
+                comment._id === commentId
+                  ? {
+                      ...comment,
+                      likes: data.likes,
+                      numberOfLikes: data.likes.length,
+                    }
+                  : comment
+              )
+            );
+        }
+
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+
+      const handleEdit = async (comment, editedContent) => {
+        setComments(
+          comments.map((c) =>
+            c._id === comment._id ? { ...c, content: editedContent } : c
+          )
+        );
+      };
+
+      const handleDelete = async (commentId) => {
+
+        setShowModal(false);
+
+        try {
+
+          if (!currentUser) 
+          {
+            navigate('/sign-in');
+            return;
+          }
+
+          const res = await fetch(`/backend/blog-comments/deleteblogcomment/${commentId}`, {
+            method: 'DELETE',
+          });
+
+          if (res.ok) 
+          {
+            const data = await res.json();
+            setComments(comments.filter((comment) => comment._id !== commentId));
+          }
+
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+    
 
   return (
-    <div className="w-full">
-      <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-        Comments ({comments.length})
-      </h3>
+    <div>
+        {currentUser ? (
 
-      {/* Comment Form */}
-      {currentUser ? (
-        <form onSubmit={handleSubmit} className="mb-8">
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Write a comment..."
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white resize-none"
-            rows="4"
-            maxLength="500"
+        <div className='flex items-center gap-1 my-5 text-gray-500 text-sm'>
+
+          <p>Signed in as:</p>
+
+          <img
+            className='h-5 w-5 object-cover rounded-full'
+            src={currentUser.profilePicture}
+            alt=''
           />
-          <div className="flex justify-between items-center mt-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {comment.length}/500 characters
-            </span>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
-            >
-              {loading ? 'Posting...' : 'Post Comment'}
-            </button>
-          </div>
-        </form>
+
+          <Link
+            to={'/dashboard?tab=profile'}
+            className='text-xs text-cyan-600 hover:underline'
+          >
+            @{currentUser.username}
+          </Link>
+
+        </div>
       ) : (
-        <div className="mb-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <p className="text-gray-700 dark:text-gray-300">
-            Please{' '}
-            <Link to="/sign-in" className="text-blue-600 dark:text-blue-400 hover:underline">
-              sign in
-            </Link>{' '}
-            to leave a comment.
-          </p>
+
+        <div className='text-sm text-teal-500 my-5 flex gap-1'>
+
+          You must be signed in to comment.
+
+          <Link className='text-blue-500 hover:underline' to={'/sign-in'}>
+            Sign In
+          </Link>
+
         </div>
       )}
 
-      {/* Comments List */}
-      <div className="space-y-6">
-        {comments.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-8">
-            No comments yet. Be the first to comment!
-          </p>
-        ) : (
-          comments.map((c) => (
-            <div
-              key={c._id}
-              className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"
-            >
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                    {c.userId?.charAt(0)?.toUpperCase()}
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        User {c.userId?.slice(0, 8)}
-                      </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
-                        {formatDate(c.createdAt)}
-                      </span>
-                    </div>
-                    {currentUser && (currentUser._id === c.userId || currentUser.isUserAdmin) && (
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => {
-                            setEditingCommentId(c._id);
-                            setEditedContent(c.content);
-                          }}
-                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400"
-                          title="Edit"
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(c._id)}
-                          className="text-red-600 hover:text-red-800 dark:text-red-400"
-                          title="Delete"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    )}
-                  </div>
+      {currentUser && (
+            <form className='border border-teal-500 rounded-md p-3' onSubmit={handleSubmit}>
 
-                  {editingCommentId === c._id ? (
-                    <div>
-                      <textarea
-                        value={editedContent}
-                        onChange={(e) => setEditedContent(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:text-white"
-                        rows="3"
-                      />
-                      <div className="flex space-x-2 mt-2">
-                        <button
-                          onClick={() => handleEdit(c._id)}
-                          className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={() => {
-                            setEditingCommentId(null);
-                            setEditedContent('');
-                          }}
-                          className="px-4 py-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 text-sm"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-gray-700 dark:text-gray-300 mb-3">{c.content}</p>
-                  )}
+                <Textarea 
+                    placeholder='Add a comment...'
+                    rows='3'
+                    maxLength='200' 
+                    onChange={(e) => setComment(e.target.value)}
+                    value={comment}
+                />
 
-                  <button
-                    onClick={() => handleLike(c._id)}
-                    className={`flex items-center space-x-1 text-sm ${
-                      currentUser && c.likes.includes(currentUser._id)
-                        ? 'text-blue-600 dark:text-blue-400'
-                        : 'text-gray-500 dark:text-gray-400'
-                    } hover:text-blue-600 transition-colors`}
-                  >
-                    <FaThumbsUp />
-                    <span>{c.numberOfLikes}</span>
-                  </button>
+                <div className='flex justify-between items-center mt-5'>
+
+                    <p className='text-gray-500 text-sm'>{200 - comment.length} characters remaining</p>
+
+                    <Button outline gradientDuoTone='purpleToBlue' type='submit'>Submit</Button>
+
                 </div>
-              </div>
+
+                {commentError && (
+                    <Alert color='failure' className='mt-5'>
+                        {commentError}
+                    </Alert>
+                )}
+
+            </form>
+      )}
+
+      {comments.length === 0 ? (
+            <p className='text-sm my-5'>No comments yet!</p>
+      ) : (
+            <>
+                <div className='text-sm my-5 flex items-center gap-1'>
+                    <p>Comments</p>
+
+                    <div className='border border-gray-600 py-1 px-2 rounded-sm'>
+                        <p>{comments.length}</p>
+                    </div>
+                </div>
+
+                {
+                    comments.map(comment => (
+                        <BlogComment 
+                            key={comment._id}
+                            comment = {comment} 
+                            onLike = {handleLike}
+                            onEdit={handleEdit}
+                            onDelete={(commentId) => {
+                                setShowModal(true);
+                                setCommentToDelete(commentId);
+                            }}
+                        />
+                    ))
+                }
+
+            </>
+      )}
+
+    <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size='md'
+      >
+        <Modal.Header />
+        <Modal.Body>
+
+          <div className='text-center'>
+
+            <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
+
+            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
+              Are you sure you want to delete this comment?
+            </h3>
+
+            <div className='flex justify-center gap-4'>
+
+              <Button
+                color='failure'
+                onClick={() => handleDelete(commentToDelete)}
+              >
+                Yes, I'm sure
+              </Button>
+
+              <Button color='gray' onClick={() => setShowModal(false)}>
+                No, cancel
+              </Button>
+
             </div>
-          ))
-        )}
-      </div>
+          </div>
+        </Modal.Body>
+    </Modal>
+
     </div>
-  );
+  )
 }

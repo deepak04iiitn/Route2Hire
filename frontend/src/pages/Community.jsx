@@ -180,33 +180,12 @@ export default function Community() {
               Route2Hire
             </span>
           </h1>
-          <p className={`text-xl sm:text-2xl ${darkMode ? 'text-gray-400' : 'text-gray-600'} max-w-3xl mx-auto leading-relaxed mb-12`}>
-            Your gateway to career success. Follow, engage, and grow with our vibrant community across all platforms
-          </p>
-
-          {/* Feature Pills */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className={`flex items-center gap-2 px-6 py-3 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} rounded-full transform hover:scale-110 transition-all duration-300 cursor-pointer`}
-                  style={{ animationDelay: `${index * 200}ms` }}
-                >
-                  <Icon className={`w-5 h-5 ${feature.color}`} />
-                  <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{feature.text}</span>
-                </div>
-              );
-            })}
-          </div>
-
         </div>
 
         {/* Social Links Grid */}
         <div className="mb-24">
           <h2 className={`text-4xl sm:text-5xl font-black mb-12 text-center ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-            <span className="inline-block animate-pulse-slow">📱</span> Follow Us Everywhere
+            <span className="inline-block animate-pulse-slow">📱</span> Join Us Now
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {socialLinks.map((social, index) => {

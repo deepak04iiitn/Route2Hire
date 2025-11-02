@@ -41,7 +41,6 @@ import { useNavigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import AdminBlogs from './pages/AdminBlogs';
 import Blogs from './pages/Blogs';
-import BlogDetail from './pages/BlogDetail';
 import DSAProblemTracker from './pages/DSAProblemTracker';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -162,9 +161,9 @@ export default function App() {
                 <Route element={<AdminRoute />}>
                   <Route path='/dashboard' element={<Dashboard />} />
                   <Route path='/admin/interview-questions' element={<AdminInterviewQuestions />} />
-                  <Route path='/admin-blogs' element={<AdminBlogs />} />
+                  {/* <Route path='/admin-blogs' element={<AdminBlogs />} />
                   <Route path='/admin-blogs/:action' element={<AdminBlogs />} />
-                  <Route path='/admin-blogs/:action/:id' element={<AdminBlogs />} />
+                  <Route path='/admin-blogs/:action/:id' element={<AdminBlogs />} /> */}
                 </Route>
                 
                 <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />
@@ -182,9 +181,9 @@ export default function App() {
                 <Route path='/interview-questions/:topicSlug/:questionId' element={<InterviewQuestions />} />
                 
                 {/* Blog Routes */}
-                {/* <Route path='/blogs' element={<Blogs />} />
+                <Route path='/blogs' element={<Blogs />} />
                 <Route path='/blogs/category/:category' element={<Blogs />} />
-                <Route path='/blog/:slug' element={<BlogDetail />} /> */}
+                <Route path='/blogs/:slug/:id' element={<Blogs />} />
                 
                 {/* DSA Problem Tracker Route */}
                 <Route path='/dsa-tracker' element={<DSAProblemTracker />} />
@@ -195,7 +194,7 @@ export default function App() {
                 <Route path="/roadmaps/edit/:role" element={<CreateRoadmap />} />
                 <Route path="/roadmaps/:role" element={<RoadmapPage />} />
 
-                <Route path="/route2hire-community" element={<Community />} />
+                <Route path="/connect-with-route2hire" element={<Community />} />
 
               </Routes>
             </div>

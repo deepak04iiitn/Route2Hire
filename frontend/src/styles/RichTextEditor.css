@@ -5,15 +5,32 @@
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
+/* Global Quill styles for proper height */
+.ql-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  height: auto !important;
+  min-height: 500px;
+}
+
+.ql-editor {
+  padding: 1rem;
+  min-height: 500px;
+  color: #374151;
+}
+
 .rich-text-editor .ql-container {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 14px;
   line-height: 1.6;
+  height: auto !important;
+  min-height: 500px;
 }
 
 .rich-text-editor .ql-editor {
   padding: 1rem;
-  min-height: 200px;
+  min-height: 500px;
   color: #374151;
 }
 
@@ -169,20 +186,74 @@
 .rich-text-editor .ql-editor ol {
   padding-left: 0;
   margin: 0.5rem 0;
+  margin-left: 0;
 }
 
 .rich-text-editor .ql-editor ul li,
 .rich-text-editor .ql-editor ol li {
   list-style-type: none;
   margin: 0.25rem 0;
-  padding-left: 1.5rem;
+  padding-left: 1em;
+  position: relative;
+}
+
+/* Handle ql-indent classes for nested list items (when tabbing within lists) */
+.rich-text-editor .ql-editor ul li.ql-indent-1,
+.rich-text-editor .ql-editor ol li.ql-indent-1 {
+  padding-left: 1.5em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-1::before,
+.rich-text-editor .ql-editor ol li.ql-indent-1::before {
+  left: 0.5em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-2,
+.rich-text-editor .ql-editor ol li.ql-indent-2 {
+  padding-left: 2em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-2::before,
+.rich-text-editor .ql-editor ol li.ql-indent-2::before {
+  left: 1em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-3,
+.rich-text-editor .ql-editor ol li.ql-indent-3 {
+  padding-left: 2.5em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-3::before,
+.rich-text-editor .ql-editor ol li.ql-indent-3::before {
+  left: 1.5em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-4,
+.rich-text-editor .ql-editor ol li.ql-indent-4 {
+  padding-left: 3em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-4::before,
+.rich-text-editor .ql-editor ol li.ql-indent-4::before {
+  left: 2em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-5,
+.rich-text-editor .ql-editor ol li.ql-indent-5 {
+  padding-left: 3.5em;
+}
+
+.rich-text-editor .ql-editor ul li.ql-indent-5::before,
+.rich-text-editor .ql-editor ol li.ql-indent-5::before {
+  left: 2.5em;
 }
 
 /* Let Quill handle the list markers with ::before pseudo-elements */
 .rich-text-editor .ql-editor ul > li::before {
   content: '\2022';
   display: inline-block;
-  margin-left: -1.5rem;
+  position: absolute;
+  left: 0;
   margin-right: 0.5rem;
   color: #374151;
 }
@@ -198,18 +269,36 @@
 .rich-text-editor .ql-editor ol > li::before {
   content: counter(list-counter) '.';
   display: inline-block;
-  margin-left: -1.5rem;
+  position: absolute;
+  left: 0;
   margin-right: 0.5rem;
   color: #374151;
 }
 
-/* Nested lists */
+/* Nested lists - handle both nested UL/OL structure and ql-indent classes */
+.rich-text-editor .ql-editor ul ul,
+.rich-text-editor .ql-editor ol ol {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.rich-text-editor .ql-editor ul ul > li,
+.rich-text-editor .ql-editor ol ol > li {
+  padding-left: 1.5em;
+}
+
 .rich-text-editor .ql-editor ul ul > li::before {
   content: '\25E6';
+  left: 0.5em;
+}
+
+.rich-text-editor .ql-editor ul ul ul > li {
+  padding-left: 2em;
 }
 
 .rich-text-editor .ql-editor ul ul ul > li::before {
   content: '\25AA';
+  left: 1em;
 }
 
 .rich-text-editor .ql-editor ol ol {
@@ -222,6 +311,7 @@
 
 .rich-text-editor .ql-editor ol ol > li::before {
   content: counter(list-counter-alpha, lower-alpha) '.';
+  left: 0.5em;
 }
 
 .rich-text-editor .ql-editor ol ol ol {
@@ -230,10 +320,12 @@
 
 .rich-text-editor .ql-editor ol ol ol > li {
   counter-increment: list-counter-roman;
+  padding-left: 2em;
 }
 
 .rich-text-editor .ql-editor ol ol ol > li::before {
   content: counter(list-counter-roman, lower-roman) '.';
+  left: 1em;
 }
 
 /* Link styles */
@@ -313,19 +405,6 @@
   line-height: 1.5;
 }
 
-/* Fullscreen mode */
-.rich-text-editor.fixed {
-  z-index: 9999;
-}
-
-.rich-text-editor.fixed .ql-container {
-  height: calc(100vh - 120px);
-}
-
-.rich-text-editor.fixed .ql-editor {
-  height: calc(100vh - 180px);
-  overflow-y: auto;
-}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

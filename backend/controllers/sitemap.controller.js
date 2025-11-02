@@ -2,6 +2,7 @@ import InterviewExperience from '../models/interview.model.js';
 import Salary from '../models/salary.model.js';
 import Referral from '../models/referral.model.js';
 import InterviewQuestion from '../models/interviewQuestion.model.js';
+import Blog from '../models/blog.model.js';
 import mongoose from 'mongoose';
 
 // In-memory cache for sitemap
@@ -61,7 +62,8 @@ const generateSitemapXML = (urls) => {
     { url: '/dsa-tracker', priority: '0.80' },
     { url: '/dashboard', priority: '0.60' },
     { url: '/admin/interview-questions', priority: '0.50' },
-    { url: '/community', priority: '0.75' }
+    { url: '/community', priority: '0.75' },
+    { url: '/blogs', priority: '0.80' }
   ];
 
   // Add static URLs
@@ -106,7 +108,8 @@ export const generateSitemap = async (req, res) => {
       salaryRecords,
       referrals,
       interviewQuestions,
-      jobs
+      jobs,
+      blogs
     ] = await Promise.all([
       InterviewExperience.find({}, '_id company position updatedAt').lean().limit(10000), // Include fields for slug
       Salary.find({}, '_id company position updatedAt').lean().limit(10000),
@@ -121,7 +124,8 @@ export const generateSitemap = async (req, res) => {
           apply_link: { $regex: /^https?:\/\/.+\..+/i }
         },
         { projection: { _id: 1, time: 1 } }
-      ).limit(10000).toArray() // Limit to prevent huge sitemaps
+      ).limit(10000).toArray(), // Limit to prevent huge sitemaps
+      Blog.find({ published: true }, '_id slug updatedAt').lean().limit(10000)
     ]);
 
     const dynamicUrls = [];
@@ -180,6 +184,15 @@ export const generateSitemap = async (req, res) => {
       });
     });
 
+    // Add blog URLs
+    blogs.forEach(blog => {
+      dynamicUrls.push({
+        url: `/blogs/${blog.slug}/${blog._id}`,
+        priority: '0.80',
+        lastmod: blog.updatedAt ? new Date(blog.updatedAt).toISOString().split('T')[0] : null
+      });
+    });
+
     // Generate XML
     const sitemapXML = generateSitemapXML(dynamicUrls);
 
@@ -221,7 +234,8 @@ export const getSitemapStats = async (req, res) => {
       salaryCount,
       referralCount,
       questionCount,
-      jobCount
+      jobCount,
+      blogCount
     ] = await Promise.all([
       InterviewExperience.countDocuments(),
       Salary.countDocuments(),
@@ -233,11 +247,12 @@ export const getSitemapStats = async (req, res) => {
         apply_link: { $ne: 'about:blank' },
         apply_link: { $not: { $regex: /invalid-url|\/404\/|\/404$|not.found|not.available/i } },
         apply_link: { $regex: /^https?:\/\/.+\..+/i }
-      })
+      }),
+      Blog.countDocuments({ published: true })
     ]);
 
-    const totalDynamicUrls = interviewCount + salaryCount + referralCount + questionCount + jobCount;
-    const staticUrlCount = 27; // Count of static URLs
+    const totalDynamicUrls = interviewCount + salaryCount + referralCount + questionCount + jobCount + blogCount;
+    const staticUrlCount = 28; // Count of static URLs (updated to include /blogs)
     const totalUrls = staticUrlCount + totalDynamicUrls;
 
     res.json({
@@ -250,6 +265,7 @@ export const getSitemapStats = async (req, res) => {
           referrals: referralCount,
           interviewQuestions: questionCount,
           jobs: jobCount,
+          blogs: blogCount,
           total: totalDynamicUrls
         },
         totalUrls,

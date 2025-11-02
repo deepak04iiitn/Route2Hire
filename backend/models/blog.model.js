@@ -54,6 +54,14 @@ const blogSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    dislikes: {
+      type: Array,
+      default: [],
+    },
+    numberOfDislikes: {
+      type: Number,
+      default: 0,
+    },
     readTime: {
       type: Number,
       default: 0, // in minutes

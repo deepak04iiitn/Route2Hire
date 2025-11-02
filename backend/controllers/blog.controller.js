@@ -13,11 +13,18 @@ const calculateReadTime = (content) => {
 };
 
 // Helper function to generate slug
-const generateSlug = (title) => {
-  return title
+const generateSlug = (title, category) => {
+  const titleSlug = title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+  
+  const categorySlug = category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  
+  return `${titleSlug}-${categorySlug}`;
 };
 
 export const createBlog = async (req, res, next) => {
@@ -33,8 +40,8 @@ export const createBlog = async (req, res, next) => {
       return next(errorHandler(400, 'All required fields must be filled'));
     }
 
-    // Generate unique slug
-    let slug = generateSlug(title);
+    // Generate unique slug with title-category format
+    let slug = generateSlug(title, category);
     const existingBlog = await Blog.findOne({ slug });
     if (existingBlog) {
       slug = `${slug}-${Date.now()}`;
@@ -173,10 +180,10 @@ export const updateBlog = async (req, res, next) => {
       return next(errorHandler(400, 'All required fields must be filled'));
     }
 
-    // Update slug if title changed
+    // Update slug if title or category changed
     let slug = blog.slug;
-    if (title !== blog.title) {
-      slug = generateSlug(title);
+    if (title !== blog.title || category !== blog.category) {
+      slug = generateSlug(title, category);
       const existingBlog = await Blog.findOne({ slug, _id: { $ne: req.params.id } });
       if (existingBlog) {
         slug = `${slug}-${Date.now()}`;
@@ -240,13 +247,72 @@ export const likeBlog = async (req, res, next) => {
       return next(errorHandler(404, 'Blog not found'));
     }
 
-    const userIndex = blog.likes.indexOf(req.user.id);
-    if (userIndex === -1) {
-      blog.likes.push(req.user.id);
+    if (!blog.likes) {
+      blog.likes = [];
+      blog.numberOfLikes = 0;
+    }
+    if (!blog.dislikes) {
+      blog.dislikes = [];
+      blog.numberOfDislikes = 0;
+    }
+
+    const userId = req.user.id;
+    const likeIndex = blog.likes.indexOf(userId);
+    const dislikeIndex = blog.dislikes.indexOf(userId);
+
+    if (likeIndex === -1) {
+      blog.likes.push(userId);
       blog.numberOfLikes += 1;
+
+      // Remove from dislikes if user disliked
+      if (dislikeIndex !== -1) {
+        blog.dislikes.splice(dislikeIndex, 1);
+        blog.numberOfDislikes -= 1;
+      }
     } else {
-      blog.likes.splice(userIndex, 1);
+      blog.likes.splice(likeIndex, 1);
       blog.numberOfLikes -= 1;
+    }
+
+    await blog.save();
+    res.status(200).json(blog);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const dislikeBlog = async (req, res, next) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return next(errorHandler(404, 'Blog not found'));
+    }
+
+    if (!blog.likes) {
+      blog.likes = [];
+      blog.numberOfLikes = 0;
+    }
+    if (!blog.dislikes) {
+      blog.dislikes = [];
+      blog.numberOfDislikes = 0;
+    }
+
+    const userId = req.user.id;
+    const likeIndex = blog.likes.indexOf(userId);
+    const dislikeIndex = blog.dislikes.indexOf(userId);
+
+    if (dislikeIndex === -1) {
+      blog.dislikes.push(userId);
+      blog.numberOfDislikes += 1;
+
+      // Remove from likes if user liked
+      if (likeIndex !== -1) {
+        blog.likes.splice(likeIndex, 1);
+        blog.numberOfLikes -= 1;
+      }
+    } else {
+      blog.dislikes.splice(dislikeIndex, 1);
+      blog.numberOfDislikes -= 1;
     }
 
     await blog.save();
