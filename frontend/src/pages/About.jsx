@@ -74,7 +74,7 @@ export default function About() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://route2hire.com/about" />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href="https://route2hire.com/about" />
       </Helmet>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">

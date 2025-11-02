@@ -260,7 +260,7 @@ const checkIfJobIsSaved = async (jobId) => {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={job ? `https://route2hire.com/fulljd/${url || job._id}/${job._id}` : "https://route2hire.com/jobs"} />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href={job ? `https://route2hire.com/fulljd/${url || job._id}/${job._id}` : "https://route2hire.com/jobs"} />
       </Helmet>
 

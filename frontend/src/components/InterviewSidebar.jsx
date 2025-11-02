@@ -210,7 +210,7 @@ export default function InterviewSidebar({
                     {/* YOE Badge */}
                     <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 bg-gradient-to-r from-slate-100/80 to-slate-200/60 px-3 py-1.5 rounded-xl border border-slate-200/50 shadow-sm backdrop-blur-sm flex-shrink-0">
                       <User size={12} className="text-slate-500 flex-shrink-0" />
-                      <span className="whitespace-nowrap">{experience.yoe || 'N/A'} YOE</span>
+                      <span className="whitespace-nowrap">{(experience.yoe != null ? experience.yoe : 'N/A')} YOE</span>
                     </div>
 
                     {/* Verdict Badge */}

@@ -514,7 +514,7 @@ const DSAProblemTracker = () => {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://route2hire.com/dsa-tracker" />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://route2hire.com/dsa-tracker" />
       </Helmet>

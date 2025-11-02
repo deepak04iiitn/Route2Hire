@@ -295,7 +295,7 @@ export default function Blogs() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href={`https://route2hire.com/blogs${categoryParam ? `/category/${categoryParam}` : ''}`} />
       </Helmet>
 

@@ -234,7 +234,7 @@ export default function ResumeTemplates() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={selectedTemplate && templateId ? (slug ? `https://route2hire.com/resumeTemplates/${slug}/${templateId}` : `https://route2hire.com/resumeTemplates/${templateId}`) : "https://route2hire.com/resume-templates"} />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href={selectedTemplate && templateId ? (slug ? `https://route2hire.com/resumeTemplates/${slug}/${templateId}` : `https://route2hire.com/resumeTemplates/${templateId}`) : "https://route2hire.com/resume-templates"} />
       </Helmet>
 

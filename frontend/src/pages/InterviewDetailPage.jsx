@@ -571,7 +571,7 @@ export default function InterviewDetailPage() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={experience ? (slug ? `https://route2hire.com/interview-experience/${slug}/${experience._id}` : `https://route2hire.com/interview-experience/${experience._id}`) : "https://route2hire.com/interview-experiences"} />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href={experience ? (slug ? `https://route2hire.com/interview-experience/${slug}/${experience._id}` : `https://route2hire.com/interview-experience/${experience._id}`) : "https://route2hire.com/interview-experiences"} />
       </Helmet>
 

@@ -140,6 +140,11 @@ const generateLLMSText = (dynamicContent) => {
       url: '/cookies',
       title: 'Cookie Policy',
       description: 'Explain cookie usage and management on the site to enhance user experience and privacy control.'
+    },
+    {
+      url: '/community',
+      title: 'Community - Join Route2Hire',
+      description: 'Join Route2Hire\'s vibrant community of 3500+ job seekers and tech enthusiasts. Connect on Telegram, WhatsApp, Instagram, and Topmate for instant job alerts, career tips, and professional networking opportunities.'
     }
   ];
 
@@ -317,7 +322,7 @@ export const getLLMSStats = async (req, res) => {
     ]);
 
     const totalDynamicItems = interviewCount + salaryCount + referralCount + questionCount + jobCount;
-    const staticItemCount = 21; // Count of static items
+    const staticItemCount = 22; // Count of static items
     const totalItems = staticItemCount + totalDynamicItems;
 
     res.json({

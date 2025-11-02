@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Linkedin, Twitter, Send, Youtube, Instagram, Github, Users, Sparkles, ExternalLink, Moon, Sun, Zap, Heart, TrendingUp, MessageCircle } from 'lucide-react';
+import Breadcrumb from '../components/Breadcrumb';
+import RelatedLinks from '../components/RelatedLinks';
 
 export default function Community() {
   const [darkMode, setDarkMode] = useState(false);
@@ -158,6 +160,15 @@ export default function Community() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-8">
+          <Breadcrumb 
+            items={[
+              { label: 'Community' }
+            ]}
+          />
+        </div>
+
         {/* Header Section */}
         <div className={`text-center mb-20 transform transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <div className="inline-block mb-6 px-6 py-3 bg-blue-500 text-white rounded-full font-semibold text-sm animate-bounce-slow">
@@ -345,6 +356,11 @@ export default function Community() {
               </a>
             </div>
           </div>
+        </div>
+
+        {/* Related Links Section */}
+        <div className={`mb-16 transform transition-all duration-1000 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '900ms' }}>
+          <RelatedLinks type="general" />
         </div>
 
         {/* Footer */}

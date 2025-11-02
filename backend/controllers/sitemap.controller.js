@@ -60,7 +60,8 @@ const generateSitemapXML = (urls) => {
     { url: '/interview-questions', priority: '0.80' },
     { url: '/dsa-tracker', priority: '0.80' },
     { url: '/dashboard', priority: '0.60' },
-    { url: '/admin/interview-questions', priority: '0.50' }
+    { url: '/admin/interview-questions', priority: '0.50' },
+    { url: '/community', priority: '0.75' }
   ];
 
   // Add static URLs
@@ -236,7 +237,7 @@ export const getSitemapStats = async (req, res) => {
     ]);
 
     const totalDynamicUrls = interviewCount + salaryCount + referralCount + questionCount + jobCount;
-    const staticUrlCount = 26; // Count of static URLs
+    const staticUrlCount = 27; // Count of static URLs
     const totalUrls = staticUrlCount + totalDynamicUrls;
 
     res.json({

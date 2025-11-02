@@ -249,7 +249,7 @@ export default function ReferralDetailPage() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={referral ? (slug ? `https://route2hire.com/referral/${slug}/${referral._id}` : `https://route2hire.com/referral/${referral._id}`) : "https://route2hire.com/referrals"} />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href={referral ? (slug ? `https://route2hire.com/referral/${slug}/${referral._id}` : `https://route2hire.com/referral/${referral._id}`) : "https://route2hire.com/referrals"} />
       </Helmet>
 

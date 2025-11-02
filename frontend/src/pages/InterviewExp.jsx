@@ -350,7 +350,7 @@ export default function InterviewExp() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={selectedExperience && experienceId ? (slug ? `https://route2hire.com/interview-experience/${slug}/${experienceId}` : `https://route2hire.com/interview-experience/${experienceId}`) : "https://route2hire.com/interview-experiences"} />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href={selectedExperience && experienceId ? (slug ? `https://route2hire.com/interview-experience/${slug}/${experienceId}` : `https://route2hire.com/interview-experience/${experienceId}`) : "https://route2hire.com/interview-experiences"} />
       </Helmet>
 
@@ -515,7 +515,7 @@ export default function InterviewExp() {
                       </h1>
                       <div className="flex flex-wrap gap-2 sm:gap-3 text-blue-100 text-xs sm:text-sm xl:text-base">
                         <span className="bg-white/20 px-2 py-1 rounded-lg">{selectedExperience.position}</span>
-                        {selectedExperience.yoe && <span className="bg-white/20 px-2 py-1 rounded-lg">{selectedExperience.yoe} YOE</span>}
+                        {selectedExperience.yoe != null && <span className="bg-white/20 px-2 py-1 rounded-lg">{selectedExperience.yoe} YOE</span>}
                         {selectedExperience.verdict && <span className="bg-white/20 px-2 py-1 rounded-lg">{selectedExperience.verdict}</span>}
                         {typeof selectedExperience.rating !== 'undefined' && (
                           <span className="bg-white/20 px-2 py-1 rounded-lg inline-flex items-center gap-1">

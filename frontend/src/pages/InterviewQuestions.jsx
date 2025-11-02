@@ -363,7 +363,7 @@ export default function InterviewQuestions() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://route2hire.com/interview-questions" />
-        <meta property="og:image" content="https://route2hire.com/logo.png" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
         <link rel="canonical" href="https://route2hire.com/interview-questions" />
       </Helmet>
 

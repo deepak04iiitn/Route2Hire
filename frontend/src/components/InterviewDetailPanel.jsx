@@ -148,7 +148,7 @@ export default function InterviewDetailPanel({ experience }) {
             <div className="flex flex-wrap gap-2 lg:gap-4">
               <span className="inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm lg:text-base font-semibold bg-indigo-600 text-indigo-100 shadow-sm">
                 <User size={14} className="mr-1.5 lg:mr-2" />
-                {experience.yoe || 'N/A'} YOE
+                {(experience.yoe != null ? experience.yoe : 'N/A')} YOE
               </span>
               
               <span className={`inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm lg:text-base font-semibold shadow-sm ${
