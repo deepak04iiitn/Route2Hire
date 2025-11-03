@@ -262,7 +262,7 @@ ${question}`;
         <section className="py-3 mt-12 md:mt-16 mb-2">
           <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden">
             <div
-              onClick={() => navigate('/dsa-tracker')}
+              onClick={() => navigate('/qa-sdet-dsa-sheet')}
               role="button"
               tabIndex={0}
               aria-label="Open QA/SDET DSA Sheet"

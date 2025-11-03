@@ -189,7 +189,7 @@ export default function App() {
                 <Route path='/blogs/:slug/:id' element={<Blogs />} />
                 
                 {/* DSA Problem Tracker Route */}
-                <Route path='/dsa-tracker' element={<DSAProblemTracker />} />
+                <Route path='/qa-sdet-dsa-sheet' element={<DSAProblemTracker />} />
 
                 {/* Roadmap Route */}
                 <Route path="/roadmaps" element={<RoadmapList />} />

@@ -246,7 +246,7 @@ export default function Header() {
     const features = [
       { path: '/interviewExp', icon: MessageCircle, label: 'Interview Experiences', desc: 'Company wise', comingSoon: false },
       { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', desc: 'Topic wise', comingSoon: false },
-      { path: '/dsa-tracker', icon: Code, label: 'QA/SDET DSA Sheet', desc: 'Track your progress', comingSoon: false },
+      { path: '/qa-sdet-dsa-sheet', icon: Code, label: 'QA/SDET DSA Sheet', desc: 'Track your progress', comingSoon: false },
       { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', desc: 'Get referred by peers', comingSoon: false },
       { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data', comingSoon: false },
       { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', desc: 'Professional templates', comingSoon: false },
@@ -420,7 +420,7 @@ export default function Header() {
                   {[
                     { path: '/interviewExp', icon: MessageCircle, label: 'Interview Experiences', comingSoon: false },
                     { path: '/interview-questions', icon: Puzzle, label: 'Interview Questions', comingSoon: false },
-                    { path: '/dsa-tracker', icon: Code, label: 'QA/SDET DSA Sheet', comingSoon: false },
+                    { path: '/qa-sdet-dsa-sheet', icon: Code, label: 'QA/SDET DSA Sheet', comingSoon: false },
                     { path: '/referrals', icon: BriefcaseIcon, label: 'Referrals', comingSoon: false },
                     { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', comingSoon: false },
                     { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', comingSoon: false },
