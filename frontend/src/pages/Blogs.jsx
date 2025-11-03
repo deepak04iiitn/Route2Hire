@@ -213,11 +213,26 @@ export default function Blogs() {
       let res;
       if (isEditing) {
         res = await axios.put(`/backend/blogs/update/${editBlogId}`, payload, { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true });
+        // Update list
         setBlogs(blogs.map(blog => blog._id === editBlogId ? res.data : blog));
+        // If the edited blog is currently selected, update it and fix the URL in case slug changed
+        if (selectedBlog && selectedBlog._id === editBlogId) {
+          setSelectedBlog(res.data);
+          if (res.data?.slug) {
+            navigate(`/blogs/${res.data.slug}/${res.data._id}`, { replace: true });
+          }
+        }
         toast.success('Blog updated!');
       } else {
         res = await axios.post('/backend/blogs/create', payload, { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true });
         setBlogs([...blogs, res.data]);
+        // After creating, select the new blog and navigate to its URL
+        if (res.data?._id) {
+          setSelectedBlog(res.data);
+          if (res.data?.slug) {
+            navigate(`/blogs/${res.data.slug}/${res.data._id}`, { replace: true });
+          }
+        }
         toast.success('Blog created!');
       }
       setShowForm(false);

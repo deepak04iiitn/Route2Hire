@@ -113,8 +113,8 @@ const generateLLMSText = (dynamicContent) => {
       description: 'Prepare candidates with categorized real interview questions and detailed explanations for IT job interviews.'
     },
     {
-      url: '/dsa-tracker',
-      title: 'DSA Problem Tracker',
+      url: '/qa-sdet-dsa-sheet',
+      title: 'QA SDET DSA Sheet',
       description: 'Master Data Structures & Algorithms with real QA/SDET interview questions. Track your progress through actual problems asked in QA and SDET interviews, organized by category and difficulty.'
     },
     {
