@@ -18,8 +18,9 @@ instance.interceptors.response.use(
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             if (error.response.status === 401) {
-                // Handle unauthorized access
-                window.location.href = '/sign-in';
+                // Handle unauthorized access with return URL
+                const current = window.location.pathname + window.location.search + window.location.hash;
+                window.location.href = `/sign-in?redirect=${encodeURIComponent(current)}`;
             }
             return Promise.reject(error);
         } else if (error.request) {

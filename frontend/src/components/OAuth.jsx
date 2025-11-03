@@ -5,12 +5,13 @@ import {GoogleAuthProvider, signInWithPopup , getAuth} from 'firebase/auth'
 import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function OAuth() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const auth = getAuth(app);
 
@@ -41,7 +42,9 @@ export default function OAuth() {
             if(res.ok)
             {
                 dispatch(signInSuccess(data));
-                navigate('/');
+                const params = new URLSearchParams(location.search);
+                const redirect = params.get('redirect') || '/';
+                navigate(redirect, { replace: true });
             }
             
         } catch (error) {

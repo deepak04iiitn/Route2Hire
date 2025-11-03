@@ -83,14 +83,16 @@ function SessionManager() {
     if (msUntilExpiry === 0) {
       // Expired already
       dispatch(signoutSuccess());
-      navigate('/sign-in');
+      const current = window.location.pathname + window.location.search + window.location.hash;
+      navigate(`/sign-in?redirect=${encodeURIComponent(current)}`);
       return;
     }
 
 
     timerRef.current = setTimeout(() => {
       dispatch(signoutSuccess());
-      navigate('/sign-in');
+      const current = window.location.pathname + window.location.search + window.location.hash;
+      navigate(`/sign-in?redirect=${encodeURIComponent(current)}`);
     }, msUntilExpiry);
 
 
@@ -109,7 +111,8 @@ function SessionManager() {
       if (document.visibilityState === 'visible') {
         if (currentUser && sessionExpiry && Date.now() >= sessionExpiry) {
           dispatch(signoutSuccess());
-          navigate('/sign-in');
+          const current = window.location.pathname + window.location.search + window.location.hash;
+          navigate(`/sign-in?redirect=${encodeURIComponent(current)}`);
         }
       }
     };

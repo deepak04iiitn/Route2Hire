@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
@@ -9,6 +9,7 @@ export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector(state => state.user);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -36,7 +37,9 @@ export default function SignIn() {
       
       if(res.ok) {
         dispatch(signInSuccess(data));
-        navigate('/');
+        const params = new URLSearchParams(location.search);
+        const redirect = params.get('redirect') || '/';
+        navigate(redirect, { replace: true });
       }
     } catch (error) {
       dispatch(signInFailure(error.message));
@@ -182,7 +185,7 @@ export default function SignIn() {
 
               <p className="mt-8 text-center text-sm text-gray-600">
                 Don't have an account?{' '}
-                <Link to="/sign-up" className="font-medium text-purple-600 hover:text-purple-500">
+                <Link to={`/sign-up?redirect=${encodeURIComponent(new URLSearchParams(location.search).get('redirect') || '')}`} className="font-medium text-purple-600 hover:text-purple-500">
                   Sign Up
                 </Link>
               </p>

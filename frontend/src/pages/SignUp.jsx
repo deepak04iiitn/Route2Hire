@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import OAuth from '../components/OAuth';
 
@@ -8,6 +8,7 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -34,7 +35,9 @@ export default function SignUp() {
       }
       setLoading(false);
       if (res.ok) {
-        navigate('/sign-in');
+        const params = new URLSearchParams(location.search);
+        const redirect = params.get('redirect');
+        navigate(redirect ? `/sign-in?redirect=${encodeURIComponent(redirect)}` : '/sign-in');
       }
     } catch (error) {
       setErrorMessage(error.message);
@@ -194,7 +197,7 @@ export default function SignUp() {
 
               <p className="mt-8 text-center text-sm text-gray-600">
                 Have an account?{' '}
-                <Link to="/sign-in" className="font-medium text-purple-600 hover:text-purple-500">
+                <Link to={`/sign-in?redirect=${encodeURIComponent(new URLSearchParams(location.search).get('redirect') || '')}`} className="font-medium text-purple-600 hover:text-purple-500">
                   Sign In
                 </Link>
               </p>

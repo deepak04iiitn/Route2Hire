@@ -213,7 +213,10 @@ const checkIfJobIsSaved = async (jobId) => {
             Sign in to unlock premium job details, save opportunities, and connect with your dream career.
           </p>
           <button
-            onClick={() => navigate("/sign-in")}
+            onClick={() => {
+              const current = location.pathname + location.search + location.hash;
+              navigate(`/sign-in?redirect=${encodeURIComponent(current)}`);
+            }}
             className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Sign In Now
