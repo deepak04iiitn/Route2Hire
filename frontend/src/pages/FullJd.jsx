@@ -201,25 +201,27 @@ const checkIfJobIsSaved = async (jobId) => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-6">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-12 text-center max-w-md mx-auto shadow-2xl">
-          <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-8">
-            <Sparkles className="w-10 h-10 text-white" />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center max-w-md mx-auto shadow-lg">
+          <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
           </div>
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Access Required
+          <h2 className="text-2xl font-bold text-slate-900 mb-3">
+            Sign In Required
           </h2>
-          <p className="text-white/80 mb-8 leading-relaxed">
-            Sign in to unlock premium job details, save opportunities, and connect with your dream career.
+          <p className="text-slate-600 mb-8 leading-relaxed">
+            Please sign in to view full job details, save opportunities, and access all features.
           </p>
           <button
             onClick={() => {
               const current = location.pathname + location.search + location.hash;
               navigate(`/sign-in?redirect=${encodeURIComponent(current)}`);
             }}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-semibold hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="w-full bg-slate-900 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-slate-800 transition-colors duration-200 shadow-sm hover:shadow-md"
           >
-            Sign In Now
+            Sign In
           </button>
         </div>
       </div>
