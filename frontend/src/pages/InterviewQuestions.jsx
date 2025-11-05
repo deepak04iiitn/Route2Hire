@@ -331,33 +331,33 @@ export default function InterviewQuestions() {
       {/* ✅ Helmet for Dynamic SEO */}
       <Helmet>
         <title>
-          {selectedTopic 
-            ? `${selectedTopic} Interview Questions | QA, SDET & Test Automation - Route2Hire`
+          {selectedQuestion?.topic 
+            ? `${selectedQuestion.topic} Interview Questions | QA, SDET & Test Automation - Route2Hire`
             : "Interview Questions | QA, SDET, Test Automation & Software Testing - Route2Hire"
           }
         </title>
         <meta
           name="description"
           content={
-            selectedTopic 
-              ? `Practice ${selectedTopic} interview questions for QA, SDET, and Test Automation roles. Get expert answers, tips, and insights to ace your software testing interviews on Route2Hire.`
+            selectedQuestion?.topic 
+              ? `Practice ${selectedQuestion.topic} interview questions for QA, SDET, and Test Automation roles. Get expert answers, tips, and insights to ace your software testing interviews on Route2Hire.`
               : "Master QA, SDET, Test Automation, and Software Testing interviews with comprehensive question banks. Practice with real interview questions, expert answers, and community insights on Route2Hire."
           }
         />
         <meta
           name="keywords"
           content={
-            selectedTopic 
-              ? `${selectedTopic} interview questions, QA interview prep, SDET interview, Test Automation questions, Software Testing interview, ${selectedTopic} QA, Quality Assurance interview`
+            selectedQuestion?.topic 
+              ? `${selectedQuestion.topic} interview questions, QA interview prep, SDET interview, Test Automation questions, Software Testing interview, ${selectedQuestion.topic} QA, Quality Assurance interview`
               : "QA interview questions, SDET interview prep, Test Automation questions, Software Testing interview, Quality Assurance interview, Test Engineering questions, QA interview tips"
           }
         />
-        <meta property="og:title" content={selectedTopic ? `${selectedTopic} Interview Questions | Route2Hire` : "Interview Questions | Route2Hire"} />
+        <meta property="og:title" content={selectedQuestion?.topic ? `${selectedQuestion.topic} Interview Questions | Route2Hire` : "Interview Questions | Route2Hire"} />
         <meta
           property="og:description"
           content={
-            selectedTopic 
-              ? `Practice ${selectedTopic} interview questions for QA, SDET, and Test Automation roles. Expert answers and tips on Route2Hire.`
+            selectedQuestion?.topic 
+              ? `Practice ${selectedQuestion.topic} interview questions for QA, SDET, and Test Automation roles. Expert answers and tips on Route2Hire.`
               : "Master QA, SDET, and Test Automation interviews with comprehensive question banks and expert answers on Route2Hire platform."
           }
         />
