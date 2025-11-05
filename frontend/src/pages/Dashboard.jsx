@@ -9,7 +9,7 @@ import {
   FaLink, 
   FaBars, 
   FaTimes,
-  FaCheck, FaTrash, FaExclamationTriangle, FaBug, FaLightbulb, FaSort 
+  FaCheck, FaTrash, FaExclamationTriangle, FaBug, FaLightbulb, FaSort, FaTable, FaTrophy 
 } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import PlatformStatistics from '../components/PlatformStatistics';
@@ -42,6 +42,12 @@ const Dashboard = () => {
   const [featureStatus, setFeatureStatus] = useState('');
   const [featureSortBy, setFeatureSortBy] = useState('createdAt');
   const [featureOrder, setFeatureOrder] = useState('desc');
+  const [dsaUserStats, setDsaUserStats] = useState([]);
+  const [dsaLeaderboard, setDsaLeaderboard] = useState([]);
+  const [dsaTotalProblems, setDsaTotalProblems] = useState(0);
+  const [dsaSearch, setDsaSearch] = useState('');
+  const [dsaSortBy, setDsaSortBy] = useState('completedCount');
+  const [dsaOrder, setDsaOrder] = useState('desc');
   
   const sidebarRef = useRef(null);
 
@@ -74,6 +80,12 @@ const Dashboard = () => {
           break;
         case 'features':
           fetchFeatureRequests(true);
+          break;
+        case 'dsa':
+          fetchDSAAdminStats();
+          break;
+        case 'dsaLeaderboard':
+          fetchDSAAdminStats();
           break;
       }
     }
@@ -141,6 +153,29 @@ const Dashboard = () => {
         if (resetPage || page === 1) setFeatureRequests(data.items);
         else setFeatureRequests(prev => [...prev, ...data.items]);
         setShowMore((data.items || []).length === ITEMS_PER_PAGE);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchDSAAdminStats = async () => {
+    try {
+      setLoading(true);
+      const [usersRes, leaderboardRes] = await Promise.all([
+        fetch(`/backend/dsa-problems/admin/users-stats`, { credentials: 'include' }),
+        fetch(`/backend/dsa-problems/admin/leaderboard?limit=20`, { credentials: 'include' })
+      ]);
+      const usersData = await usersRes.json();
+      const leaderboardData = await leaderboardRes.json();
+      if (usersRes.ok) {
+        setDsaUserStats(usersData.items || []);
+        setDsaTotalProblems(usersData.totalProblems || 0);
+      }
+      if (leaderboardRes.ok) {
+        setDsaLeaderboard(leaderboardData.items || []);
       }
     } catch (e) {
       console.log(e);
@@ -289,6 +324,12 @@ const Dashboard = () => {
         break;
       case 'features':
         fetchFeatureRequests();
+        break;
+      case 'dsa':
+        fetchDSAAdminStats();
+        break;
+      case 'dsaLeaderboard':
+        fetchDSAAdminStats();
         break;
     }
   };
@@ -1084,6 +1125,131 @@ const Dashboard = () => {
   );
 
 
+  const DSAStats = () => {
+    const filtered = dsaUserStats.filter((u) => {
+      if (!dsaSearch) return true;
+      const q = dsaSearch.toLowerCase();
+      return (
+        (u.username || '').toLowerCase().includes(q) ||
+        (u.email || '').toLowerCase().includes(q)
+      );
+    });
+
+    const sorted = [...filtered].sort((a, b) => {
+      const dir = dsaOrder === 'asc' ? 1 : -1;
+      if (dsaSortBy === 'completedCount') return (a.completedCount - b.completedCount) * dir;
+      if (dsaSortBy === 'completionPercentage') return (a.completionPercentage - b.completionPercentage) * dir;
+      if (dsaSortBy === 'lastCompletedAt') {
+        const ax = a.lastCompletedAt ? new Date(a.lastCompletedAt).getTime() : 0;
+        const bx = b.lastCompletedAt ? new Date(b.lastCompletedAt).getTime() : 0;
+        return (ax - bx) * dir;
+      }
+      return 0;
+    });
+
+    return (
+      <div className="w-full mt-12 p-4">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            <input
+              value={dsaSearch}
+              onChange={(e) => setDsaSearch(e.target.value)}
+              placeholder="Search username or email"
+              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+            />
+            <select
+              value={dsaSortBy}
+              onChange={(e) => setDsaSortBy(e.target.value)}
+              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+            >
+              <option value="completedCount">Solved Count</option>
+              <option value="completionPercentage">Completion %</option>
+              <option value="lastCompletedAt">Last Completed</option>
+            </select>
+            <select
+              value={dsaOrder}
+              onChange={(e) => setDsaOrder(e.target.value)}
+              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm"
+            >
+              <option value="desc">Desc</option>
+              <option value="asc">Asc</option>
+            </select>
+          </div>
+          <div className="text-sm text-gray-600 dark:text-gray-300">
+            Total problems in sheet: <span className="font-semibold">{dsaTotalProblems}</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800">
+                  {['User', 'Email', 'Solved', 'Favorites', 'Completion %', 'Last Completed'].map((h) => (
+                    <th key={h} className="px-6 py-5 text-left whitespace-nowrap">
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">{h}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                {sorted.map((u) => (
+                  <tr key={u.userId} className="hover:bg-blue-50/50 dark:hover:bg-gray-700/50 transition-all duration-300">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <img src={u.profilePicture} alt={u.username} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
+                        <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{u.username}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{u.email}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{u.completedCount}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{u.favoriteCount}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 whitespace-nowrap">{u.completionPercentage}%</td>
+                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{u.lastCompletedAt ? new Date(u.lastCompletedAt).toLocaleString() : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const DSALeaderboard = () => (
+    <div className="w-full mt-12 p-4">
+      <div className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-200">DSA Leaderboard</div>
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-800">
+              {['Rank', 'User', 'Solved', '%'].map((h) => (
+                <th key={h} className="px-4 py-3 text-left whitespace-nowrap">
+                  <span className="text-xs font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider">{h}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+            {dsaLeaderboard.map((u, idx) => (
+              <tr key={u.userId} className="hover:bg-purple-50/50 dark:hover:bg-gray-700/50">
+                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">#{idx + 1}</td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="flex items-center gap-2">
+                    <img src={u.profilePicture} alt={u.username} className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+                    <span className="text-sm truncate">{u.username}</span>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-sm whitespace-nowrap">{u.completedCount}</td>
+                <td className="px-4 py-3 text-sm whitespace-nowrap">{u.completionPercentage}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
   const SidebarItem = ({ icon: Icon, label, tab }) => (
     <button
       onClick={() => {
@@ -1224,6 +1390,8 @@ const Dashboard = () => {
           <SidebarItem icon={FaFileAlt} label="Resume Templates" tab="resumeTemplates" />
           <SidebarItem icon={FaBug} label="Bugs" tab="bugs" />
           <SidebarItem icon={FaLightbulb} label="Feature Requests" tab="features" />
+        <SidebarItem icon={FaTable} label="DSA Sheet" tab="dsa" />
+        <SidebarItem icon={FaTrophy} label="DSA Leaderboard" tab="dsaLeaderboard" />
         </nav>
       </div>
 
@@ -1248,6 +1416,8 @@ const Dashboard = () => {
           activeTab === 'resumeTemplates' ? resumeTemplates.length > 0 :
           activeTab === 'bugs' ? bugReports.length > 0 :
           activeTab === 'features' ? featureRequests.length > 0 :
+          activeTab === 'dsa' ? dsaUserStats.length > 0 :
+          activeTab === 'dsaLeaderboard' ? dsaLeaderboard.length > 0 :
           referrals.length > 0
         ) ? (
           <div className="animate-fade-in">
@@ -1261,6 +1431,8 @@ const Dashboard = () => {
                  activeTab === 'resumeTemplates' ? <ResumeTemplatesTable /> :
                  activeTab === 'bugs' ? <BugsTable /> :
                  activeTab === 'features' ? <FeaturesTable /> :
+                 activeTab === 'dsa' ? <DSAStats /> :
+                 activeTab === 'dsaLeaderboard' ? <DSALeaderboard /> :
                  <ReferralsTable />}
               </div>
             </div>

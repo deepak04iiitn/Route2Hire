@@ -3,6 +3,7 @@ import { errorHandler } from "../utils/error.js";
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import User from "../models/user.model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -361,6 +362,109 @@ export const getRecentActivity = async (req, res, next) => {
             data: recentActivity
         });
 
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ADMIN: Get per-user DSA progress stats
+export const getAdminUsersDSAStats = async (req, res, next) => {
+    try {
+        // Aggregate completed and favorite counts per user
+        const perUser = await DSAProblem.aggregate([
+            {
+                $group: {
+                    _id: "$userId",
+                    completedCount: {
+                        $sum: { $cond: [{ $eq: ["$isCompleted", true] }, 1, 0] }
+                    },
+                    favoriteCount: {
+                        $sum: { $cond: [{ $eq: ["$isFavorite", true] }, 1, 0] }
+                    },
+                    lastCompletedAt: {
+                        $max: "$completedAt"
+                    }
+                }
+            }
+        ]);
+
+        const userIds = perUser.map(u => u._id);
+        const users = await User.find({ _id: { $in: userIds } })
+            .select("username email profilePicture createdAt isUserAdmin status lastVisit")
+            .lean();
+        const userMap = new Map(users.map(u => [String(u._id), u]));
+
+        const totalProblems = dsaData.length;
+
+        const rows = perUser
+            .map(u => {
+                const user = userMap.get(String(u._id));
+                if (!user) return null;
+                const completionPercentage = totalProblems > 0 ? Math.round((u.completedCount / totalProblems) * 100) : 0;
+                return {
+                    userId: u._id,
+                    username: user.username,
+                    email: user.email,
+                    profilePicture: user.profilePicture,
+                    createdAt: user.createdAt,
+                    status: user.status,
+                    lastVisit: user.lastVisit,
+                    isUserAdmin: user.isUserAdmin,
+                    completedCount: u.completedCount,
+                    favoriteCount: u.favoriteCount,
+                    lastCompletedAt: u.lastCompletedAt,
+                    totalProblems,
+                    completionPercentage
+                };
+            })
+            .filter(Boolean)
+            .sort((a, b) => b.completedCount - a.completedCount);
+
+        res.json({ success: true, items: rows, totalProblems });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ADMIN: Leaderboard - top users by completed problems
+export const getAdminDSALeaderboard = async (req, res, next) => {
+    try {
+        const limit = Math.max(1, Math.min(parseInt(req.query.limit || '20', 10), 100));
+        const top = await DSAProblem.aggregate([
+            {
+                $group: {
+                    _id: "$userId",
+                    completedCount: {
+                        $sum: { $cond: [{ $eq: ["$isCompleted", true] }, 1, 0] }
+                    },
+                    lastCompletedAt: { $max: "$completedAt" }
+                }
+            },
+            { $sort: { completedCount: -1, lastCompletedAt: -1 } },
+            { $limit: limit }
+        ]);
+
+        const userIds = top.map(t => t._id);
+        const users = await User.find({ _id: { $in: userIds } })
+            .select("username email profilePicture")
+            .lean();
+        const userMap = new Map(users.map(u => [String(u._id), u]));
+        const totalProblems = dsaData.length;
+
+        const items = top.map(t => {
+            const user = userMap.get(String(t._id));
+            return {
+                userId: t._id,
+                username: user?.username || "Unknown",
+                email: user?.email || "",
+                profilePicture: user?.profilePicture,
+                completedCount: t.completedCount,
+                completionPercentage: totalProblems > 0 ? Math.round((t.completedCount / totalProblems) * 100) : 0,
+                lastCompletedAt: t.lastCompletedAt
+            };
+        });
+
+        res.json({ success: true, items, totalProblems });
     } catch (error) {
         next(error);
     }

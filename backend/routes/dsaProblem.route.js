@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyToken } from '../utils/verifyUser.js';
+import { verifyToken, verifyAdmin } from '../utils/verifyUser.js';
 import { 
     getDSAProblems, 
     updateProblemStatus, 
@@ -7,7 +7,9 @@ import {
     getProgressStats,
     getFilteredProblems,
     bulkUpdateProblems,
-    getRecentActivity
+    getRecentActivity,
+    getAdminUsersDSAStats,
+    getAdminDSALeaderboard
 } from '../controllers/dsaProblem.controller.js';
 
 const router = express.Router();
@@ -35,5 +37,9 @@ router.put('/bulk-update', bulkUpdateProblems);
 
 // Get recent activity
 router.get('/recent-activity', getRecentActivity);
+
+// Admin-only DSA stats endpoints
+router.get('/admin/users-stats', verifyAdmin, getAdminUsersDSAStats);
+router.get('/admin/leaderboard', verifyAdmin, getAdminDSALeaderboard);
 
 export default router;
