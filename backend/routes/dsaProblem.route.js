@@ -9,7 +9,10 @@ import {
     bulkUpdateProblems,
     getRecentActivity,
     getAdminUsersDSAStats,
-    getAdminDSALeaderboard
+    getAdminDSALeaderboard,
+    getDSALeaderboard,
+    getWeeklyWinners,
+    streamDSALeaderboard
 } from '../controllers/dsaProblem.controller.js';
 
 const router = express.Router();
@@ -41,5 +44,10 @@ router.get('/recent-activity', getRecentActivity);
 // Admin-only DSA stats endpoints
 router.get('/admin/users-stats', verifyAdmin, getAdminUsersDSAStats);
 router.get('/admin/leaderboard', verifyAdmin, getAdminDSALeaderboard);
+
+// Public (authenticated) leaderboard & weekly winners
+router.get('/leaderboard', getDSALeaderboard);
+router.get('/weekly-winners', getWeeklyWinners);
+router.get('/leaderboard/stream', streamDSALeaderboard);
 
 export default router;

@@ -22,10 +22,53 @@ const DSAProblemTracker = () => {
   const [selectedProblems, setSelectedProblems] = useState(new Set());
   const [showStats, setShowStats] = useState(false);
   const [showNotesSection, setShowNotesSection] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [weeklyWinners, setWeeklyWinners] = useState([]);
+  const [leaderboardPeriod, setLeaderboardPeriod] = useState('all');
+  const [leaderboardTab, setLeaderboardTab] = useState('leaderboard'); // 'leaderboard' | 'winners'
+  const [lbLimit, setLbLimit] = useState(10);
+  const [lbSearch, setLbSearch] = useState('');
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   useEffect(() => {
     fetchProblems();
   }, []);
+
+  // Refetch leaderboard function that can be called manually
+  const refetchLeaderboard = async () => {
+    try {
+      const [lbRes, winnersRes] = await Promise.all([
+        axios.get(`/backend/dsa-problems/leaderboard?limit=${lbLimit}&period=${leaderboardPeriod}`),
+        axios.get('/backend/dsa-problems/weekly-winners')
+      ]);
+      if (lbRes.data?.success) setLeaderboard(lbRes.data.items || []);
+      if (winnersRes.data?.success) setWeeklyWinners(winnersRes.data.items || []);
+    } catch (e) {
+      // non-blocking
+    }
+  };
+
+  useEffect(() => {
+    if (!showLeaderboard) return;
+    // Initial fetch
+    refetchLeaderboard();
+
+    // SSE stream for live leaderboard
+    let es;
+    try {
+      es = new EventSource(`/backend/dsa-problems/leaderboard/stream?limit=${lbLimit}&period=${leaderboardPeriod}`, { withCredentials: true });
+      es.addEventListener('leaderboard', (ev) => {
+        try {
+          const payload = JSON.parse(ev.data);
+          if (Array.isArray(payload.items)) setLeaderboard(payload.items);
+        } catch (_) {}
+      });
+    } catch (_) {}
+
+    return () => {
+      if (es && typeof es.close === 'function') es.close();
+    };
+  }, [leaderboardPeriod, lbLimit, showLeaderboard]);
 
   const fetchProblems = async () => {
     try {
@@ -103,6 +146,11 @@ const DSAProblemTracker = () => {
         });
 
         toast.success('Status updated successfully');
+        
+        // Immediately refetch leaderboard if it's visible and we marked as completed
+        if (showLeaderboard && updates.isCompleted !== undefined) {
+          refetchLeaderboard();
+        }
       }
     } catch (error) {
       console.error('Error updating problem status:', error);
@@ -302,6 +350,11 @@ const DSAProblemTracker = () => {
         toast.success(`Marked ${selectedProblems.size} problems as completed`);
         setSelectedProblems(new Set());
         setBulkSelectMode(false);
+        
+        // Immediately refetch leaderboard if it's visible
+        if (showLeaderboard) {
+          refetchLeaderboard();
+        }
       }
     } catch (error) {
       console.error('Error in bulk update:', error);
@@ -618,7 +671,7 @@ const DSAProblemTracker = () => {
           </motion.div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -692,7 +745,179 @@ const DSAProblemTracker = () => {
                 </div>
               </div>
             </motion.div>
+
           </div>
+
+          {/* Horizontal Leaderboard Strip */}
+          <div
+            className={`relative mb-8 rounded-2xl border overflow-hidden transition-all duration-300 ${showLeaderboard ? 'border-transparent bg-gradient-to-r from-indigo-50 via-sky-50 to-rose-50 shadow-lg' : 'border-slate-200 bg-white hover:shadow-md'}`}
+          >
+            <button
+              onClick={() => setShowLeaderboard(prev => !prev)}
+              className="w-full text-left relative group"
+            >
+              <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-indigo-500 via-fuchsia-500 to-pink-500" />
+              <div className="absolute right-0 top-0 h-full w-1 bg-gradient-to-b from-cyan-500 via-emerald-500 to-lime-500 opacity-60" />
+              <div className="pointer-events-none absolute -top-10 -left-10 h-40 w-40 rounded-full bg-gradient-to-br from-indigo-200 via-fuchsia-200 to-pink-200 blur-2xl opacity-60" />
+              <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-gradient-to-br from-cyan-200 via-emerald-200 to-lime-200 blur-2xl opacity-60" />
+              <div className="flex items-center justify-between px-4 sm:px-6 py-4 relative">
+                <div className="flex items-center gap-4">
+                  <div className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm ring-2 ring-offset-2 transition-all ${showLeaderboard ? 'bg-white ring-indigo-200' : 'bg-gradient-to-br from-indigo-100 to-pink-100 ring-transparent group-hover:ring-indigo-200'}`}>
+                    <BarChart3 className={`${showLeaderboard ? 'text-indigo-700' : 'text-indigo-700'} h-5 w-5`} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="text-base sm:text-lg font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 via-fuchsia-700 to-pink-700 bg-clip-text text-transparent">Live Leaderboard</p>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r from-red-100 to-rose-100 text-rose-700 animate-pulse hidden sm:inline-block">LIVE</span>
+                    </div>
+                    <p className={`text-xs sm:text-sm ${showLeaderboard ? 'text-indigo-700' : 'text-slate-600'}`}>Tap to view all time and weekly rankings and weekly winners</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className={`text-sm font-semibold ${showLeaderboard ? 'text-indigo-800' : 'text-slate-700'}`}>{showLeaderboard ? 'Hide' : 'View'}</span>
+                  <div className={`h-7 w-7 rounded-full flex items-center justify-center transition-transform ${showLeaderboard ? 'bg-white text-indigo-700 rotate-90' : 'bg-gradient-to-br from-slate-100 to-white text-slate-600 group-hover:text-indigo-700'}`}>
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+
+          {/* Live Leaderboard & Weekly Winners - Tabs */}
+          {showLeaderboard && (
+          <div className="bg-white rounded-2xl shadow-sm border border-indigo-200 p-0 mb-8 overflow-hidden">
+            <div className="flex items-center border-b border-slate-200">
+              <button
+                onClick={() => setLeaderboardTab('leaderboard')}
+                className={`px-5 py-3 text-sm font-semibold transition-colors ${leaderboardTab==='leaderboard' ? 'text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-600 hover:text-slate-800'}`}
+              >
+                Leaderboard
+              </button>
+              <button
+                onClick={() => setLeaderboardTab('winners')}
+                className={`px-5 py-3 text-sm font-semibold transition-colors ${leaderboardTab==='winners' ? 'text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-600 hover:text-slate-800'}`}
+              >
+                Weekly Winners
+              </button>
+            </div>
+
+            {/* Leaderboard Tab Content */}
+            {leaderboardTab === 'leaderboard' && (
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row md:items-center gap-3 mb-4">
+                  <div className="inline-flex rounded-lg border border-slate-300 overflow-hidden">
+                    <button
+                      onClick={() => setLeaderboardPeriod('all')}
+                      className={`px-3 py-2 text-sm font-medium ${leaderboardPeriod==='all' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700'}`}
+                    >
+                      All-Time
+                    </button>
+                    <button
+                      onClick={() => setLeaderboardPeriod('weekly')}
+                      className={`px-3 py-2 text-sm font-medium ${leaderboardPeriod==='weekly' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-700'}`}
+                    >
+                      This Week
+                    </button>
+                  </div>
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Search user..."
+                      value={lbSearch}
+                      onChange={(e) => setLbSearch(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50"
+                    />
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-slate-600 border-b">
+                        <th className="py-2 pr-3">Rank</th>
+                        <th className="py-2 pr-3">User</th>
+                        <th className="py-2 pr-3">Points</th>
+                        <th className="py-2 pr-3">Completed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(leaderboard.filter(r => !lbSearch || r.username?.toLowerCase().includes(lbSearch.toLowerCase()) || r.email?.toLowerCase().includes(lbSearch.toLowerCase()))).map((row) => (
+                        <tr key={`${row.userId}-${row.rank}`} className="border-b last:border-0">
+                          <td className="py-3 pr-3 font-bold text-indigo-700">#{row.rank}</td>
+                          <td className="py-3 pr-3">
+                            <div className="flex items-center gap-2">
+                              {row.profilePicture ? (
+                                <img src={row.profilePicture} alt={row.username} className="w-7 h-7 rounded-full object-cover" />
+                              ) : (
+                                <div className="w-7 h-7 rounded-full bg-slate-200" />
+                              )}
+                              <span className="font-medium text-slate-800">{row.username}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 pr-3 font-semibold text-slate-900">{row.totalPoints}</td>
+                          <td className="py-3 pr-3 text-slate-700">{row.completedCount}</td>
+                        </tr>
+                      ))}
+                      {leaderboard.length === 0 && (
+                        <tr>
+                          <td colSpan={4} className="py-6 text-center text-slate-500">No entries yet</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="flex items-center justify-end mt-4">
+                  <div className="flex items-center gap-2">
+                    {lbLimit > 10 && (
+                      <button onClick={() => setLbLimit(10)} className="px-3 py-1.5 text-sm border rounded-lg hover:bg-slate-50">Show less</button>
+                    )}
+                    <button onClick={() => setLbLimit(lbLimit + 10)} className="px-3 py-1.5 text-sm border rounded-lg hover:bg-slate-50">Show more</button>
+                  </div>
+                </div>
+
+                {!!lbSearch && leaderboard.filter(r => r.username?.toLowerCase().includes(lbSearch.toLowerCase()) || r.email?.toLowerCase().includes(lbSearch.toLowerCase())).length === 0 && (
+                  <div className="mt-2 text-xs text-slate-500">User not in top {lbLimit}. Try "Show more" to load additional ranks.</div>
+                )}
+              </div>
+            )}
+
+            {/* Winners Tab Content */}
+            {leaderboardTab === 'winners' && (
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50">
+                <h2 className="text-lg font-bold text-amber-800 mb-4">Weekly Winners</h2>
+                <div className="space-y-3">
+                  {weeklyWinners.map((w, index) => (
+                    <div key={w.userId} className="flex items-center justify-between p-3 rounded-xl bg-white/70 border border-amber-200">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${index===0?'bg-yellow-500':index===1?'bg-slate-400':'bg-amber-700'}`}>{index+1}</div>
+                        <div className="flex items-center gap-2">
+                          {w.profilePicture ? (
+                            <img src={w.profilePicture} alt={w.username} className="w-8 h-8 rounded-full object-cover" />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-slate-200" />
+                          )}
+                          <div>
+                            <div className="text-slate-900 font-semibold">{w.username}</div>
+                            <div className="text-xs text-slate-500">{w.completedCount} completed</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-slate-900 font-bold">{w.totalPoints} pts</div>
+                      </div>
+                    </div>
+                  ))}
+                  {weeklyWinners.length === 0 && (
+                    <div className="text-center text-slate-600 py-4">No winners yet this week</div>
+                  )}
+                </div>
+                
+              </div>
+            )}
+          </div>
+          )}
 
           {/* Controls */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">

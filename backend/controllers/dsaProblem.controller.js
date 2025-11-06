@@ -469,3 +469,148 @@ export const getAdminDSALeaderboard = async (req, res, next) => {
         next(error);
     }
 };
+
+// Helper: compute last Monday 00:00:00 for weekly window (UTC)
+const getLastMonday = () => {
+    const now = new Date();
+    const day = now.getUTCDay(); // 0=Sun,1=Mon
+    const diffToMonday = (day + 6) % 7; // days since Monday
+    const lastMonday = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        0, 0, 0, 0
+    ));
+    lastMonday.setUTCDate(lastMonday.getUTCDate() - diffToMonday);
+    return lastMonday;
+};
+
+// Helper: common aggregation for leaderboard with points and deterministic ranking
+async function computeLeaderboard({ weekly = true, limit = 20 }) {
+    const matchStage = { isCompleted: true };
+    if (weekly) {
+        matchStage.completedAt = { $gte: getLastMonday() };
+    }
+
+    // Points per difficulty: Easy=10, Medium=20, Hard=30
+    const difficultyPoints = {
+        Easy: 10,
+        Medium: 20,
+        Hard: 30,
+    };
+
+    const pipeline = [
+        { $match: matchStage },
+        {
+            $group: {
+                _id: "$userId",
+                completedCount: { $sum: 1 },
+                totalPoints: {
+                    $sum: {
+                        $switch: {
+                            branches: [
+                                { case: { $eq: ["$difficulty", "Easy"] }, then: difficultyPoints.Easy },
+                                { case: { $eq: ["$difficulty", "Medium"] }, then: difficultyPoints.Medium },
+                                { case: { $eq: ["$difficulty", "Hard"] }, then: difficultyPoints.Hard },
+                            ],
+                            default: 0,
+                        },
+                    },
+                },
+                lastCompletedAt: { $max: "$completedAt" },
+                firstCompletedAt: { $min: "$completedAt" },
+            },
+        },
+        // Deterministic ordering: points desc, count desc, lastCompletedAt desc, _id asc
+        { $sort: { totalPoints: -1, completedCount: -1, lastCompletedAt: -1, _id: 1 } },
+        { $limit: limit },
+    ];
+
+    const agg = await DSAProblem.aggregate(pipeline);
+    const userIds = agg.map((a) => a._id);
+    const users = await User.find({ _id: { $in: userIds } })
+        .select("username email profilePicture")
+        .lean();
+    const userMap = new Map(users.map((u) => [String(u._id), u]));
+
+    // Assign unique ranks (no ties) in sorted order
+    const items = agg.map((row, idx) => {
+        const user = userMap.get(String(row._id));
+        return {
+            rank: idx + 1,
+            userId: row._id,
+            username: user?.username || "Unknown",
+            email: user?.email || "",
+            profilePicture: user?.profilePicture,
+            completedCount: row.completedCount,
+            totalPoints: row.totalPoints,
+            lastCompletedAt: row.lastCompletedAt,
+            firstCompletedAt: row.firstCompletedAt,
+        };
+    });
+
+    return { items };
+}
+
+// Public (authenticated) leaderboard
+export const getDSALeaderboard = async (req, res, next) => {
+    try {
+        const limit = Math.max(1, Math.min(parseInt(req.query.limit || '20', 10), 100));
+        const period = (req.query.period || 'weekly').toLowerCase();
+        const weekly = period !== 'all';
+        const { items } = await computeLeaderboard({ weekly, limit });
+        res.json({ success: true, items, period });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Weekly winners (top 3 of current week)
+export const getWeeklyWinners = async (req, res, next) => {
+    try {
+        const { items } = await computeLeaderboard({ weekly: true, limit: 3 });
+        res.json({ success: true, items, weekStart: getLastMonday() });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// SSE: real-time leaderboard stream
+export const streamDSALeaderboard = async (req, res, next) => {
+    try {
+        // Headers for SSE
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        // Allow cookies over SSE
+        res.flushHeaders?.();
+
+        const limit = Math.max(1, Math.min(parseInt(req.query.limit || '20', 10), 100));
+        const period = (req.query.period || 'weekly').toLowerCase();
+        const weekly = period !== 'all';
+
+        let closed = false;
+        req.on('close', () => { closed = true; clearInterval(timer); });
+
+        const send = async () => {
+            try {
+                const { items } = await computeLeaderboard({ weekly, limit });
+                const payload = JSON.stringify({ items, period });
+                res.write(`event: leaderboard\n`);
+                res.write(`data: ${payload}\n\n`);
+            } catch (e) {
+                // On error, send comment to keep connection alive
+                res.write(`: ping\n\n`);
+            }
+        };
+
+        // Initial send
+        await send();
+        // Periodic updates every 10s
+        const timer = setInterval(() => {
+            if (!closed) send();
+        }, 10000);
+    } catch (error) {
+        next(error);
+    }
+};
