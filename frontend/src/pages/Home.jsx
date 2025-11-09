@@ -350,7 +350,7 @@ ${question}`;
             {/* Premium CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-12 sm:mb-16 px-4">
               <button
-                onClick={() => navigate('/dsa-tracker')}
+                onClick={() => navigate('/qa-sdet-dsa-sheet')}
                 className="group relative inline-flex items-center justify-center gap-3 sm:gap-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:via-teal-500 hover:to-cyan-500 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-2xl text-base sm:text-lg font-bold transition-all duration-500 hover:scale-105 shadow-2xl hover:shadow-emerald-500/25 border border-emerald-400/30 w-full sm:w-auto max-w-xs sm:max-w-none"
               >
                 <Code className="text-xl sm:text-2xl flex-shrink-0" />
