@@ -46,6 +46,33 @@ export default function Home() {
     };
   }, []);
 
+  // FAQ content
+  const faqs = useMemo(
+    () => [
+      {
+        q: 'What is Route2Hire?',
+        a: 'Route2Hire is a curated platform for QA, SDET, Test Automation, and broader tech roles. We provide job listings, employee referrals, interview prep, salary insights, resume templates, DSA Sheet, and many more exciting features.'
+      },
+      {
+        q: 'How do I get job alerts?',
+        a: 'Join our Telegram community for instant updates or create a free account to personalize alerts. We share handpicked roles daily.'
+      },
+      {
+        q: 'What is the QA/SDET DSA Sheet and how do I use it?',
+        a: 'The QA/SDET DSA Sheet is a curated set of DSA topics and problems tailored for QA and SDET interviews. Start from the overview at QA/SDET DSA Sheet, then track your progress and compete with others in live leaderboard.'
+      },
+      {
+        q: 'How can I participate in polls?',
+        a: 'Sign in and head to the Create Polls action or visit Public Polls to vote and explore community insights.'
+      },
+      {
+        q: 'Where can I connect with the community?',
+        a: 'Join our Telegram and WhatsApp communities to network, get job alerts, and discuss career growth with peers.'
+      }
+    ],
+    []
+  );
+
   const scrollToBottom = useCallback(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -571,6 +598,8 @@ ${question}`;
           </div>
         </section>
 
+        
+
         {/* Testimonials */}
         <section id="testimonials" className="py-12 sm:py-20">
           <div className="container mx-auto px-4 sm:px-6">
@@ -591,6 +620,65 @@ ${question}`;
             }>
               <TestimonialSection />
             </Suspense>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className="py-12 sm:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-6">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-white/70 max-w-3xl mx-auto text-base sm:text-lg">
+                Quick answers about Route2Hire, the QA/SDET DSA Sheet, alerts, and our community.
+              </p>
+            </div>
+
+            {/* Community Quick Links */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
+              <a
+                href="https://t.me/trendingjobs4all_QA"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-white/20 hover:border-white/30 transition-all duration-300"
+              >
+                <span className="font-bold">Join Telegram</span>
+                <span aria-hidden className="opacity-70 group-hover:translate-x-0.5 transition-transform">→</span>
+              </a>
+              <a
+                href="https://chat.whatsapp.com/DXvc1ncAenX1HZ7OKr8L4Y?mode=wwt"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-white/20 hover:border-white/30 transition-all duration-300"
+              >
+                <span className="font-bold">Join WhatsApp</span>
+                <span aria-hidden className="opacity-70 group-hover:translate-x-0.5 transition-transform">→</span>
+              </a>
+            </div>
+
+            {/* FAQ Items */}
+            <div className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
+              {faqs.map((item, index) => (
+                <details
+                  key={index}
+                  className="group bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 open:border-white/30 transition-all duration-300"
+                >
+                  <summary className="cursor-pointer list-none px-5 sm:px-6 py-4 sm:py-5 text-white flex items-start justify-between gap-4">
+                    <span className="text-base sm:text-lg font-semibold">{item.q}</span>
+                    <span
+                      aria-hidden
+                      className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-lg bg-white/10 text-white/80 group-open:rotate-45 transition-transform"
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <div className="px-5 sm:px-6 pb-5 sm:pb-6 text-white/80 text-sm sm:text-base">
+                    {item.a}
+                  </div>
+                </details>
+              ))}
+            </div>
           </div>
         </section>
 
