@@ -12,7 +12,6 @@ import {
   FaCheck, FaTrash, FaExclamationTriangle, FaBug, FaLightbulb, FaSort, FaTable, FaTrophy 
 } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
-import PlatformStatistics from '../components/PlatformStatistics';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('statistics');
@@ -111,6 +110,336 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const AdvancedStatistics = () => {
+    const colors = {
+      primary: '#3b82f6',
+      secondary: '#8b5cf6',
+      accent: '#10b981',
+      grid: '#e5e7eb',
+      text: '#6b7280',
+    };
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [adminCounts, setAdminCounts] = useState({
+      usersLength: 0,
+      commentsLength: 0,
+      interviewExperiencesLength: 0,
+      referralsLength: 0,
+      salariesLength: 0,
+      resumeTemplatesLength: 0
+    });
+    const [llms, setLlms] = useState({
+      interviewExperiences: 0,
+      salaryRecords: 0,
+      referrals: 0,
+      interviewQuestions: 0,
+      jobs: 0,
+      blogs: 0,
+      total: 0
+    });
+    const [bugTotals, setBugTotals] = useState({ total: 0, pending: 0, resolved: 0 });
+    const [featureTotals, setFeatureTotals] = useState({ total: 0, pending: 0, implemented: 0 });
+    const [months, setMonths] = useState([]);
+    const [usersMonthly, setUsersMonthly] = useState([]);
+    const [visitsMonthly, setVisitsMonthly] = useState([]);
+
+    useEffect(() => {
+      const getMonthBuckets = (n = 6) => {
+        const arr = [];
+        const now = new Date();
+        for (let i = n - 1; i >= 0; i--) {
+          const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
+          arr.push({
+            key: `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-01`,
+            label: d.toLocaleString(undefined, { month: 'short' })
+          });
+        }
+        return arr;
+      };
+
+      const fetchAll = async () => {
+        try {
+          setLoading(true);
+          setError('');
+          const monthBuckets = getMonthBuckets(6);
+          setMonths(monthBuckets.map(m => m.label));
+
+          const [
+            adminRes,
+            llmsRes,
+            bugTotalRes,
+            bugPendingRes,
+            bugResolvedRes,
+            featureTotalRes,
+            featurePendingRes,
+            featureImplementedRes,
+            dsaLeaderboardRes
+          ] = await Promise.all([
+            fetch('/backend/admin/statistics', { credentials: 'include' }),
+            // Public route mounted at root
+            fetch('/llms-stats'),
+            // Admin-only; may fail if not authenticated/admin
+            fetch(`/backend/bugs?page=1&limit=1`, { credentials: 'include' }),
+            fetch(`/backend/bugs?page=1&limit=1&status=Pending`, { credentials: 'include' }),
+            fetch(`/backend/bugs?page=1&limit=1&status=Resolved`, { credentials: 'include' }),
+            fetch(`/backend/feature-requests?page=1&limit=1`, { credentials: 'include' }),
+            fetch(`/backend/feature-requests?page=1&limit=1&status=Pending`, { credentials: 'include' }),
+            fetch(`/backend/feature-requests?page=1&limit=1&status=Implemented`, { credentials: 'include' }),
+            // Public leaderboard to read totalProblems for sheet size
+            fetch(`/backend/dsa-problems/leaderboard`)
+          ]);
+
+          // Parse JSON with guards
+          const safeJson = async (res) => {
+            try { return await res.json(); } catch { return null; }
+          };
+          const [adminData, llmsData, bugTotal, bugPending, bugResolved, featTotal, featPending, featImplemented, dsaLeaderboard] =
+            await Promise.all([safeJson(adminRes), safeJson(llmsRes), safeJson(bugTotalRes), safeJson(bugPendingRes), safeJson(bugResolvedRes), safeJson(featureTotalRes), safeJson(featurePendingRes), safeJson(featureImplementedRes), safeJson(dsaLeaderboardRes)]);
+
+          if (adminRes.ok && adminData) setAdminCounts(adminData);
+          if (llmsRes.ok && llmsData?.stats?.dynamicItems) {
+            setLlms({
+              interviewExperiences: llmsData.stats.dynamicItems.interviewExperiences || 0,
+              salaryRecords: llmsData.stats.dynamicItems.salaryRecords || 0,
+              referrals: llmsData.stats.dynamicItems.referrals || 0,
+              interviewQuestions: llmsData.stats.dynamicItems.interviewQuestions || 0,
+              jobs: llmsData.stats.dynamicItems.jobs || 0,
+              blogs: llmsData.stats.dynamicItems.blogs || 0,
+              total: llmsData.stats.dynamicItems.total || 0
+            });
+          }
+          if ((bugTotalRes.ok || bugPendingRes.ok || bugResolvedRes.ok) && (bugTotal || bugPending || bugResolved)) {
+            setBugTotals({
+              total: bugTotal?.total || 0,
+              pending: bugPending?.total || 0,
+              resolved: bugResolved?.total || 0
+            });
+          }
+          if ((featureTotalRes.ok || featurePendingRes.ok || featureImplementedRes.ok) && (featTotal || featPending || featImplemented)) {
+            setFeatureTotals({
+              total: featTotal?.total || 0,
+              pending: featPending?.total || 0,
+              implemented: featImplemented?.total || 0
+            });
+          }
+          // If admin counts unavailable, attempt to derive some KPIs from llms stats
+          if (!adminRes.ok && llmsRes.ok) {
+            setAdminCounts((prev) => ({
+              ...prev,
+              interviewExperiencesLength: llmsData?.stats?.dynamicItems?.interviewExperiences || 0,
+              salariesLength: llmsData?.stats?.dynamicItems?.salaryRecords || 0,
+              referralsLength: llmsData?.stats?.dynamicItems?.referrals || 0,
+            }));
+          }
+          // We can surface totalProblems for sheet size from public leaderboard
+          const totalProblems = dsaLeaderboard?.totalProblems;
+
+          // Users monthly registered and visited via existing API filter by date
+          // This route requires auth; if not available, skip silently
+          try {
+            const monthlyPromises = monthBuckets.map((m) =>
+              fetch(`/backend/user/getusers?startIndex=0&limit=1&date=${m.key}`, { credentials: 'include' }).then(async (r) => (r.ok ? r.json() : null))
+            );
+            const monthResults = await Promise.all(monthlyPromises);
+            const regSeries = monthResults.map(r => (r && typeof r.matchedCount === 'number' ? r.matchedCount : 0));
+            const visitSeries = monthResults.map(r => (r && typeof r.visitedCount === 'number' ? r.visitedCount : 0));
+            if (regSeries.some(v => v > 0) || visitSeries.some(v => v > 0)) {
+              setUsersMonthly(regSeries);
+              setVisitsMonthly(visitSeries);
+            }
+          } catch {}
+        } catch (e) {
+          setError('Failed to load statistics');
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchAll();
+    }, []);
+
+    const toPath = (data, width, height, padding) => {
+      if (!data || data.length === 0) return '';
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+      const stepX = (width - padding * 2) / Math.max(1, (data.length - 1));
+      const y = (v) => {
+        if (max === min) return height / 2;
+        return height - padding - ((v - min) / (max - min)) * (height - padding * 2);
+      };
+      return data
+        .map((v, i) => `${i === 0 ? 'M' : 'L'} ${padding + i * stepX} ${y(v)}`)
+        .join(' ');
+    };
+
+    const donutData = [
+      { label: 'Jobs', value: llms.jobs, color: '#60a5fa' },
+      { label: 'Interviews', value: llms.interviewExperiences, color: '#a78bfa' },
+      { label: 'Referrals', value: llms.referrals, color: '#34d399' },
+      { label: 'Salaries', value: llms.salaryRecords, color: '#f59e0b' },
+      { label: 'Questions', value: llms.interviewQuestions, color: '#f472b6' },
+      { label: 'Blogs', value: llms.blogs, color: '#22c55e' },
+    ].filter(d => d.value > 0);
+    const donutTotal = donutData.reduce((a, b) => a + b.value, 0) || 1;
+    const donutCirc = 2 * Math.PI * 60;
+
+    const kpis = [
+      { label: 'Total Users', value: adminCounts.usersLength || 'N/A' },
+      { label: 'Interview Experiences', value: adminCounts.interviewExperiencesLength },
+      { label: 'Salary Structures', value: adminCounts.salariesLength },
+      { label: 'Resume Templates', value: adminCounts.resumeTemplatesLength },
+      { label: 'Comments', value: adminCounts.commentsLength || 'N/A' },
+      { label: 'Referrals', value: adminCounts.referralsLength },
+      { label: 'Question Bank', value: llms.interviewQuestions },
+      { label: 'Jobs', value: llms.jobs },
+      { label: 'Blogs', value: llms.blogs },
+      { label: 'Bugs (All)', value: bugTotals.total || 'N/A' },
+      { label: 'Features (All)', value: featureTotals.total || 'N/A' },
+    ];
+
+    return (
+      <div className="space-y-6 p-4 mt-6">
+        {error && (
+          <div className="rounded-lg border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300 px-4 py-2 text-sm">
+            {error}
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          {kpis.map((k) => (
+            <div key={k.label} className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm">
+              <div className="text-xs text-gray-500 dark:text-gray-400">{k.label}</div>
+              <div className="mt-2 flex items-end justify-between">
+                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{loading ? '—' : k.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-2 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
+            <div className="flex items-center justify-between">
+              <div className="font-semibold text-gray-900 dark:text-gray-100">Users Growth (last 6 months)</div>
+              <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full" style={{ background: colors.primary }} />Registered</div>
+                <div className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full" style={{ background: colors.secondary }} />Visited</div>
+              </div>
+            </div>
+            <div className="mt-3 w-full">
+              <svg viewBox="0 0 700 260" className="w-full">
+                <g>
+                  {[0,1,2,3].map((i) => (
+                    <line key={i} x1="40" x2="680" y1={40 + i * 50} y2={40 + i * 50} stroke={colors.grid} strokeDasharray="4 4" />
+                  ))}
+                </g>
+                <g transform="translate(0,0)">
+                  <path d={toPath(usersMonthly, 700, 240, 40)} fill="none" stroke={colors.primary} strokeWidth="2.5" />
+                  <path d={toPath(visitsMonthly, 700, 240, 40)} fill="none" stroke={colors.secondary} strokeWidth="2.5" />
+                </g>
+                <g>
+                  {months.map((m, i) => (
+                    <text key={m} x={40 + i * ((700 - 80) / Math.max(1, (months.length - 1)))} y="255" textAnchor="middle" fontSize="10" fill={colors.text}>{m}</text>
+                  ))}
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
+            <div className="font-semibold text-gray-900 dark:text-gray-100">Content Mix</div>
+            <div className="mt-4 flex items-center gap-6">
+              <svg viewBox="0 0 160 160" className="w-36 h-36">
+                <circle cx="80" cy="80" r="60" stroke="#e5e7eb" className="dark:stroke-gray-700" strokeWidth="16" fill="none" />
+                {(() => {
+                  let donutOffset = 0;
+                  return donutData.map((d) => {
+                    const length = ((d.value || 0) / donutTotal) * donutCirc;
+                    const circle = (
+                      <circle
+                        key={d.label}
+                        cx="80"
+                        cy="80"
+                        r="60"
+                        fill="none"
+                        stroke={d.color}
+                        strokeWidth="16"
+                        strokeDasharray={`${length} ${donutCirc - length}`}
+                        strokeDashoffset={-donutOffset}
+                        transform="rotate(-90 80 80)"
+                      />
+                    );
+                    donutOffset += length;
+                    return circle;
+                  });
+                })()}
+              </svg>
+              <div className="space-y-2 text-sm">
+                {donutData.map((d) => (
+                  <div key={d.label} className="flex items-center justify-between gap-6">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block w-3 h-3 rounded-sm" style={{ background: d.color }} />
+                      <span className="text-gray-600 dark:text-gray-300">{d.label}</span>
+                    </div>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{d.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">Breakdown of platform content</div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
+            <div className="font-semibold text-gray-900 dark:text-gray-100">Bugs Status</div>
+            <div className="mt-4 space-y-3">
+              {[
+                { label: 'Pending', a: bugTotals.pending, color: '#f59e0b' },
+                { label: 'Resolved', a: bugTotals.resolved, color: '#10b981' },
+              ].map((row) => {
+                const max = Math.max(1, bugTotals.total);
+                return (
+                  <div key={row.label}>
+                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                      <span>{row.label}</span>
+                      <span>{row.a.toLocaleString()}</span>
+                    </div>
+                    <div className="mt-1 h-7 rounded-md bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                      <div
+                        className="h-7"
+                        style={{ width: `${(row.a / max) * 100}%`, background: row.color }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
+            <div className="font-semibold text-gray-900 dark:text-gray-100">Feature Requests Status</div>
+            <div className="mt-4 space-y-3">
+              {[
+                { label: 'Pending', a: featureTotals.pending, color: '#60a5fa' },
+                { label: 'Implemented', a: featureTotals.implemented, color: '#22c55e' },
+              ].map((row) => {
+                const max = Math.max(1, featureTotals.total);
+                return (
+                  <div key={row.label}>
+                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                      <span>{row.label}</span>
+                      <span>{row.a.toLocaleString()}</span>
+                    </div>
+                    <div className="mt-1 h-7 rounded-md bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                      <div
+                        className="h-7"
+                        style={{ width: `${(row.a / max) * 100}%`, background: row.color }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const fetchBugReports = async (resetPage = false) => {
@@ -1407,7 +1736,7 @@ const Dashboard = () => {
       <main className="flex-1 p-6 md:p-10 overflow-x-hidden">
         {currentUser.isUserAdmin && (
           activeTab === 'statistics' ? (
-            <PlatformStatistics />
+            <AdvancedStatistics />
           ) : 
           activeTab === 'users' ? users.length > 0 :
           activeTab === 'comments' ? comments.length > 0 :
@@ -1423,7 +1752,7 @@ const Dashboard = () => {
           <div className="animate-fade-in">
             <div className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
               <div className="overflow-x-auto">
-                {activeTab === 'statistics' ? <PlatformStatistics /> : 
+                {activeTab === 'statistics' ? <AdvancedStatistics /> : 
                  activeTab === 'users' ? <UsersTable /> : 
                  activeTab === 'comments' ? <CommentsTable /> : 
                  activeTab === 'interviewExperiences' ? <InterviewExperiencesTable /> : 
@@ -1437,7 +1766,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {showMore && (
+            {showMore && activeTab !== 'statistics' && (
               <button
                 onClick={handleShowMore}
                 disabled={loading}
