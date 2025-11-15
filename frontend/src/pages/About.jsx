@@ -178,9 +178,9 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { label: 'Active Job Listings', value: '2000+', gradient: 'from-purple-500 to-purple-600' },
-              { label: 'Companies Hiring', value: '500+', gradient: 'from-blue-500 to-blue-600' },
-              { label: 'Trusted Community', value: '700+', gradient: 'from-emerald-500 to-emerald-600' }
+              { label: 'Active Job Listings', value: '2500+', gradient: 'from-purple-500 to-purple-600' },
+              { label: 'Companies Hiring', value: '1000+', gradient: 'from-blue-500 to-blue-600' },
+              { label: 'Trusted Community', value: '1000+', gradient: 'from-emerald-500 to-emerald-600' }
             ].map((stat, index) => (
               <div key={index} className="text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div className={`text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}>{stat.value}</div>

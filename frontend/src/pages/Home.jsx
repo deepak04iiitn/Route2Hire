@@ -408,16 +408,16 @@ ${question}`;
             {/* Premium Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 max-w-4xl mx-auto mb-8 sm:mb-12">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">3K+</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">2500+</div>
                 <div className="text-white/60 font-medium text-sm sm:text-base">Fresh Jobs</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">500+</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">1000+</div>
                 <div className="text-white/60 font-medium text-sm sm:text-base">Active Users</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">90%</div>
-                <div className="text-white/60 font-medium text-sm sm:text-base">Success Rate</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">100+</div>
+                <div className="text-white/60 font-medium text-sm sm:text-base">Interview Resources</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">24/7</div>

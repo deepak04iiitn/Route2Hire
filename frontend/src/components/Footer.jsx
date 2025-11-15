@@ -82,11 +82,11 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-slate-400 leading-relaxed max-w-sm">
-              Connecting ambitious professionals to extraordinary career opportunities in the digital age. Your gateway to success.
+              Connecting QA/SDET professionals to extraordinary career opportunities and job resources. Your gateway to success.
             </p>
             <div className="flex items-center space-x-2 text-sm text-slate-500">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Trusted by many professionals</span>
+              <span>Trusted by 1000+ professionals</span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-slate-500">
               <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
