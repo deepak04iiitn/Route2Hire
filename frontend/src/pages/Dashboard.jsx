@@ -11,11 +11,12 @@ import {
   FaTimes,
   FaCheck, FaTrash, FaExclamationTriangle, FaBug, FaLightbulb, FaSort, FaTable, FaTrophy 
 } from 'react-icons/fa';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('statistics');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1280);
   const [users, setUsers] = useState([]);
   const [comments, setComments] = useState([]);
   const [interviewExperiences, setInterviewExperiences] = useState([]);
@@ -1583,17 +1584,19 @@ const Dashboard = () => {
     <button
       onClick={() => {
         setActiveTab(tab);
-        setIsSidebarOpen(false);
+        if (window.innerWidth < 1280) {
+          setIsSidebarOpen(false);
+        }
       }}
       className={`
-        w-full flex items-center p-3 rounded-lg transition-all duration-300 
+        w-full flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg transition-all duration-300 text-left
         ${activeTab === tab 
-          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' 
-          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'}
+          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/30' 
+          : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900'}
       `}
     >
-      <Icon className="mr-3 text-xl" />
-      <span className="text-sm font-medium">{label}</span>
+      <Icon className="text-base sm:text-lg flex-shrink-0" />
+      <span className="text-sm sm:text-base font-medium">{label}</span>
     </button>
   );
 
@@ -1684,56 +1687,72 @@ const Dashboard = () => {
         <link rel="canonical" href="https://route2hire.com/dashboard" />
       </Helmet>
 
-      <div className="relative h-screen bg-gray-50 dark:bg-gray-900 flex">
-      {/* Mobile & Tablet Hamburger Button */}
-      <button 
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="relative h-10 top-2 left-2 z-50 md:hidden p-2 text-black text-2xl rounded-full"
-      >
-        {isSidebarOpen ? <FaBars className='hidden' /> : <FaBars />}
-      </button>
+      <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
+        {/* Sidebar Toggle Arrow - right edge */}
+        <button
+          className="xl:hidden fixed top-1/2 -translate-y-1/2 right-0 z-40 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-2.5 rounded-l-xl shadow-2xl backdrop-blur-sm border border-white/20 hover:translate-x-0.5 transition-all duration-300 touch-manipulation"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          aria-label="Toggle sidebar"
+        >
+          {isSidebarOpen ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+        </button>
 
-      {/* Sidebar */}
-      <div 
-        ref={sidebarRef}
-        className={`
-          fixed md:static z-40 top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 
-          shadow-2xl transform transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:translate-x-0 md:block
-        `}
-      >
-        <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Admin Dashboard
-          </h1>
+        {/* Backdrop for mobile and tablet */}
+        {isSidebarOpen && window.innerWidth < 1280 && (
+          <div 
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 xl:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar - Responsive width and positioning */}
+        <div
+          ref={sidebarRef}
+          className={`
+            w-full sm:w-80 lg:w-96 xl:w-80 2xl:w-96 bg-white/90 backdrop-blur-xl border-r border-white/20 shadow-2xl z-30 transition-all duration-500 fixed inset-y-0 overflow-y-auto
+            ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} right-0
+            xl:left-0 xl:right-auto xl:translate-x-0 xl:relative
+          `}
+        >
+          <div className="pt-16 sm:pt-20 md:pt-24 xl:pt-28 p-2 sm:p-3 md:p-4">
+            {/* Close button for mobile and tablet */}
+            {isSidebarOpen && window.innerWidth < 1280 && (
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all duration-200"
+                aria-label="Close sidebar"
+              >
+                <X size={18} className="sm:w-5 sm:h-5" />
+              </button>
+            )}
+
+            {/* Header */}
+            <div className="mb-4 sm:mb-6">
+              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-1 sm:mb-2">
+                Admin Dashboard
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-500">Manage your platform</p>
+            </div>
+
+            {/* Navigation */}
+            <nav className="space-y-2">
+              <SidebarItem icon={FaChartLine} label="Statistics" tab="statistics" />
+              <SidebarItem icon={FaUsers} label="Users" tab="users" />
+              <SidebarItem icon={FaComments} label="Comments" tab="comments" />
+              <SidebarItem icon={FaClipboardList} label="Interview Experiences" tab="interviewExperiences" />
+              <SidebarItem icon={FaLink} label="Referrals" tab="referrals" />
+              <SidebarItem icon={FaMoneyBillWave} label="Salary Structures" tab="salaries" />
+              <SidebarItem icon={FaFileAlt} label="Resume Templates" tab="resumeTemplates" />
+              <SidebarItem icon={FaBug} label="Bugs" tab="bugs" />
+              <SidebarItem icon={FaLightbulb} label="Feature Requests" tab="features" />
+              <SidebarItem icon={FaTable} label="DSA Sheet" tab="dsa" />
+              <SidebarItem icon={FaTrophy} label="DSA Leaderboard" tab="dsaLeaderboard" />
+            </nav>
+          </div>
         </div>
 
-        <nav className="p-4 space-y-2">
-          <SidebarItem icon={FaChartLine} label="Statistics" tab="statistics" />
-          <SidebarItem icon={FaUsers} label="Users" tab="users" />
-          <SidebarItem icon={FaComments} label="Comments" tab="comments" />
-          <SidebarItem icon={FaClipboardList} label="Interview Experiences" tab="interviewExperiences" />
-          <SidebarItem icon={FaLink} label="Referrals" tab="referrals" />
-          <SidebarItem icon={FaMoneyBillWave} label="Salary Structures" tab="salaries" />
-          <SidebarItem icon={FaFileAlt} label="Resume Templates" tab="resumeTemplates" />
-          <SidebarItem icon={FaBug} label="Bugs" tab="bugs" />
-          <SidebarItem icon={FaLightbulb} label="Feature Requests" tab="features" />
-        <SidebarItem icon={FaTable} label="DSA Sheet" tab="dsa" />
-        <SidebarItem icon={FaTrophy} label="DSA Leaderboard" tab="dsaLeaderboard" />
-        </nav>
-      </div>
-
-      {/* Overlay for Mobile Sidebar */}
-      {isSidebarOpen && (
-        <div 
-          onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
-        />
-      )}
-
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-10 overflow-x-hidden">
+      <main className="flex-1 p-4 sm:p-6 md:p-8 lg:p-10 overflow-x-hidden">
         {currentUser.isUserAdmin && (
           activeTab === 'statistics' ? (
             <AdvancedStatistics />
