@@ -122,6 +122,23 @@ export default function RoadmapList() {
     <>
       <Helmet>
         <title>Learning Roadmaps | Route2Hire</title>
+        <meta
+          name="description"
+          content="Explore structured learning roadmaps for QA, SDET, and Test Automation careers. Master new skills and track your progress with comprehensive learning paths on Route2Hire."
+        />
+        <meta
+          name="keywords"
+          content="learning roadmaps, QA roadmap, SDET roadmap, test automation roadmap, career path, skill development"
+        />
+        <meta property="og:title" content="Learning Roadmaps | Route2Hire" />
+        <meta
+          property="og:description"
+          content="Explore structured learning roadmaps for QA, SDET, and Test Automation careers."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://route2hire.com/roadmaps" />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
+        <link rel="canonical" href="https://route2hire.com/roadmaps" />
       </Helmet>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-violet-50/40 mt-16">
       {/* Breadcrumb Navigation */}

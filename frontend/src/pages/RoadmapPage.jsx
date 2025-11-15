@@ -156,6 +156,23 @@ export default function RoadmapPage() {
     <>
       <Helmet>
         <title>{roadmapData?.title || 'Learning Roadmap'} | Route2Hire</title>
+        <meta
+          name="description"
+          content={roadmapData?.description || "Explore a comprehensive learning roadmap for QA, SDET, and Test Automation careers. Track your progress and master new skills."}
+        />
+        <meta
+          name="keywords"
+          content="learning roadmap, QA roadmap, SDET roadmap, test automation, career path, skill development"
+        />
+        <meta property="og:title" content={`${roadmapData?.title || 'Learning Roadmap'} | Route2Hire`} />
+        <meta
+          property="og:description"
+          content={roadmapData?.description || "Explore a comprehensive learning roadmap for QA, SDET, and Test Automation careers."}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://route2hire.com/roadmaps/${role || ''}`} />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
+        <link rel="canonical" href={`https://route2hire.com/roadmaps/${role || ''}`} />
       </Helmet>
       <div className="min-h-screen bg-slate-50">
       {/* Breadcrumb Navigation */}

@@ -68,6 +68,16 @@ export default function InterviewExp() {
     checkPremiumStatus();
   }, [currentUser]);
 
+  // Redirect from old /interviewExp route to canonical /interview-experiences
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath === '/interviewExp' || currentPath.startsWith('/interviewExp/')) {
+      const newPath = currentPath.replace('/interviewExp', '/interview-experiences');
+      navigate(newPath, { replace: true });
+      return;
+    }
+  }, [navigate]);
+
   useEffect(() => {
     fetchExperiences();
   }, []);
@@ -477,10 +487,10 @@ export default function InterviewExp() {
           <div className="mb-4 px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8">
             <Breadcrumb 
               items={[
-                { label: 'Interview Experiences', path: '/interviewExp' },
+                { label: 'Interview Experiences', path: '/interview-experiences' },
                 selectedExperience ? { 
                   label: selectedExperience.company || 'Company', 
-                  path: `/interviewExp?company=${encodeURIComponent(selectedExperience.company || '')}` 
+                  path: `/interview-experiences?company=${encodeURIComponent(selectedExperience.company || '')}` 
                 } : null,
               ].filter(Boolean)}
             />

@@ -150,6 +150,7 @@ export default function App() {
                 <Route path="/interview-experience/:slug/:experienceId" element={<InterviewExp />} />
                 <Route path="/interview-experience/:experienceId" element={<InterviewExp />} />
                 <Route path="/salaryStructures" element={<SalaryStructures />} />
+                <Route path="/salary-structures" element={<SalaryStructures />} />
                 <Route path="/salaryStructures/:slug/:salaryId" element={<SalaryStructures />} />
                 <Route path="/salaryStructures/:salaryId" element={<SalaryStructures />} />
                 <Route path="/salary/:id" element={<SalaryDetailPage />} />
@@ -157,6 +158,7 @@ export default function App() {
                 <Route path="/referral/:slug/:id" element={<ReferralDetailPage />} />
                 <Route path="/referral/:id" element={<ReferralDetailPage />} />
                 <Route path='/resumeTemplates' element={<ResumeTemplates />} />
+                <Route path='/resume-templates' element={<ResumeTemplates />} />
                 <Route path='/resumeTemplates/:slug/:templateId' element={<ResumeTemplates />} />
                 <Route path='/resumeTemplates/:templateId' element={<ResumeTemplates />} />
                 <Route path='/myCorner' element={<MyCorner />} />
@@ -173,8 +175,11 @@ export default function App() {
                 <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />
                 <Route path='/contactUs' element={<ContactUs />} />
                 <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
+                <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                 <Route path='/terms' element={<TermsOfService />} />
+                <Route path='/terms-of-service' element={<TermsOfService />} />
                 <Route path='/cookies' element={<CookiePolicy />} />
+                <Route path='/cookie-policy' element={<CookiePolicy />} />
                 <Route path='/newsletter' element={<Newsletter />} />
                 <Route path='/jobs' element={<Jobs />} />
                 <Route path='/resume-builder' element={<ResumeBuilder />} />

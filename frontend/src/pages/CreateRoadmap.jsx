@@ -185,6 +185,15 @@ export default function CreateRoadmap() {
     <>
       <Helmet>
         <title>{isEditMode ? 'Edit Roadmap' : 'Create Roadmap'} | Route2Hire</title>
+        <meta
+          name="description"
+          content={isEditMode ? "Edit learning roadmap for QA, SDET, and Test Automation careers." : "Create a new learning roadmap for QA, SDET, and Test Automation careers."}
+        />
+        <meta property="og:title" content={`${isEditMode ? 'Edit Roadmap' : 'Create Roadmap'} | Route2Hire`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={isEditMode ? `https://route2hire.com/roadmaps/edit/${role || ''}` : "https://route2hire.com/roadmaps/create"} />
+        <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
+        <link rel="canonical" href={isEditMode ? `https://route2hire.com/roadmaps/edit/${role || ''}` : "https://route2hire.com/roadmaps/create"} />
       </Helmet>
       <div className="min-h-screen bg-slate-50">
       {/* Breadcrumb Navigation */}

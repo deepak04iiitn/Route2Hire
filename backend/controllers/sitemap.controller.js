@@ -33,7 +33,7 @@ const generateSitemapXML = (urls) => {
 
 `;
 
-  // Static URLs with priorities
+  // Static URLs with priorities (only canonical URLs, no duplicates)
   const staticUrls = [
     { url: '/', priority: '1.00' },
     { url: '/about', priority: '0.80' },
@@ -43,18 +43,17 @@ const generateSitemapXML = (urls) => {
     { url: '/my-jobs', priority: '0.70' },
     { url: '/publicpolls', priority: '0.70' },
     { url: '/mypolls', priority: '0.60' },
-    { url: '/interviewExp', priority: '0.80' },
-    { url: '/interview-experiences', priority: '0.80' },
-    { url: '/salaryStructures', priority: '0.80' },
+    { url: '/interview-experiences', priority: '0.80' }, // Canonical URL (removed /interviewExp duplicate)
+    { url: '/salary-structures', priority: '0.80' }, // Canonical URL (prefer kebab-case)
     { url: '/referrals', priority: '0.80' },
-    { url: '/resumeTemplates', priority: '0.70' },
+    { url: '/resume-templates', priority: '0.70' }, // Canonical URL (prefer kebab-case)
     { url: '/roadmaps', priority: '0.60' },
     { url: '/myCorner', priority: '0.60' },
     { url: '/BuyMeACoffee', priority: '0.50' },
     { url: '/contactUs', priority: '0.60' },
-    { url: '/privacyPolicy', priority: '0.40' },
-    { url: '/terms', priority: '0.40' },
-    { url: '/cookies', priority: '0.40' },
+    { url: '/privacy-policy', priority: '0.40' }, // Canonical URL (prefer kebab-case)
+    { url: '/terms-of-service', priority: '0.40' }, // Canonical URL (prefer kebab-case)
+    { url: '/cookie-policy', priority: '0.40' }, // Canonical URL (prefer kebab-case)
     { url: '/newsletter', priority: '0.50' },
     { url: '/jobs', priority: '0.90' },
     { url: '/resume-builder', priority: '0.70' },
@@ -62,7 +61,7 @@ const generateSitemapXML = (urls) => {
     { url: '/qa-sdet-dsa-sheet', priority: '0.80' },
     { url: '/dashboard', priority: '0.60' },
     { url: '/admin/interview-questions', priority: '0.50' },
-    { url: '/community', priority: '0.75' },
+    { url: '/connect-with-route2hire', priority: '0.75' }, // Canonical URL
     { url: '/blogs', priority: '0.80' }
   ];
 
@@ -252,7 +251,7 @@ export const getSitemapStats = async (req, res) => {
     ]);
 
     const totalDynamicUrls = interviewCount + salaryCount + referralCount + questionCount + jobCount + blogCount;
-    const staticUrlCount = 28; // Count of static URLs (updated to include /blogs)
+    const staticUrlCount = 27; // Count of static URLs (removed duplicates, using canonical URLs only)
     const totalUrls = staticUrlCount + totalDynamicUrls;
 
     res.json({
