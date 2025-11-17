@@ -3,6 +3,7 @@ import Salary from '../models/salary.model.js';
 import Referral from '../models/referral.model.js';
 import InterviewQuestion from '../models/interviewQuestion.model.js';
 import Blog from '../models/blog.model.js';
+import User from '../models/user.model.js';
 import mongoose from 'mongoose';
 
 // In-memory cache for llms.txt
@@ -370,6 +371,24 @@ export const getLLMSStats = async (req, res) => {
     res.status(500).json({ 
       success: false, 
       message: 'Failed to get llms statistics',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+// Public endpoint to get users count
+export const getUsersCount = async (req, res) => {
+  try {
+    const usersCount = await User.countDocuments();
+    res.json({
+      success: true,
+      usersCount
+    });
+  } catch (error) {
+    console.error('Error getting users count:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to get users count',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }

@@ -8,7 +8,7 @@ import ResumePreview from '../components/resume/ResumePreview';
 import FieldSelection from '../components/resume/FieldSelection';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedLinks from '../components/RelatedLinks';
-import { FileText, Edit2, Trash2, Plus, Briefcase, FileEdit, Sparkles, Crown, FileSignature, LayoutTemplate, Eye, Download } from 'lucide-react';
+import { FileText, Edit2, Trash2, Plus, Briefcase, FileEdit, Crown, FileSignature, LayoutTemplate, Eye, Download, Rocket, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { FaDownload } from 'react-icons/fa';
 
@@ -208,33 +208,34 @@ const ResumeBuilder = () => {
 
     if (!currentUser) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 flex justify-center items-center relative overflow-hidden">
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 flex justify-center items-center relative overflow-hidden">
                 {/* Animated Background Elements */}
-                <div className="absolute inset-0">
-                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+                    <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay: '2s'}}></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{animationDelay: '4s'}}></div>
                 </div>
                 
                 <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="relative z-10 text-center p-12 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl max-w-lg mx-4"
+                    className="relative z-10 text-center p-12 bg-white/90 backdrop-blur-xl rounded-3xl border-2 border-purple-200/50 shadow-2xl max-w-lg mx-4"
                 >
                     <div className="relative mb-8">
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur opacity-75"></div>
-                        <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 p-4 rounded-2xl">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-lg opacity-20"></div>
+                        <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 p-4 rounded-2xl shadow-lg">
                             <Crown className="w-12 h-12 text-white mx-auto" />
                         </div>
                     </div>
-                    <h1 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold text-slate-900 mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                         Premium Resume Builder
                     </h1>
-                    <p className="text-xl text-gray-300 mb-8">Please sign in to access your professional resume builder</p>
-                    <div className="flex items-center justify-center space-x-2 text-purple-300">
-                        <Sparkles className="w-5 h-5 animate-pulse" />
-                        <span className="text-sm">Craft Your Perfect Resume</span>
-                        <Sparkles className="w-5 h-5 animate-pulse" />
+                    <p className="text-xl text-slate-600 mb-8">Please sign in to access your professional resume builder</p>
+                    <div className="flex items-center justify-center space-x-2 text-purple-600">
+                        <FileEdit className="w-5 h-5 animate-pulse" />
+                        <span className="text-sm font-medium">Craft Your Perfect Resume</span>
+                        <Award className="w-5 h-5 animate-pulse" />
                     </div>
                 </motion.div>
             </div>
@@ -243,7 +244,7 @@ const ResumeBuilder = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 flex justify-center items-center">
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 flex justify-center items-center">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -251,13 +252,13 @@ const ResumeBuilder = () => {
                     className="flex flex-col items-center"
                 >
                     <div className="relative">
-                        <div className="w-20 h-20 border-4 border-purple-500/30 rounded-full animate-spin"></div>
+                        <div className="w-20 h-20 border-4 border-purple-200 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-purple-500 rounded-full animate-spin"></div>
                     </div>
                     <motion.div
                         animate={{ opacity: [0.5, 1, 0.5] }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        className="mt-6 text-lg text-purple-300 font-medium"
+                        className="mt-6 text-lg text-purple-600 font-medium"
                     >
                         Loading your workspace...
                     </motion.div>
@@ -290,14 +291,19 @@ const ResumeBuilder = () => {
                 <link rel="canonical" href="https://route2hire.com/resume-builder" />
             </Helmet>
 
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
             {/* Modern Background Effects */}
-            <div className="absolute inset-0">
-                <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-                <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-full blur-3xl"></div>
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute top-20 left-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+                <div className="absolute top-40 right-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay: '2s'}}></div>
+                <div className="absolute -bottom-20 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay: '4s'}}></div>
                 {/* Subtle grid pattern */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+                <div className="absolute inset-0 opacity-5">
+                    <div className="w-full h-full" style={{
+                        backgroundImage: `linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)`,
+                        backgroundSize: '50px 50px'
+                    }}></div>
+                </div>
             </div>
 
             <div className="relative z-10 py-8 px-4 sm:px-6 lg:px-8">
@@ -317,45 +323,49 @@ const ResumeBuilder = () => {
                         transition={{ duration: 0.6, ease: "easeOut" }}
                         className="text-center mb-12"
                     >
-                        <div className="flex items-center justify-center space-x-4 mb-8 mt-20">
+                        <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-purple-200 shadow-lg shadow-purple-100/50 mb-6 mt-20">
+                            <Crown className="w-4 h-4 text-purple-600" />
+                            <span className="text-sm font-semibold text-purple-700">Professional Resume Builder</span>
+                        </div>
+                        <div className="flex items-center justify-center space-x-4 mb-8">
                             <div className="relative group">
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                                <div className="relative bg-gradient-to-r from-blue-500 to-indigo-600 p-4 rounded-2xl shadow-xl">
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl blur-lg opacity-30 group-hover:opacity-40 transition-opacity"></div>
+                                <div className="relative bg-gradient-to-r from-blue-500 to-indigo-600 p-4 rounded-2xl shadow-lg">
                                     <Crown className="w-8 h-8 text-white" />
                                 </div>
                             </div>
-                            <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent tracking-tight">
+                            <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight">
                                 Resume Builder
                             </h1>
                             <div className="relative group">
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                                <div className="relative bg-gradient-to-r from-purple-500 to-pink-600 p-4 rounded-2xl shadow-xl">
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl blur-lg opacity-30 group-hover:opacity-40 transition-opacity"></div>
+                                <div className="relative bg-gradient-to-r from-purple-500 to-pink-600 p-4 rounded-2xl shadow-lg">
                                     <FileSignature className="w-8 h-8 text-white" />
                                 </div>
                             </div>
                         </div>
-                        <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+                        <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
                             Create professional resumes that stand out. Choose your sections, 
                             customize with precision, and generate documents that command attention.
                         </p>
-                        <div className="flex items-center justify-center space-x-8">
-                            <div className="flex items-center space-x-2 text-slate-300 group">
-                                <div className="p-2 bg-slate-800/50 rounded-lg group-hover:bg-slate-700/50 transition-colors">
-                                    <LayoutTemplate className="w-4 h-4 text-blue-400" />
+                        <div className="flex flex-wrap items-center justify-center gap-6">
+                            <div className="flex items-center space-x-2 text-slate-700 group">
+                                <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors border border-blue-200">
+                                    <LayoutTemplate className="w-4 h-4 text-blue-600" />
                                 </div>
                                 <span className="text-sm font-medium">Professional Templates</span>
                             </div>
-                            <div className="w-px h-6 bg-slate-600"></div>
-                            <div className="flex items-center space-x-2 text-slate-300 group">
-                                <div className="p-2 bg-slate-800/50 rounded-lg group-hover:bg-slate-700/50 transition-colors">
-                                    <Eye className="w-4 h-4 text-purple-400" />
+                            <div className="w-px h-6 bg-slate-300"></div>
+                            <div className="flex items-center space-x-2 text-slate-700 group">
+                                <div className="p-2 bg-purple-50 rounded-lg group-hover:bg-purple-100 transition-colors border border-purple-200">
+                                    <Eye className="w-4 h-4 text-purple-600" />
                                 </div>
                                 <span className="text-sm font-medium">Live Preview</span>
                             </div>
-                            <div className="w-px h-6 bg-slate-600"></div>
-                            <div className="flex items-center space-x-2 text-slate-300 group">
-                                <div className="p-2 bg-slate-800/50 rounded-lg group-hover:bg-slate-700/50 transition-colors">
-                                    <Download className="w-4 h-4 text-green-400" />
+                            <div className="w-px h-6 bg-slate-300"></div>
+                            <div className="flex items-center space-x-2 text-slate-700 group">
+                                <div className="p-2 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors border border-emerald-200">
+                                    <Download className="w-4 h-4 text-emerald-600" />
                                 </div>
                                 <span className="text-sm font-medium">Instant Download</span>
                             </div>
@@ -375,19 +385,19 @@ const ResumeBuilder = () => {
                                     <motion.div
                                         whileHover={{ y: -2 }}
                                         transition={{ duration: 0.3 }}
-                                        className="bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6 hover:shadow-blue-500/10 hover:border-slate-600/50 transition-all duration-300"
+                                        className="bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-xl p-6 hover:shadow-2xl hover:border-blue-200 transition-all duration-300"
                                     >
                                         <div className="flex items-center justify-between mb-6">
-                                            <h2 className="text-2xl font-bold text-white flex items-center">
+                                            <h2 className="text-2xl font-bold text-slate-900 flex items-center">
                                                 <div className="relative mr-3">
-                                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl blur opacity-60"></div>
-                                                    <div className="relative bg-gradient-to-r from-blue-500 to-indigo-600 p-2 rounded-xl">
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl blur-lg opacity-30"></div>
+                                                    <div className="relative bg-gradient-to-r from-blue-500 to-indigo-600 p-2 rounded-xl shadow-lg">
                                                         <Briefcase className="w-5 h-5 text-white" />
                                                     </div>
                                                 </div>
                                                 Your Resumes
                                             </h2>
-                                            <div className="px-3 py-1 bg-slate-700/50 rounded-full text-slate-300 text-sm font-medium">
+                                            <div className="px-3 py-1 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-medium">
                                                 {savedResumes.length} Resume{savedResumes.length !== 1 ? 's' : ''}
                                             </div>
                                         </div>
@@ -399,10 +409,10 @@ const ResumeBuilder = () => {
                                                     animate={{ opacity: 1, x: 0 }}
                                                     transition={{ delay: index * 0.1 }}
                                                     whileHover={{ scale: 1.01, x: 2 }}
-                                                    className="group bg-slate-700/30 backdrop-blur-sm rounded-xl p-4 border border-slate-600/30 hover:border-blue-500/50 hover:bg-slate-700/40 transition-all duration-300"
+                                                    className="group bg-slate-50 rounded-xl p-4 border-2 border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 transition-all duration-300"
                                                 >
                                                     <div className="flex items-center justify-between mb-3">
-                                                        <h3 className="font-semibold text-base text-white group-hover:text-blue-300 transition-colors truncate">
+                                                        <h3 className="font-semibold text-base text-slate-900 group-hover:text-blue-600 transition-colors truncate">
                                                             {resume.resumeData.Header?.name || 'Untitled Resume'}
                                                         </h3>
                                                         <div className="flex space-x-1">
@@ -410,7 +420,7 @@ const ResumeBuilder = () => {
                                                                 whileHover={{ scale: 1.05 }}
                                                                 whileTap={{ scale: 0.95 }}
                                                                 onClick={() => handleEditResume(resume._id)}
-                                                                className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all duration-200"
+                                                                className="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-100 rounded-lg transition-all duration-200"
                                                             >
                                                                 <FileEdit size={16} />
                                                             </motion.button>
@@ -418,18 +428,18 @@ const ResumeBuilder = () => {
                                                                 whileHover={{ scale: 1.05 }}
                                                                 whileTap={{ scale: 0.95 }}
                                                                 onClick={() => handleDeleteResume(resume._id)}
-                                                                className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all duration-200"
+                                                                className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-100 rounded-lg transition-all duration-200"
                                                             >
                                                                 <Trash2 size={16} />
                                                             </motion.button>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center justify-between text-xs">
-                                                        <div className="flex items-center text-slate-400">
+                                                        <div className="flex items-center text-slate-600">
                                                             <FileText className="w-3 h-3 mr-2" />
                                                             {resume.selectedFields.length} sections
                                                         </div>
-                                                        <div className="px-2 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-blue-300 text-xs font-medium">
+                                                        <div className="px-2 py-1 bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 rounded-full text-blue-700 text-xs font-medium">
                                                             Premium
                                                         </div>
                                                     </div>
@@ -441,22 +451,22 @@ const ResumeBuilder = () => {
                                     <motion.div
                                         whileHover={{ y: -2 }}
                                         transition={{ duration: 0.3 }}
-                                        className="bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-8 text-center"
+                                        className="bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-xl p-8 text-center"
                                     >
                                         <motion.div
                                             initial={{ scale: 0 }}
                                             animate={{ scale: 1 }}
                                             transition={{ delay: 0.3, type: "spring" }}
-                                            className="w-16 h-16 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-6"
+                                            className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mx-auto mb-6 border-2 border-blue-200"
                                         >
-                                            <FileText className="w-8 h-8 text-blue-400" />
+                                            <FileText className="w-8 h-8 text-blue-600" />
                                         </motion.div>
-                                        <h2 className="text-2xl font-bold text-white mb-3">Your Portfolio</h2>
-                                        <p className="text-slate-300 mb-6">No resumes created yet. Start building your first professional resume.</p>
-                                        <div className="flex items-center justify-center space-x-2 text-blue-400">
-                                            <Sparkles className="w-4 h-4 animate-pulse" />
+                                        <h2 className="text-2xl font-bold text-slate-900 mb-3">Your Portfolio</h2>
+                                        <p className="text-slate-600 mb-6">No resumes created yet. Start building your first professional resume.</p>
+                                        <div className="flex items-center justify-center space-x-2 text-blue-600">
+                                            <Rocket className="w-4 h-4 animate-pulse" />
                                             <span className="text-sm font-medium">Ready to get started?</span>
-                                            <Sparkles className="w-4 h-4 animate-pulse" />
+                                            <Rocket className="w-4 h-4 animate-pulse" />
                                         </div>
                                     </motion.div>
                                 )}
@@ -467,13 +477,13 @@ const ResumeBuilder = () => {
                                 <motion.div
                                     whileHover={{ y: -2 }}
                                     transition={{ duration: 0.3 }}
-                                    className="bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6 hover:shadow-purple-500/10 hover:border-slate-600/50 transition-all duration-300"
+                                    className="bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-xl p-6 hover:shadow-2xl hover:border-purple-200 transition-all duration-300"
                                 >
                                     <div className="flex items-center justify-between mb-6">
-                                        <h2 className="text-2xl font-bold text-white flex items-center">
+                                        <h2 className="text-2xl font-bold text-slate-900 flex items-center">
                                             <div className="relative mr-3">
-                                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl blur opacity-60"></div>
-                                                <div className="relative bg-gradient-to-r from-purple-500 to-pink-600 p-2 rounded-xl">
+                                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl blur-lg opacity-30"></div>
+                                                <div className="relative bg-gradient-to-r from-purple-500 to-pink-600 p-2 rounded-xl shadow-lg">
                                                     <Plus className="w-5 h-5 text-white" />
                                                 </div>
                                             </div>
@@ -497,7 +507,7 @@ const ResumeBuilder = () => {
                             <motion.div
                                 whileHover={{ y: -1 }}
                                 transition={{ duration: 0.3 }}
-                                className="bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6 hover:shadow-purple-500/10 hover:border-slate-600/50 transition-all duration-300"
+                                className="bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-xl p-6 hover:shadow-2xl hover:border-purple-200 transition-all duration-300"
                             >
                                 <ResumeForm
                                     selectedFields={selectedFields}
@@ -509,7 +519,7 @@ const ResumeBuilder = () => {
                             <motion.div
                                 whileHover={{ y: -1 }}
                                 transition={{ duration: 0.3 }}
-                                className="bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6 hover:shadow-blue-500/10 hover:border-slate-600/50 transition-all duration-300"
+                                className="bg-white/90 backdrop-blur-sm rounded-2xl border-2 border-slate-200 shadow-xl p-6 hover:shadow-2xl hover:border-blue-200 transition-all duration-300"
                             >
                                 <ResumePreview
                                     selectedFields={selectedFields}
