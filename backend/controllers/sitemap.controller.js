@@ -141,9 +141,8 @@ export const generateSitemap = async (req, res) => {
 
     // Add salary record URLs
     salaryRecords.forEach(salary => {
-      const slug = createSlug(`${salary.company || 'company'}-${salary.position || 'role'}`);
       dynamicUrls.push({
-        url: `/salaryStructures/${slug}/${salary._id}`,
+        url: `/salary/${salary._id}`,
         priority: '0.70',
         lastmod: salary.updatedAt ? new Date(salary.updatedAt).toISOString().split('T')[0] : null
       });

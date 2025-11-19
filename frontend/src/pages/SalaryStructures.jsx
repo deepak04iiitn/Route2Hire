@@ -285,7 +285,7 @@ export default function SalaryStructures() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={selectedSalary && salaryId ? (slug ? `https://route2hire.com/salaryStructures/${slug}/${salaryId}` : `https://route2hire.com/salaryStructures/${salaryId}`) : "https://route2hire.com/salary-structures"} />
         <meta property="og:image" content="https://route2hire.com/assets/Route2Hire.png" />
-        <link rel="canonical" href={selectedSalary && salaryId ? (slug ? `https://route2hire.com/salaryStructures/${slug}/${salaryId}` : `https://route2hire.com/salaryStructures/${salaryId}`) : "https://route2hire.com/salary-structures"} />
+        <link rel="canonical" href={selectedSalary && salaryId ? `https://route2hire.com/salary/${salaryId}` : "https://route2hire.com/salary-structures"} />
       </Helmet>
 
       <div className="flex flex-col xl:flex-row bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-x-hidden">
