@@ -317,7 +317,7 @@ export default function CreateRoadmap() {
             transition={{ delay: 0.1 }}
             className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
           >
-            <div className="bg-teal-500 px-6 py-4 flex items-center justify-between">
+            <div className="bg-teal-500 px-6 py-4 flex items-center justify-between sticky top-0 z-20 shadow-lg">
               <div className="flex items-center gap-3">
                 <FaLightbulb className="text-2xl text-white" />
                 <h2 className="text-xl font-semibold text-white">Learning Nodes</h2>
@@ -434,7 +434,7 @@ export default function CreateRoadmap() {
 
                       {/* Learning Steps */}
                       <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                        <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center justify-between mb-3 sticky top-0 bg-blue-50 z-10 py-2 -mx-4 px-4">
                           <h4 className="font-semibold text-blue-900 flex items-center gap-2">
                             Learning Steps
                             <span className="bg-blue-200 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">
@@ -496,14 +496,48 @@ export default function CreateRoadmap() {
 
                                 <div>
                                   <label className="block text-xs font-medium text-slate-600 mb-1">
-                                    Hours
+                                    Days
                                   </label>
                                   <input
-                                    type="number"
-                                    value={step.estimatedHours}
-                                    onChange={(e) => updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', parseInt(e.target.value))}
+                                    type="text"
+                                    inputMode="decimal"
+                                    value={step.estimatedHours ? (step.estimatedHours / 24).toString() : ''}
+                                    onChange={(e) => {
+                                      const inputValue = e.target.value.trim();
+                                      
+                                      // Allow empty string and partial input (like "1." or "-")
+                                      if (inputValue === '' || inputValue === '.') {
+                                        updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', 0);
+                                        return;
+                                      }
+                                      
+                                      // Allow valid decimal numbers
+                                      const daysValue = parseFloat(inputValue);
+                                      if (!isNaN(daysValue) && daysValue >= 0) {
+                                        const hoursValue = Math.round(daysValue * 24);
+                                        updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', hoursValue);
+                                      } else if (inputValue === '0' || inputValue === '0.') {
+                                        updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', 0);
+                                      }
+                                    }}
+                                    onBlur={(e) => {
+                                      // Validate and format on blur
+                                      const inputValue = e.target.value.trim();
+                                      if (inputValue === '' || inputValue === '.') {
+                                        updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', 0);
+                                        return;
+                                      }
+                                      const daysValue = parseFloat(inputValue);
+                                      if (!isNaN(daysValue) && daysValue >= 0) {
+                                        const hoursValue = Math.round(daysValue * 24);
+                                        updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', hoursValue);
+                                      } else {
+                                        // Reset to 0 if invalid
+                                        updateLearningStep(nodeIndex, stepIndex, 'estimatedHours', 0);
+                                      }
+                                    }}
                                     className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-sm text-slate-900"
-                                    min="0"
+                                    placeholder="0.0"
                                   />
                                 </div>
                               </div>
@@ -523,7 +557,7 @@ export default function CreateRoadmap() {
 
                               {/* Resources */}
                               <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                                <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center justify-between mb-2 sticky top-0 bg-purple-50 z-10 py-1 -mx-3 px-3">
                                   <h5 className="text-sm font-semibold text-purple-900 flex items-center gap-1">
                                     Resources
                                     <span className="bg-purple-200 text-purple-700 px-2 py-0.5 rounded-full text-xs font-bold">
@@ -588,17 +622,101 @@ export default function CreateRoadmap() {
                                     </div>
                                   </div>
                                 ))}
+                                
+                                {/* Add Resource Button at Bottom */}
+                                {step.resources && step.resources.length > 0 && (
+                                  <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="mt-3 pt-2 border-t border-purple-300"
+                                  >
+                                    <motion.button
+                                      type="button"
+                                      onClick={() => addResource(nodeIndex, stepIndex)}
+                                      className="w-full text-purple-600 hover:bg-purple-100 px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1 border-2 border-dashed border-purple-300"
+                                      whileHover={{ scale: 1.02 }}
+                                      whileTap={{ scale: 0.98 }}
+                                    >
+                                      <FaPlus className="text-xs" />
+                                      Add Another Resource
+                                    </motion.button>
+                                  </motion.div>
+                                )}
                               </div>
                             </div>
                           </motion.div>
                         ))}
+                        
+                        {/* Add Step Button at Bottom */}
+                        {node.learningSteps && node.learningSteps.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="mt-4 pt-3 border-t border-blue-300"
+                          >
+                            <motion.button
+                              type="button"
+                              onClick={() => addLearningStep(nodeIndex)}
+                              className="w-full text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 border-2 border-dashed border-blue-300"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <FaPlus className="text-sm" />
+                              Add Another Step
+                            </motion.button>
+                          </motion.div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
                 ))
               )}
+              
+              {/* Add Node Button at Bottom */}
+              {formData.nodes.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 pt-6 border-t-2 border-slate-300"
+                >
+                  <motion.button
+                    type="button"
+                    onClick={addNode}
+                    className="w-full flex items-center justify-center gap-3 bg-teal-500 text-white px-6 py-4 rounded-xl font-semibold hover:bg-teal-600 transition-all shadow-lg shadow-teal-200 hover:shadow-xl hover:shadow-teal-300"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <FaPlus className="text-lg" />
+                    Add Another Learning Node
+                  </motion.button>
+                </motion.div>
+              )}
             </div>
           </motion.div>
+          
+          {/* Floating Add Node Button */}
+          {formData.nodes.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="fixed bottom-8 right-8 z-50"
+            >
+              <motion.button
+                type="button"
+                onClick={addNode}
+                className="
+                  flex items-center gap-3 bg-teal-500 text-white px-6 py-4 rounded-2xl
+                  font-bold shadow-2xl shadow-teal-500/50 hover:shadow-3xl hover:shadow-teal-500/60
+                  transition-all hover:bg-teal-600
+                "
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaPlus className="text-xl" />
+                <span className="hidden sm:inline">Add Node</span>
+              </motion.button>
+            </motion.div>
+          )}
 
           {/* Submit Button */}
           <motion.div

@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedLinks from '../components/RelatedLinks';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { FaPlus, FaRoad, FaClock, FaChartLine, FaEdit, FaTrash, FaArrowRight, FaStar, FaFire } from 'react-icons/fa';
+import { FaPlus, FaRoad, FaClock, FaChartLine, FaEdit, FaTrash, FaArrowRight, FaStar, FaFire, FaExclamationTriangle, FaTimes } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 export default function RoadmapList() {
@@ -13,6 +13,7 @@ export default function RoadmapList() {
   const navigate = useNavigate();
   const [roadmaps, setRoadmaps] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, roadmapId: null, roadmapTitle: null });
 
   useEffect(() => {
     fetchRoadmaps();
@@ -33,13 +34,19 @@ export default function RoadmapList() {
     }
   };
 
-  const handleDelete = async (roadmapId) => {
-    if (!window.confirm('Are you sure you want to delete this roadmap?')) {
-      return;
-    }
+  const openDeleteModal = (roadmapId, roadmapTitle) => {
+    setDeleteModal({ isOpen: true, roadmapId, roadmapTitle });
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModal({ isOpen: false, roadmapId: null, roadmapTitle: null });
+  };
+
+  const handleDelete = async () => {
+    if (!deleteModal.roadmapId) return;
 
     try {
-      const res = await fetch(`/backend/roadmaps/admin/${roadmapId}`, {
+      const res = await fetch(`/backend/roadmaps/admin/${deleteModal.roadmapId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -50,6 +57,7 @@ export default function RoadmapList() {
       if (data.success) {
         toast.success('Roadmap deleted successfully');
         fetchRoadmaps();
+        closeDeleteModal();
       } else {
         toast.error(data.message || 'Failed to delete roadmap');
       }
@@ -268,12 +276,12 @@ export default function RoadmapList() {
               const difficultyConfig = getDifficultyConfig(roadmap.difficulty);
               const DifficultyIcon = difficultyConfig.icon;
               
-              const totalHours = (roadmap.nodes && Array.isArray(roadmap.nodes)) 
-                ? roadmap.nodes.reduce((sum, node) => 
+              const totalDays = (roadmap.nodes && Array.isArray(roadmap.nodes)) 
+                ? (roadmap.nodes.reduce((sum, node) => 
                     sum + ((node.learningSteps && Array.isArray(node.learningSteps))
                       ? node.learningSteps.reduce((s, step) => 
                           s + (step.estimatedHours || 0), 0)
-                      : 0), 0)
+                      : 0), 0) / 24)
                 : 0;
 
               const skillsCount = (roadmap.nodes && Array.isArray(roadmap.nodes)) 
@@ -314,7 +322,7 @@ export default function RoadmapList() {
                       <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4 group-hover:text-indigo-600 transition-colors duration-300 break-words line-clamp-2 min-h-[3.5rem] leading-tight">
                         {roadmap.title || roadmap.role}
                       </h3>
-                      <p className="text-sm sm:text-base text-slate-600 line-clamp-3 mb-8 leading-relaxed break-words min-h-[4.5rem]">
+                      <p className="text-sm sm:text-base text-slate-600 line-clamp-3 mb-8 leading-relaxed break-words min-h-[4.5rem] whitespace-pre-wrap">
                         {roadmap.description || 'No description available'}
                       </p>
 
@@ -332,10 +340,10 @@ export default function RoadmapList() {
                         <div className="flex flex-col gap-2 p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
                           <div className="flex items-center gap-2">
                             <FaClock className="text-blue-600 text-sm" />
-                            <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider">Hours</span>
+                            <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider">Days</span>
                           </div>
                           <span className="text-2xl font-bold text-slate-900">
-                            {totalHours}
+                            {Math.round(totalDays * 10) / 10}
                           </span>
                         </div>
                       </div>
@@ -371,7 +379,7 @@ export default function RoadmapList() {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          handleDelete(roadmap._id);
+                          openDeleteModal(roadmap._id, roadmap.title || roadmap.role);
                         }}
                         className="
                           flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold
@@ -397,6 +405,90 @@ export default function RoadmapList() {
         </div>
       </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteModal.isOpen && (
+          <div className="fixed inset-0 z-50 overflow-y-auto">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeDeleteModal}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            
+            {/* Modal */}
+            <div className="flex min-h-full items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", duration: 0.3 }}
+                className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border-2 border-slate-200"
+              >
+              {/* Close Button */}
+              <button
+                onClick={closeDeleteModal}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors z-10"
+              >
+                <FaTimes className="text-xl" />
+              </button>
+
+              {/* Modal Content */}
+              <div className="p-8">
+                {/* Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-rose-100 to-red-100 rounded-2xl flex items-center justify-center shadow-lg">
+                    <FaExclamationTriangle className="text-3xl text-rose-600" />
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-slate-900 text-center mb-3">
+                  Delete Roadmap?
+                </h3>
+
+                {/* Description */}
+                <p className="text-slate-600 text-center mb-2 leading-relaxed">
+                  Are you sure you want to delete
+                </p>
+                <p className="text-slate-900 font-semibold text-center mb-6 px-4 py-2 bg-slate-50 rounded-lg border border-slate-200">
+                  "{deleteModal.roadmapTitle}"
+                </p>
+                <p className="text-rose-600 text-sm text-center font-medium mb-8">
+                  This action cannot be undone. All learning progress and data associated with this roadmap will be permanently deleted.
+                </p>
+
+                {/* Buttons */}
+                <div className="flex gap-3">
+                  <motion.button
+                    onClick={closeDeleteModal}
+                    className="flex-1 px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-all duration-200 border-2 border-slate-200"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    onClick={handleDelete}
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-rose-500 to-red-600 text-white rounded-xl font-semibold hover:from-rose-600 hover:to-red-700 transition-all duration-200 shadow-lg shadow-rose-200"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      <FaTrash className="text-sm" />
+                      Delete Forever
+                    </span>
+                  </motion.button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

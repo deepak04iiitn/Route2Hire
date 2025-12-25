@@ -390,7 +390,7 @@ export const createOrUpdateRoadmap = async (req, res, next) => {
     
     const { role, nodes, title, description, difficulty } = req.body;
     
-    // Calculate total estimated hours
+    // Calculate total estimated hours (stored as hours, displayed as days in frontend)
     const totalHours = nodes.reduce((sum, node) => {
       const nodeHours = node.learningSteps.reduce(
         (stepSum, step) => stepSum + (step.estimatedHours || 0), 

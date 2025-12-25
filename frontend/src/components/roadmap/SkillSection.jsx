@@ -17,7 +17,7 @@ export default function SkillSection({ skill, isExpanded, onToggle, userProgress
   
   const totalSubskills = skill.learningSteps?.length || 0;
   const subskillProgress = totalSubskills > 0 ? (completedSubskills / totalSubskills) * 100 : 0;
-  const totalHours = skill.learningSteps?.reduce((sum, step) => sum + (step.estimatedHours || 0), 0) || 0;
+  const totalDays = (skill.learningSteps?.reduce((sum, step) => sum + (step.estimatedHours || 0), 0) || 0) / 24;
 
   return (
     <motion.div
@@ -72,7 +72,7 @@ export default function SkillSection({ skill, isExpanded, onToggle, userProgress
               )}
             </div>
             
-            <p className="text-slate-600 leading-relaxed mb-4">
+            <p className="text-slate-600 leading-relaxed mb-4 whitespace-pre-wrap">
               {skill.description}
             </p>
             
@@ -102,10 +102,10 @@ export default function SkillSection({ skill, isExpanded, onToggle, userProgress
           </div>
           
           <div className="flex items-center gap-4 flex-shrink-0">
-            {totalHours > 0 && (
+            {totalDays > 0 && (
               <div className="flex items-center gap-2 px-3 py-2 bg-sky-50 text-sky-700 rounded-lg border border-sky-200">
                 <FaClock className="text-sm" />
-                <span className="text-sm font-semibold">{totalHours}h</span>
+                <span className="text-sm font-semibold">{Math.round(totalDays * 10) / 10}d</span>
               </div>
             )}
             
@@ -182,13 +182,13 @@ export default function SkillSection({ skill, isExpanded, onToggle, userProgress
                               {step.estimatedHours > 0 && (
                                 <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 rounded-lg border border-amber-200 flex-shrink-0">
                                   <FaClock className="text-xs" />
-                                  <span className="text-xs font-bold">{step.estimatedHours}h</span>
+                                  <span className="text-xs font-bold">{Math.round((step.estimatedHours / 24) * 10) / 10}d</span>
                                 </div>
                               )}
                             </div>
                             
                             {step.description && (
-                              <p className={`text-sm leading-relaxed mb-4 ${
+                              <p className={`text-sm leading-relaxed mb-4 whitespace-pre-wrap ${
                                 isStepCompleted ? 'text-slate-400' : 'text-slate-600'
                               }`}>
                                 {step.description}

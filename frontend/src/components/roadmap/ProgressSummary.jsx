@@ -7,9 +7,9 @@ export default function ProgressSummary({ progress, roadmapData, userProgress })
     ? Math.floor((new Date() - new Date(userProgress.createdAt)) / (1000 * 60 * 60 * 24)) 
     : 0;
 
-  const totalHours = roadmapData?.nodes.reduce((sum, node) => {
+  const totalDays = (roadmapData?.nodes.reduce((sum, node) => {
     return sum + (node.learningSteps?.reduce((s, step) => s + (step.estimatedHours || 0), 0) || 0);
-  }, 0) || 0;
+  }, 0) || 0) / 24;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -85,7 +85,7 @@ export default function ProgressSummary({ progress, roadmapData, userProgress })
         <div className="relative flex items-start justify-between mb-4">
           <div>
             <p className="text-sm font-semibold text-sky-600 mb-2 uppercase tracking-wide">Total Time</p>
-            <p className="text-4xl font-bold text-slate-900">{totalHours}h</p>
+            <p className="text-4xl font-bold text-slate-900">{Math.round(totalDays * 10) / 10}d</p>
           </div>
           <div className="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center shadow-lg shadow-sky-200">
             <FaClock className="text-white text-2xl" />

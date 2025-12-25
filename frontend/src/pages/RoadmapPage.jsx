@@ -231,7 +231,7 @@ export default function RoadmapPage() {
               <h1 className="text-4xl font-bold text-slate-900 mb-3 tracking-tight">
                 {roadmapData?.title}
               </h1>
-              <p className="text-lg text-slate-600 leading-relaxed">
+              <p className="text-lg text-slate-600 leading-relaxed whitespace-pre-wrap">
                 {roadmapData?.description}
               </p>
             </div>
@@ -289,7 +289,7 @@ export default function RoadmapPage() {
                   Recommended Next
                 </div>
                 <h3 className="text-xl font-bold mb-2">{recommendedNext.label}</h3>
-                <p className="text-emerald-50 leading-relaxed">{recommendedNext.description}</p>
+                <p className="text-emerald-50 leading-relaxed whitespace-pre-wrap">{recommendedNext.description}</p>
               </div>
             </div>
           </motion.div>

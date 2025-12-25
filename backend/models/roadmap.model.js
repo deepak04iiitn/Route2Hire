@@ -8,7 +8,7 @@ const learningStepSchema = new mongoose.Schema({
     title: String,
     url: String
   }],
-  estimatedHours: Number,
+  estimatedHours: Number, // Stored as hours, displayed as days in frontend (hours / 24)
   order: Number
 });
 
@@ -42,7 +42,7 @@ const roadmapSchema = new mongoose.Schema({
   title: String,
   description: String,
   nodes: [skillNodeSchema],
-  totalEstimatedHours: Number,
+  totalEstimatedHours: Number, // Stored as hours, displayed as days in frontend (hours / 24)
   difficulty: {
     type: String,
     enum: ['Beginner', 'Intermediate', 'Advanced'],
