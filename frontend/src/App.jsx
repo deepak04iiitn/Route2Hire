@@ -167,9 +167,9 @@ export default function App() {
                 <Route element={<AdminRoute />}>
                   <Route path='/dashboard' element={<Dashboard />} />
                   <Route path='/admin/interview-questions' element={<AdminInterviewQuestions />} />
-                  {/* <Route path='/admin-blogs' element={<AdminBlogs />} />
+                  <Route path='/admin-blogs' element={<AdminBlogs />} />
                   <Route path='/admin-blogs/:action' element={<AdminBlogs />} />
-                  <Route path='/admin-blogs/:action/:id' element={<AdminBlogs />} /> */}
+                  <Route path='/admin-blogs/:action/:id' element={<AdminBlogs />} />
                 </Route>
                 
                 <Route path='/BuyMeACoffee' element={<PremiumSubscription />} />

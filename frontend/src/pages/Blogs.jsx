@@ -536,20 +536,22 @@ export default function Blogs() {
             </div>
           ) : (
             <div className="space-y-4 sm:space-y-6 lg:space-y-8 max-w-none">
-              {/* Page Description */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-100">
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2 sm:p-3 bg-blue-100 rounded-lg sm:rounded-xl flex-shrink-0">
-                    <FaBookOpen size={20} className="text-blue-600 sm:w-6 sm:h-6" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-1 sm:mb-2">Blog Management</h2>
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                      Create, edit, and manage your blog posts with rich content and media support.
-                    </p>
+              {/* Page Description - Admin Only */}
+              {currentUser?.isUserAdmin && (
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-100">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="p-2 sm:p-3 bg-blue-100 rounded-lg sm:rounded-xl flex-shrink-0">
+                      <FaBookOpen size={20} className="text-blue-600 sm:w-6 sm:h-6" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-1 sm:mb-2">Blog Management</h2>
+                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        Create, edit, and manage your blog posts with rich content and media support.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* Admin Controls */}
               {currentUser?.isUserAdmin && (

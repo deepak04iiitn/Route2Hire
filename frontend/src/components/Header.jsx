@@ -251,7 +251,7 @@ export default function Header() {
       { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', desc: 'Compensation data', comingSoon: false },
       { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', desc: 'Professional templates', comingSoon: false },
       { path: '/resume-builder', icon: User, label: 'Resume Builder', desc: 'Create your resume', comingSoon: false },
-      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: true },
+      { path: '/blogs', icon: BookOpen, label: 'Blogs', desc: 'Read and create articles', comingSoon: false },
       { path: '/roadmaps', icon: Puzzle, label: 'Roadmaps', desc: 'Skill paths for roles', comingSoon: true }
     ];
 
@@ -425,7 +425,7 @@ export default function Header() {
                     { path: '/salaryStructures', icon: TrendingUp, label: 'Salary Insights', comingSoon: false },
                     { path: '/resumeTemplates', icon: FileEdit, label: 'Resume Templates', comingSoon: false },
                     { path: '/resume-builder', icon: User, label: 'Resume Builder', comingSoon: false },
-                    { path: '/blogs', icon: BookOpen, label: 'Blogs', comingSoon: true }
+                    { path: '/blogs', icon: BookOpen, label: 'Blogs', comingSoon: false }
                   ].map(({ path, icon: Icon, label, comingSoon }) => (
                     <motion.div
                       key={label}
