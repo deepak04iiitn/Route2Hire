@@ -21,13 +21,15 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAVm2xpbUscbiYq2RBrLu478nlZfNTzWc0",
-  authDomain: "careerconnect-85965.firebaseapp.com",
-  projectId: "careerconnect-85965",
-  storageBucket: "careerconnect-85965.firebasestorage.app",
-  messagingSenderId: "865595243103",
-  appId: "1:865595243103:web:f6fa600c83beb8334679ea"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: "route2hire-e3f29.firebaseapp.com",
+  projectId: "route2hire-e3f29",
+  storageBucket: "route2hire-e3f29.firebasestorage.app",
+  messagingSenderId: "822788689323",
+  appId: "1:822788689323:web:34aca62779c6a0ccc056ee",
+  measurementId: "G-GQLEC2RCZD"
 };
 
 // Initialize Firebase
@@ -35,6 +37,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+
+
+
+
+
+
 
 
 
