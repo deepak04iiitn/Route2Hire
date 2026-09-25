@@ -46,6 +46,31 @@ const BLOCK_LABELS = {
   divider: 'Divider',
 };
 
+const CODE_LANG_OPTIONS = [
+  { value: 'javascript', label: 'JavaScript' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'python', label: 'Python' },
+  { value: 'java', label: 'Java' },
+  { value: 'cpp', label: 'C++' },
+  { value: 'c', label: 'C' },
+  { value: 'csharp', label: 'C#' },
+  { value: 'go', label: 'Go' },
+  { value: 'rust', label: 'Rust' },
+  { value: 'kotlin', label: 'Kotlin' },
+  { value: 'swift', label: 'Swift' },
+  { value: 'ruby', label: 'Ruby' },
+  { value: 'php', label: 'PHP' },
+  { value: 'bash', label: 'Bash / Shell' },
+  { value: 'sql', label: 'SQL' },
+  { value: 'json', label: 'JSON' },
+  { value: 'yaml', label: 'YAML' },
+  { value: 'xml', label: 'XML' },
+  { value: 'html', label: 'HTML' },
+  { value: 'css', label: 'CSS' },
+  { value: 'markdown', label: 'Markdown' },
+  { value: 'plaintext', label: 'Plain text' },
+];
+
 function BlockEditor({ blocks, onChange }) {
   const updateBlock = (index, patch) => {
     const next = blocks.map((b, i) => (i === index ? { ...b, ...patch } : b));
@@ -158,12 +183,22 @@ function BlockEditor({ blocks, onChange }) {
 
           {block.type === 'code' && (
             <div className="space-y-2">
-              <input
-                value={block.lang}
+              <select
+                value={
+                  CODE_LANG_OPTIONS.some((o) => o.value === block.lang)
+                    ? block.lang
+                    : 'javascript'
+                }
                 onChange={(e) => updateBlock(i, { lang: e.target.value })}
-                placeholder="Language (javascript, python...)"
                 className="w-full rounded-lg border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2 text-sm outline-none focus:border-[#C4A574]"
-              />
+                aria-label="Code language"
+              >
+                {CODE_LANG_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
               <textarea
                 value={block.code}
                 onChange={(e) => updateBlock(i, { code: e.target.value })}
@@ -174,37 +209,97 @@ function BlockEditor({ blocks, onChange }) {
           )}
 
           {block.type === 'table' && (
-            <div className="space-y-3 overflow-x-auto">
-              <div className="flex gap-2">
-                {block.headers.map((h, j) => (
-                  <input
-                    key={j}
-                    value={h}
-                    onChange={(e) => {
-                      const headers = [...block.headers];
-                      headers[j] = e.target.value;
-                      updateBlock(i, { headers });
-                    }}
-                    className="min-w-[100px] flex-1 rounded border border-[#E5DCCE] bg-[#F7F3EC] px-2 py-1 text-sm"
-                  />
-                ))}
-              </div>
-              {block.rows.map((row, j) => (
-                <div key={j} className="flex gap-2">
-                  {row.map((cell, k) => (
-                    <input
-                      key={k}
-                      value={cell}
-                      onChange={(e) => {
-                        const rows = block.rows.map((r) => [...r]);
-                        rows[j][k] = e.target.value;
-                        updateBlock(i, { rows });
-                      }}
-                      className="min-w-[100px] flex-1 rounded border border-[#E5DCCE] bg-[#F7F3EC] px-2 py-1 text-sm"
-                    />
+            <div className="space-y-3">
+              <div className="overflow-x-auto">
+                <div className="inline-flex min-w-full flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    {block.headers.map((h, j) => (
+                      <div key={j} className="flex min-w-[100px] flex-1 items-center gap-1">
+                        <input
+                          value={h}
+                          onChange={(e) => {
+                            const headers = [...block.headers];
+                            headers[j] = e.target.value;
+                            updateBlock(i, { headers });
+                          }}
+                          placeholder={`Column ${j + 1}`}
+                          className="w-full rounded border border-[#E5DCCE] bg-[#F7F3EC] px-2 py-1 text-sm font-medium"
+                        />
+                        {block.headers.length > 1 ? (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const headers = block.headers.filter((_, k) => k !== j);
+                              const rows = block.rows.map((r) => r.filter((_, k) => k !== j));
+                              updateBlock(i, { headers, rows });
+                            }}
+                            className="shrink-0 rounded p-1 text-rose-600 hover:bg-rose-50"
+                            aria-label={`Remove column ${j + 1}`}
+                            title="Remove column"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        ) : null}
+                      </div>
+                    ))}
+                    <span className="w-8 shrink-0" aria-hidden />
+                  </div>
+                  {block.rows.map((row, j) => (
+                    <div key={j} className="flex items-center gap-2">
+                      {row.map((cell, k) => (
+                        <input
+                          key={k}
+                          value={cell}
+                          onChange={(e) => {
+                            const rows = block.rows.map((r) => [...r]);
+                            rows[j][k] = e.target.value;
+                            updateBlock(i, { rows });
+                          }}
+                          className="min-w-[100px] flex-1 rounded border border-[#E5DCCE] bg-[#F7F3EC] px-2 py-1 text-sm"
+                        />
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (block.rows.length <= 1) return;
+                          updateBlock(i, { rows: block.rows.filter((_, k) => k !== j) });
+                        }}
+                        disabled={block.rows.length <= 1}
+                        className="shrink-0 rounded p-1 text-rose-600 hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-40"
+                        aria-label={`Remove row ${j + 1}`}
+                        title="Remove row"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   ))}
                 </div>
-              ))}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const colCount = block.headers.length || 1;
+                    updateBlock(i, {
+                      rows: [...block.rows, Array.from({ length: colCount }, () => '')],
+                    });
+                  }}
+                  className="text-xs font-medium text-[#6B5A48] hover:underline"
+                >
+                  + Add row
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const headers = [...block.headers, `Column ${block.headers.length + 1}`];
+                    const rows = block.rows.map((r) => [...r, '']);
+                    updateBlock(i, { headers, rows });
+                  }}
+                  className="text-xs font-medium text-[#6B5A48] hover:underline"
+                >
+                  + Add column
+                </button>
+              </div>
             </div>
           )}
 
