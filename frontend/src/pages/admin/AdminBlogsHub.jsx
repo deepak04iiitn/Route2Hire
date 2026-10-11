@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   Plus, Eye, Pencil, Copy, Trash2, Upload, Archive, Search,
   Save, X, ChevronUp, ChevronDown, FileText, Settings, GripVertical,
+  FileDown,
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import AdminSectionHeader from '../../components/admin/AdminSectionHeader';
@@ -11,7 +12,14 @@ import AdminDataTable from '../../components/admin/AdminDataTable';
 import AdminPagination from '../../components/admin/AdminPagination';
 import BlogBlocks from '../../components/blog/BlogBlocks';
 import { useAdminPaginatedList } from '../../hooks/useAdminPaginatedList';
-import { BLOG_BLOCK_TYPES, createEmptyBlock, slugify } from '../../lib/blog-blocks';
+import {
+  BLOG_BLOCK_TYPES,
+  CODE_LANG_OPTIONS,
+  createEmptyBlock,
+  normalizeCodeLang,
+  slugify,
+} from '../../lib/blog-blocks';
+import { isBlankBlogContent, markdownToBlogBlocks } from '../../lib/markdown-to-blog-blocks';
 import {
   EMPTY_BLOG,
   adminFetchAnalytics,
@@ -46,31 +54,6 @@ const BLOCK_LABELS = {
   divider: 'Divider',
 };
 
-const CODE_LANG_OPTIONS = [
-  { value: 'javascript', label: 'JavaScript' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'python', label: 'Python' },
-  { value: 'java', label: 'Java' },
-  { value: 'cpp', label: 'C++' },
-  { value: 'c', label: 'C' },
-  { value: 'csharp', label: 'C#' },
-  { value: 'go', label: 'Go' },
-  { value: 'rust', label: 'Rust' },
-  { value: 'kotlin', label: 'Kotlin' },
-  { value: 'swift', label: 'Swift' },
-  { value: 'ruby', label: 'Ruby' },
-  { value: 'php', label: 'PHP' },
-  { value: 'bash', label: 'Bash / Shell' },
-  { value: 'sql', label: 'SQL' },
-  { value: 'json', label: 'JSON' },
-  { value: 'yaml', label: 'YAML' },
-  { value: 'xml', label: 'XML' },
-  { value: 'html', label: 'HTML' },
-  { value: 'css', label: 'CSS' },
-  { value: 'markdown', label: 'Markdown' },
-  { value: 'plaintext', label: 'Plain text' },
-];
-
 function BlockEditor({ blocks, onChange }) {
   const updateBlock = (index, patch) => {
     const next = blocks.map((b, i) => (i === index ? { ...b, ...patch } : b));
@@ -80,9 +63,95 @@ function BlockEditor({ blocks, onChange }) {
   const updateListItem = (blockIndex, itemIndex, value) => {
     const block = blocks[blockIndex];
     const items = [...block.items];
-    items[itemIndex] = value;
+    const prev = items[itemIndex];
+    items[itemIndex] =
+      prev && typeof prev === 'object'
+        ? { ...prev, text: value }
+        : value;
     updateBlock(blockIndex, { items });
   };
+
+  const renderListEditor = (blockIndex, items, path = []) => (
+    <div className="space-y-2">
+      {items.map((item, j) => {
+        const text = typeof item === 'string' ? item : item?.text || '';
+        const children = typeof item === 'object' && Array.isArray(item.children) ? item.children : null;
+        return (
+          <div key={[...path, j].join('-')} className="space-y-2">
+            <div className="flex gap-2" style={{ marginLeft: path.length ? path.length * 16 : 0 }}>
+              <input
+                value={text}
+                onChange={(e) => {
+                  if (!path.length) {
+                    updateListItem(blockIndex, j, e.target.value);
+                    return;
+                  }
+                  // Deep update for nested items
+                  const block = blocks[blockIndex];
+                  const nextItems = structuredClone(block.items);
+                  let cursor = nextItems;
+                  for (let p = 0; p < path.length; p += 1) {
+                    const idx = path[p].itemIndex;
+                    const childIndex = path[p].childIndex;
+                    const node = typeof cursor[idx] === 'object' ? cursor[idx] : { text: cursor[idx], children: [] };
+                    cursor[idx] = node;
+                    if (!node.children) node.children = [];
+                    cursor = node.children[childIndex].items;
+                  }
+                  const prev = cursor[j];
+                  cursor[j] = prev && typeof prev === 'object' ? { ...prev, text: e.target.value } : e.target.value;
+                  updateBlock(blockIndex, { items: nextItems });
+                }}
+                className="flex-1 rounded-lg border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2 text-sm outline-none focus:border-[#C4A574]"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  if (!path.length) {
+                    updateBlock(blockIndex, { items: items.filter((_, k) => k !== j) });
+                    return;
+                  }
+                  const block = blocks[blockIndex];
+                  const nextItems = structuredClone(block.items);
+                  let cursor = nextItems;
+                  for (let p = 0; p < path.length; p += 1) {
+                    const idx = path[p].itemIndex;
+                    const childIndex = path[p].childIndex;
+                    cursor = cursor[idx].children[childIndex].items;
+                  }
+                  cursor.splice(j, 1);
+                  updateBlock(blockIndex, { items: nextItems });
+                }}
+                className="text-rose-600"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            {children?.map((child, ci) => (
+              <div key={`child-${j}-${ci}`} className="border-l border-[#E5DCCE] pl-3">
+                <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-[#A89B8A]">
+                  Nested {child.type === 'numbered' ? 'numbered' : 'bullet'} list
+                </p>
+                {renderListEditor(blockIndex, child.items || [], [
+                  ...path,
+                  { itemIndex: j, childIndex: ci },
+                ])}
+              </div>
+            ))}
+          </div>
+        );
+      })}
+      {!path.length ? (
+        <button
+          type="button"
+          onClick={() => updateBlock(blockIndex, { items: [...items, ''] })}
+          className="text-xs text-[#6B5A48] hover:underline"
+        >
+          + Add item
+        </button>
+      ) : null}
+    </div>
+  );
 
   const moveBlock = (index, dir) => {
     const next = [...blocks];
@@ -154,41 +223,16 @@ function BlockEditor({ blocks, onChange }) {
           )}
 
           {(block.type === 'bullets' || block.type === 'numbered') && (
-            <div className="space-y-2">
-              {block.items.map((item, j) => (
-                <div key={j} className="flex gap-2">
-                  <input
-                    value={item}
-                    onChange={(e) => updateListItem(i, j, e.target.value)}
-                    className="flex-1 rounded-lg border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2 text-sm outline-none focus:border-[#C4A574]"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => updateBlock(i, { items: block.items.filter((_, k) => k !== j) })}
-                    className="text-rose-600"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => updateBlock(i, { items: [...block.items, ''] })}
-                className="text-xs text-[#6B5A48] hover:underline"
-              >
-                + Add item
-              </button>
-            </div>
+            renderListEditor(i, block.items || [])
           )}
 
           {block.type === 'code' && (
             <div className="space-y-2">
               <select
-                value={
-                  CODE_LANG_OPTIONS.some((o) => o.value === block.lang)
-                    ? block.lang
-                    : 'javascript'
-                }
+                value={(() => {
+                  const id = normalizeCodeLang(block.lang);
+                  return CODE_LANG_OPTIONS.some((o) => o.value === id) ? id : 'plaintext';
+                })()}
                 onChange={(e) => updateBlock(i, { lang: e.target.value })}
                 className="w-full rounded-lg border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2 text-sm outline-none focus:border-[#C4A574]"
                 aria-label="Code language"
@@ -340,6 +384,8 @@ export default function AdminBlogsHub() {
   const [editId, setEditId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [coverFile, setCoverFile] = useState(null);
+  const [importingMd, setImportingMd] = useState(false);
+  const mdFileInputRef = useRef(null);
 
   useEffect(() => {
     adminFetchAnalytics()
@@ -393,6 +439,96 @@ export default function AdminBlogsHub() {
   }, [isCreate, isEdit, id]);
 
   const patchForm = (patch) => setForm((f) => ({ ...f, ...patch }));
+
+  const applyMarkdownImport = (markdown, { replace } = { replace: true }) => {
+    const { blocks, meta } = markdownToBlogBlocks(markdown);
+    setForm((prev) => {
+      const nextContent = replace
+        ? blocks
+        : [
+            ...(isBlankBlogContent(prev.content) ? [] : prev.content),
+            ...blocks,
+          ];
+
+      const next = { ...prev, content: nextContent };
+
+      if (!prev.title?.trim() && meta.title) {
+        next.title = meta.title;
+        if (!prev.slug?.trim()) next.slug = slugify(meta.title);
+      }
+      if (!prev.subtitle?.trim() && meta.subtitle) next.subtitle = meta.subtitle;
+      if (!prev.excerpt?.trim() && meta.excerpt) next.excerpt = meta.excerpt;
+      if (!prev.category?.trim() && meta.category) next.category = meta.category;
+      if (!(prev.tags || []).length && Array.isArray(meta.tags) && meta.tags.length) {
+        next.tags = meta.tags;
+      }
+      if (!prev.slug?.trim() && meta.slug) next.slug = slugify(meta.slug);
+      if (meta.author && !prev.author?.name?.trim()) {
+        next.author = {
+          ...(prev.author || {}),
+          name: typeof meta.author === 'string' ? meta.author : meta.author.name || '',
+        };
+      }
+
+      const seo = { ...(prev.seo || EMPTY_BLOG.seo) };
+      let seoTouched = false;
+      if (!seo.metaTitle?.trim() && (meta.title || meta.metaTitle)) {
+        seo.metaTitle = meta.metaTitle || meta.title;
+        seoTouched = true;
+      }
+      if (!seo.metaDescription?.trim() && (meta.excerpt || meta.description || meta.metaDescription)) {
+        seo.metaDescription = meta.metaDescription || meta.excerpt || meta.description;
+        seoTouched = true;
+      }
+      if (!(seo.keywords || []).length && Array.isArray(meta.keywords) && meta.keywords.length) {
+        seo.keywords = meta.keywords;
+        seoTouched = true;
+      }
+      if (seoTouched) next.seo = seo;
+
+      return next;
+    });
+  };
+
+  const handleMarkdownFile = async (file) => {
+    if (!file) return;
+    const name = file.name || '';
+    const looksLikeMd =
+      /\.(md|markdown|mdx)$/i.test(name) ||
+      file.type === 'text/markdown' ||
+      file.type === 'text/plain' ||
+      file.type === '';
+    if (!looksLikeMd) {
+      toast.error('Please upload a Markdown (.md) file');
+      return;
+    }
+
+    const hasContent = !isBlankBlogContent(form.content);
+    let replace = true;
+    if (hasContent) {
+      const choice = window.confirm(
+        'Replace existing content with this Markdown?\n\nOK = Replace\nCancel = Append below current blocks',
+      );
+      replace = choice;
+    }
+
+    setImportingMd(true);
+    try {
+      const text = await file.text();
+      if (!String(text || '').trim()) {
+        toast.error('Markdown file is empty');
+        return;
+      }
+      applyMarkdownImport(text, { replace });
+      setActiveTab('content');
+      toast.success(replace ? 'Markdown imported into content blocks' : 'Markdown appended as content blocks');
+    } catch {
+      toast.error('Failed to read Markdown file');
+    } finally {
+      setImportingMd(false);
+      if (mdFileInputRef.current) mdFileInputRef.current.value = '';
+    }
+  };
 
   const run = async (fn, okMsg) => {
     try {
@@ -642,6 +778,41 @@ export default function AdminBlogsHub() {
             <div className="min-h-0 flex-1 overflow-y-auto p-5">
               {activeTab === 'content' && (
                 <div className="space-y-4">
+                  <div className="rounded-xl border border-dashed border-[#C4A574]/60 bg-[#F7F3EC]/70 px-4 py-4">
+                    <div className="flex flex-col items-center gap-3 text-center">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-[#2C241B]">Import from Markdown</p>
+                        <p className="mt-0.5 text-xs leading-relaxed text-[#78716C]">
+                          Upload a Markdown file and we’ll turn it into an editable blog post.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={importingMd}
+                        onClick={() => mdFileInputRef.current?.click()}
+                        className={`inline-flex items-center gap-1.5 rounded-xl border border-[#E5DCCE] bg-[#FFFDF8] px-3 py-2 text-xs font-semibold text-[#2C241B] hover:bg-[#EFE8DC] disabled:opacity-50 ${focusRing}`}
+                      >
+                        <FileDown className="h-3.5 w-3.5" />
+                        {importingMd ? 'Importing…' : 'Choose .md file'}
+                      </button>
+                    </div>
+                    <input
+                      ref={mdFileInputRef}
+                      type="file"
+                      accept=".md,.markdown,.mdx,text/markdown,text/plain"
+                      className="hidden"
+                      onChange={(e) => handleMarkdownFile(e.target.files?.[0] || null)}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-3" role="separator" aria-label="Or write manually">
+                    <div className="h-px flex-1 bg-[#E5DCCE]" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A89B8A]">
+                      Or
+                    </span>
+                    <div className="h-px flex-1 bg-[#E5DCCE]" />
+                  </div>
+
                   <input
                     value={form.title}
                     onChange={(e) => patchForm({ title: e.target.value, slug: form.slug || slugify(e.target.value) })}
@@ -688,6 +859,7 @@ export default function AdminBlogsHub() {
                       <p className="mt-1 text-xs text-[#78716C]">{coverFile?.name || form.coverImage}</p>
                     )}
                   </div>
+
                   <BlockEditor blocks={form.content} onChange={(content) => patchForm({ content })} />
                 </div>
               )}

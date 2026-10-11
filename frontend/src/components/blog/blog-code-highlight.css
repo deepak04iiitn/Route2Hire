@@ -1,0 +1,86 @@
+/* Scoped dark syntax theme for blog code blocks — high contrast on charcoal. */
+.blog-code-block pre,
+.blog-code-block .hljs {
+  background: transparent !important;
+  color: #e8e4dc !important;
+  padding: 0;
+}
+
+.blog-code-block .hljs-comment,
+.blog-code-block .hljs-quote {
+  color: #8a8278 !important;
+  font-style: italic;
+}
+
+.blog-code-block .hljs-keyword,
+.blog-code-block .hljs-selector-tag,
+.blog-code-block .hljs-meta .hljs-keyword {
+  color: #f2a4b0 !important;
+}
+
+.blog-code-block .hljs-string,
+.blog-code-block .hljs-doctag,
+.blog-code-block .hljs-regexp,
+.blog-code-block .hljs-template-tag {
+  color: #9fd0ff !important;
+}
+
+/* f-string / template interpolations — often the camouflaged bits */
+.blog-code-block .hljs-subst,
+.blog-code-block .hljs-template-variable {
+  color: #e8e4dc !important;
+}
+
+.blog-code-block .hljs-title,
+.blog-code-block .hljs-title.class_,
+.blog-code-block .hljs-title.function_,
+.blog-code-block .hljs-section {
+  color: #d4b4ff !important;
+}
+
+.blog-code-block .hljs-type,
+.blog-code-block .hljs-built_in,
+.blog-code-block .hljs-builtin-name,
+.blog-code-block .hljs-symbol,
+.blog-code-block .hljs-bullet {
+  color: #f0b27a !important;
+}
+
+.blog-code-block .hljs-number,
+.blog-code-block .hljs-literal,
+.blog-code-block .hljs-attr,
+.blog-code-block .hljs-attribute,
+.blog-code-block .hljs-variable,
+.blog-code-block .hljs-params,
+.blog-code-block .hljs-meta {
+  color: #7ec8ff !important;
+}
+
+.blog-code-block .hljs-name,
+.blog-code-block .hljs-selector-id,
+.blog-code-block .hljs-selector-class {
+  color: #d4b4ff !important;
+}
+
+.blog-code-block .hljs-property,
+.blog-code-block .hljs-tag {
+  color: #9fd0ff !important;
+}
+
+.blog-code-block .hljs-addition {
+  color: #7ee787 !important;
+  background: rgba(46, 160, 67, 0.18) !important;
+}
+
+.blog-code-block .hljs-deletion {
+  color: #ffa198 !important;
+  background: rgba(248, 81, 73, 0.18) !important;
+}
+
+.blog-code-block .hljs-emphasis {
+  font-style: italic;
+}
+
+.blog-code-block .hljs-strong {
+  font-weight: 700;
+}
