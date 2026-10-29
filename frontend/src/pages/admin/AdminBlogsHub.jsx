@@ -541,7 +541,7 @@ export default function AdminBlogsHub() {
   };
 
   const handleSave = async (publish = false) => {
-    if (!form.title || !form.category) {
+    if (!form.title?.trim() || !form.category?.trim()) {
       toast.error('Title and category are required');
       return;
     }
@@ -549,29 +549,56 @@ export default function AdminBlogsHub() {
     setSaving(true);
     try {
       const payload = {
-        ...form,
+        title: form.title,
+        subtitle: form.subtitle,
         slug: form.slug || slugify(form.title),
+        excerpt: form.excerpt,
+        content: form.content,
+        category: form.category,
+        tags: form.tags || [],
+        status: publish ? 'published' : form.status || 'draft',
+        isFeatured: Boolean(form.isFeatured),
+        coverImage: form.coverImage || '',
+        coverImageAlt: form.coverImageAlt || '',
+        author: form.author || EMPTY_BLOG.author,
+        seo: form.seo || EMPTY_BLOG.seo,
+        faq: form.faq || [],
+        relatedSlugs: form.relatedSlugs || [],
         coverImageFile: coverFile,
-        status: publish ? 'published' : form.status,
       };
 
       let saved;
-      if (editId) {
-        saved = await adminUpdateBlog(editId, payload);
-        if (publish) saved = await adminPublishBlog(editId);
+      const existingId = editId;
+      if (existingId) {
+        saved = await adminUpdateBlog(existingId, payload);
+        if (publish && saved.status !== 'published') {
+          saved = await adminPublishBlog(existingId);
+        }
       } else {
         saved = await adminCreateBlog(payload);
-        if (publish) saved = await adminPublishBlog(saved._id);
+        if (publish && saved.status !== 'published') {
+          saved = await adminPublishBlog(saved._id);
+        }
         setEditId(saved._id);
       }
 
-      setForm((f) => ({ ...f, ...saved, content: saved.content || f.content }));
+      setForm((f) => ({
+        ...f,
+        ...saved,
+        content: saved.content || f.content,
+        status: saved.status || (publish ? 'published' : f.status),
+      }));
       setCoverFile(null);
-      toast.success(publish ? 'Published' : 'Saved');
+      toast.success(publish ? 'Published successfully' : 'Draft saved');
       reload();
-      if (!editId) navigate(`/admin/blogs/edit/${saved._id}`, { replace: true });
+      if (!existingId) navigate(`/admin/blogs/edit/${saved._id}`, { replace: true });
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Save failed');
+      const msg =
+        err.response?.data?.message ||
+        err.message ||
+        (publish ? 'Publish failed' : 'Save failed');
+      console.error('[admin-blog] save/publish failed:', err.response?.data || err);
+      toast.error(msg);
     } finally {
       setSaving(false);
     }

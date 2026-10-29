@@ -250,7 +250,19 @@ function Layout() {
       </div>
       {!hideFooterChrome && <Footer />}
       {!hideSocialFab && <SocialIconFab />}
-      <ToastContainer position="bottom-right" autoClose={2500} hideProgressBar={false} newestOnTop theme="colored" closeOnClick pauseOnFocusLoss={false} draggable pauseOnHover />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        theme="colored"
+        closeOnClick
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        style={{ zIndex: 2147483647 }}
+        toastStyle={{ zIndex: 2147483647 }}
+      />
     </div>
   );
 }

@@ -1,5 +1,13 @@
 export const BLOG_BLOCK_TYPES = [
-  'heading', 'paragraph', 'bullets', 'numbered', 'code', 'quote', 'table', 'divider',
+  'heading',
+  'paragraph',
+  'bullets',
+  'numbered',
+  'code',
+  'quote',
+  'table',
+  'divider',
+  'footnotes',
 ];
 
 export function slugify(text) {
@@ -9,22 +17,39 @@ export function slugify(text) {
     .replace(/^-|-$/g, '');
 }
 
+function listItemText(item) {
+  if (typeof item === 'string') return item;
+  if (item && typeof item === 'object') return item.text || '';
+  return '';
+}
+
+function walkListItems(items, visit) {
+  for (const item of items || []) {
+    visit(listItemText(item));
+    const children = item && typeof item === 'object' ? item.children : null;
+    if (!Array.isArray(children)) continue;
+    for (const child of children) {
+      if (child?.items) walkListItems(child.items, visit);
+    }
+  }
+}
+
 function blockText(block) {
   switch (block.type) {
     case 'heading':
-      return block.text || '';
     case 'paragraph':
-      return block.text || '';
     case 'quote':
       return block.text || '';
     case 'bullets':
-      return (block.items || []).join(' ');
     case 'numbered':
-      return (block.items || []).join(' ');
+    case 'footnotes': {
+      const parts = [];
+      walkListItems(block.items || [], (t) => parts.push(t));
+      return parts.join(' ');
+    }
     case 'table':
       return [...(block.headers || []), ...(block.rows || []).flat()].join(' ');
     case 'code':
-      return '';
     case 'divider':
       return '';
     default:
@@ -64,6 +89,21 @@ export function buildTocAndIds(blocks) {
   return { blocks: nextBlocks, toc };
 }
 
+function isValidListItem(item) {
+  if (typeof item === 'string') return true;
+  if (!item || typeof item !== 'object' || typeof item.text !== 'string') return false;
+  if (item.children == null) return true;
+  if (!Array.isArray(item.children)) return false;
+  return item.children.every(
+    (child) =>
+      child &&
+      typeof child === 'object' &&
+      ['bullets', 'numbered'].includes(child.type) &&
+      Array.isArray(child.items) &&
+      child.items.every(isValidListItem),
+  );
+}
+
 function isValidBlock(block) {
   if (!block || typeof block !== 'object' || !BLOG_BLOCK_TYPES.includes(block.type)) {
     return false;
@@ -77,7 +117,12 @@ function isValidBlock(block) {
       return typeof block.text === 'string';
     case 'bullets':
     case 'numbered':
-      return Array.isArray(block.items) && block.items.every((i) => typeof i === 'string');
+      return Array.isArray(block.items) && block.items.every(isValidListItem);
+    case 'footnotes':
+      return (
+        Array.isArray(block.items) &&
+        block.items.every((i) => typeof i === 'string' || (i && typeof i.text === 'string'))
+      );
     case 'code':
       return typeof block.code === 'string' && typeof block.lang === 'string';
     case 'table':
@@ -101,7 +146,8 @@ export function validateBlocks(content) {
 
   for (let i = 0; i < content.length; i += 1) {
     if (!isValidBlock(content[i])) {
-      return `Invalid block at index ${i}`;
+      const type = content[i]?.type || 'unknown';
+      return `Invalid block at index ${i} (type: ${type})`;
     }
   }
 
