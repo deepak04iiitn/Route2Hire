@@ -63,6 +63,25 @@ export async function adminUploadImage(file) {
   return res.data.url;
 }
 
+const ALLOWED_BLOG_FIELDS = new Set([
+  'title',
+  'subtitle',
+  'slug',
+  'excerpt',
+  'content',
+  'category',
+  'tags',
+  'status',
+  'isFeatured',
+  'coverImage',
+  'coverImageAlt',
+  'author',
+  'seo',
+  'faq',
+  'relatedSlugs',
+  'scheduledAt',
+]);
+
 function buildFormData(data) {
   const form = new FormData();
   const jsonFields = ['content', 'tags', 'seo', 'faq', 'relatedSlugs', 'author'];
@@ -73,8 +92,14 @@ function buildFormData(data) {
       form.append('coverImage', value);
       return;
     }
+    // Never send mongoose metadata / counters back into create/update
+    if (!ALLOWED_BLOG_FIELDS.has(key)) return;
     if (jsonFields.includes(key)) {
       form.append(key, JSON.stringify(value));
+      return;
+    }
+    if (typeof value === 'boolean' || typeof value === 'number') {
+      form.append(key, String(value));
       return;
     }
     form.append(key, value);
