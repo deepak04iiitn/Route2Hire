@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
@@ -6,7 +6,10 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import InterviewCommentSection from '../components/InterviewCommentSection';
+import InterviewAnswer from '../components/InterviewAnswer';
+import InterviewQuestionSetPreview from '../components/InterviewQuestionSetPreview';
 import RelatedLinks from '../components/RelatedLinks';
+import { markdownToInterviewQuestions } from '../lib/markdown-to-interview-questions';
 import slugify from '../utils/slugify';
 import { focusRing } from '../theme/tokens';
 import {
@@ -25,6 +28,8 @@ import {
   ArrowUpDown,
   Layers,
   Hash,
+  FileDown,
+  Eye,
 } from 'lucide-react';
 
 const emptyForm = () => ({
@@ -55,7 +60,10 @@ export default function InterviewQuestions() {
   const [imagesFilesByIndex, setImagesFilesByIndex] = useState({});
   const [imageModal, setImageModal] = useState({ open: false, images: [], index: 0 });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [importingMd, setImportingMd] = useState(false);
+  const [formTab, setFormTab] = useState('edit');
   const [expandedAnswers, setExpandedAnswers] = useState({});
+  const mdFileInputRef = useRef(null);
 
   const selectedQuestion = questions.find((q) => q._id === selectedTopic);
 
@@ -96,6 +104,60 @@ export default function InterviewQuestions() {
     setImagesFilesByIndex({});
     setIsEditing(false);
     setEditQuestionId(null);
+    setFormTab('edit');
+    if (mdFileInputRef.current) mdFileInputRef.current.value = '';
+  };
+
+  const handleMarkdownFile = async (file) => {
+    if (!file) return;
+    const name = file.name || '';
+    const looksLikeMd =
+      /\.(md|markdown|mdx)$/i.test(name) ||
+      file.type === 'text/markdown' ||
+      file.type === 'text/plain' ||
+      file.type === '';
+    if (!looksLikeMd) {
+      toast.error('Please upload a Markdown (.md) file');
+      return;
+    }
+
+    const hasExisting =
+      formData.topic.trim() ||
+      formData.description.trim() ||
+      formData.questions.some((q) => q.question.trim() || q.answer.trim());
+
+    if (hasExisting) {
+      const ok = window.confirm(
+        'Replace the current topic and questions with this Markdown file?',
+      );
+      if (!ok) {
+        if (mdFileInputRef.current) mdFileInputRef.current.value = '';
+        return;
+      }
+    }
+
+    setImportingMd(true);
+    try {
+      const text = await file.text();
+      const parsed = markdownToInterviewQuestions(text);
+      setFormData({
+        topic: parsed.topic,
+        description: parsed.description,
+        questions: parsed.questions.map((q) => ({
+          question: q.question,
+          answer: q.answer,
+          images: [],
+        })),
+      });
+      setImagesFilesByIndex({});
+      setFormTab('preview');
+      toast.success(`Imported ${parsed.questions.length} question(s) for “${parsed.topic}”`);
+    } catch (err) {
+      toast.error(err?.message || 'Failed to import Markdown');
+    } finally {
+      setImportingMd(false);
+      if (mdFileInputRef.current) mdFileInputRef.current.value = '';
+    }
   };
 
   useEffect(() => {
@@ -297,17 +359,34 @@ export default function InterviewQuestions() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.topic.trim()) {
+      toast.error('Topic is required');
+      setFormTab('edit');
+      return;
+    }
+    if (!formData.description.trim()) {
+      toast.error('Description is required');
+      setFormTab('edit');
+      return;
+    }
+    const processedQuestions = formData.questions
+      .map((q) => ({
+        question: String(q.question || '').trim(),
+        answer: String(q.answer || '').trim(),
+        images: q.images || [],
+      }))
+      .filter((q) => q.question && q.answer);
+    if (!processedQuestions.length) {
+      toast.error('Add at least one question with an answer');
+      setFormTab('edit');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const processedQuestions = formData.questions.map((q) => ({
-        question: q.question,
-        answer: q.answer,
-        images: q.images || [],
-      }));
-
       const payload = new FormData();
-      payload.append('topic', formData.topic);
-      payload.append('description', formData.description);
+      payload.append('topic', formData.topic.trim());
+      payload.append('description', formData.description.trim());
       payload.append('questions', JSON.stringify(processedQuestions));
       Object.entries(imagesFilesByIndex).forEach(([idx, files]) => {
         files.forEach((file) => payload.append(`images_${idx}`, file));
@@ -352,6 +431,7 @@ export default function InterviewQuestions() {
     });
     setEditQuestionId(question._id);
     setIsEditing(true);
+    setFormTab('edit');
     setImagesFilesByIndex({});
     openAdminPanel('edit');
   };
@@ -751,9 +831,7 @@ export default function InterviewQuestions() {
                                   <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#78716C]">
                                     Model answer
                                   </p>
-                                  <div className="whitespace-pre-wrap text-[14px] leading-relaxed text-[#2C241B] sm:text-[15px]">
-                                    {qa.answer}
-                                  </div>
+                                  <InterviewAnswer answer={qa.answer} />
 
                                   {Array.isArray(qa.images) && qa.images.length > 0 && (
                                     <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -889,8 +967,73 @@ export default function InterviewQuestions() {
                   </p>
                 </div>
 
+                <div className="flex shrink-0 gap-1 border-b border-[#E5DCCE] px-5 sm:px-6">
+                  {[
+                    { id: 'edit', label: 'Edit', icon: Pencil },
+                    { id: 'preview', label: 'Preview', icon: Eye },
+                  ].map(({ id, label, icon: Icon }) => (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setFormTab(id)}
+                      className={`inline-flex items-center gap-1.5 border-b-2 px-3 py-3 text-xs font-medium transition ${
+                        formTab === id
+                          ? 'border-[#C4A574] text-[#2C241B]'
+                          : 'border-transparent text-[#78716C] hover:text-[#2C241B]'
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" /> {label}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="r2h-scroll-thin flex-1 overflow-y-auto px-5 py-5 sm:px-6">
-                  <form id="iq-admin-form" className="space-y-5" onSubmit={handleSubmit}>
+                  <form id="iq-admin-form" noValidate className="space-y-5" onSubmit={handleSubmit}>
+                    {formTab === 'preview' ? (
+                      <InterviewQuestionSetPreview
+                        topic={formData.topic}
+                        description={formData.description}
+                        questions={formData.questions}
+                      />
+                    ) : (
+                    <>
+                    <div className="rounded-xl border border-dashed border-[#C4A574]/60 bg-[#F7F3EC]/70 px-4 py-4">
+                      <div className="flex flex-col items-center gap-3 text-center">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-[#2C241B]">Import from Markdown</p>
+                          <p className="mt-0.5 text-xs leading-relaxed text-[#78716C]">
+                            Use <code className="rounded bg-[#EFE8DC] px-1"># Topic</code> and{' '}
+                            <code className="rounded bg-[#EFE8DC] px-1">## Question</code> headings
+                            for each Q&amp;A pair.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          disabled={importingMd}
+                          onClick={() => mdFileInputRef.current?.click()}
+                          className={`inline-flex items-center gap-1.5 rounded-xl border border-[#E5DCCE] bg-[#FFFDF8] px-3 py-2 text-xs font-semibold text-[#2C241B] transition hover:bg-[#EFE8DC] disabled:opacity-50 ${focusRing}`}
+                        >
+                          <FileDown className="h-3.5 w-3.5" aria-hidden />
+                          {importingMd ? 'Importing…' : 'Choose .md file'}
+                        </button>
+                      </div>
+                      <input
+                        ref={mdFileInputRef}
+                        type="file"
+                        accept=".md,.markdown,.mdx,text/markdown,text/plain"
+                        className="hidden"
+                        onChange={(e) => handleMarkdownFile(e.target.files?.[0] || null)}
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-3" role="separator" aria-label="Or enter manually">
+                      <div className="h-px flex-1 bg-[#E5DCCE]" />
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#A89B8A]">
+                        Or
+                      </span>
+                      <div className="h-px flex-1 bg-[#E5DCCE]" />
+                    </div>
+
                     <div className="space-y-3">
                       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#78716C]">
                         Topic
@@ -902,26 +1045,24 @@ export default function InterviewQuestions() {
                       <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-[#78716C]">
                         Name
                       </span>
-                      <input
-                        required
-                        value={formData.topic}
-                        onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                        className={`w-full rounded-xl border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2.5 text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
-                      />
-                    </label>
+                          <input
+                            value={formData.topic}
+                            onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+                            className={`w-full rounded-xl border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2.5 text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
+                          />
+                        </label>
 
-                    <label className="block">
-                      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-[#78716C]">
-                        Description
-                      </span>
-                      <textarea
-                        required
-                        rows={3}
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className={`w-full resize-none rounded-xl border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2.5 text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
-                      />
-                    </label>
+                        <label className="block">
+                          <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-[#78716C]">
+                            Description
+                          </span>
+                          <textarea
+                            rows={3}
+                            value={formData.description}
+                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            className={`w-full resize-none rounded-xl border border-[#E5DCCE] bg-[#F7F3EC] px-3 py-2.5 text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
+                          />
+                        </label>
 
                     <div className="space-y-3 pt-1">
                       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#78716C]">
@@ -952,19 +1093,17 @@ export default function InterviewQuestions() {
                             )}
                           </div>
                           <input
-                            required
                             value={qa.question}
                             onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
                             placeholder="Question…"
                             className={`mb-2 w-full rounded-xl border border-[#E5DCCE] bg-[#FFFDF8] px-3 py-2.5 text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
                           />
                           <textarea
-                            required
-                            rows={5}
+                            rows={Math.min(14, Math.max(5, String(qa.answer || '').split('\n').length + 1))}
                             value={qa.answer}
                             onChange={(e) => handleQuestionChange(index, 'answer', e.target.value)}
-                            placeholder="Model answer…"
-                            className={`w-full resize-none rounded-xl border border-[#E5DCCE] bg-[#FFFDF8] px-3 py-2.5 text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
+                            placeholder="Model answer (Markdown supported)…"
+                            className={`w-full resize-y rounded-xl border border-[#E5DCCE] bg-[#FFFDF8] px-3 py-2.5 font-mono text-sm text-[#2C241B] outline-none transition focus:border-[#C4A574] focus:ring-2 focus:ring-[#C4A574]/30 ${focusRing}`}
                           />
 
                           {qa.images?.length > 0 && (
@@ -1018,6 +1157,8 @@ export default function InterviewQuestions() {
                       <Plus className="h-3.5 w-3.5" aria-hidden />
                       Add another question
                     </button>
+                    </>
+                    )}
                   </form>
                 </div>
 

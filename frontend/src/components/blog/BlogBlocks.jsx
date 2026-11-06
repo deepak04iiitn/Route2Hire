@@ -260,7 +260,7 @@ function ListBlock({ type, items = [] }) {
   );
 }
 
-export default function BlogBlocks({ blocks = [] }) {
+export default function BlogBlocks({ blocks = [], compact = false }) {
   const chapterNumbers = [];
   let n = 0;
   for (const block of blocks) {
@@ -288,7 +288,9 @@ export default function BlogBlocks({ blocks = [] }) {
               <Heading
                 key={i}
                 block={block}
-                chapterNumber={block.level === 2 ? chapterNumbers[i] : undefined}
+                chapterNumber={
+                  !compact && block.level === 2 ? chapterNumbers[i] : undefined
+                }
               />
             );
           case 'paragraph': {
@@ -302,7 +304,7 @@ export default function BlogBlocks({ blocks = [] }) {
                 />
               );
             }
-            const isFirst = i === firstParagraphIndex;
+            const isFirst = !compact && i === firstParagraphIndex;
             return (
               <p
                 key={i}
